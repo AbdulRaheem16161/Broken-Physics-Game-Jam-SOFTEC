@@ -7,6 +7,9 @@ namespace ArcadeVP
     {
         public Rigidbody carBody;
 
+        [Header("Only bounce on these layers")]
+        public LayerMask bounceLayers;
+
         public float impactThreshold = 4f;
 
         public float forceMultiplier = 1.5f;
@@ -23,6 +26,10 @@ namespace ArcadeVP
 
         private void OnCollisionEnter(Collision collision)
         {
+            // ❌ ignore objects not in allowed layers
+            if ((bounceLayers.value & (1 << collision.gameObject.layer)) == 0)
+                return;
+
             float impact = collision.relativeVelocity.magnitude;
 
             if (impact < impactThreshold)
@@ -32,30 +39,20 @@ namespace ArcadeVP
 
             Vector3 hitDir = collision.relativeVelocity.normalized;
 
-            // -----------------------------------------
-            // 🔥 KEY FIX: OFF-CENTER FORCE CREATION
-            // -----------------------------------------
-
             Vector3 offsetFromCenter = contact.point - carBody.worldCenterOfMass;
 
-            // remove vertical influence so we control lift ourselves
             offsetFromCenter.y = 0f;
 
-            // base directional force (push direction of impact)
             Vector3 directionalForce = hitDir * impact * forceMultiplier;
 
-            // upward lift
             Vector3 liftForce = Vector3.up * impact * upwardBoost;
 
-            // combine forces
             Vector3 finalForce = directionalForce + liftForce;
 
             finalForce = Vector3.ClampMagnitude(finalForce, maxForce);
 
-            // APPLY FORCE AT OFFSET POSITION → THIS CREATES REAL TORQUE
             carBody.AddForceAtPosition(finalForce, contact.point + offsetFromCenter, ForceMode.Impulse);
 
-            // EXTRA SPIN FOR FLIPS
             Vector3 torqueAxis = Vector3.Cross(offsetFromCenter.normalized, hitDir);
             carBody.AddTorque(torqueAxis * impact * torqueMultiplier, ForceMode.Impulse);
         }
