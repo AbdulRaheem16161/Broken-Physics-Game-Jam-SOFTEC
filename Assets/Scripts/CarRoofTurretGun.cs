@@ -3,8 +3,6 @@ using UnityEngine;
 
 public class CarRoofTurretGun : MonoBehaviour
 {
-    #region Gun Mode
-
     public enum GunMode
     {
         Rifle,
@@ -16,34 +14,22 @@ public class CarRoofTurretGun : MonoBehaviour
     [Header("Gun Mode")]
     [SerializeField] private GunMode currentMode;
 
-    #endregion
-
-    #region Targeting
-
     [Header("Targeting")]
     [SerializeField] private float detectionRadius = 25f;
     [SerializeField] private LayerMask targetLayer;
+    [SerializeField] private string aimChildTag = "AimPoint";
     [SerializeField] private Transform turretHead;
 
-    private Transform currentTarget;
-
-    #endregion
-
-    #region Rotation
-
     [Header("Rotation")]
-    [SerializeField] private float rotationSpeed = 10f;
-
-    #endregion
-
-    #region Fire Points
+    [SerializeField] private float rotationSpeed = 8f;
+    [SerializeField] private float returnSpeed = 4f;
+    [SerializeField] private Vector3 defaultLocalEuler;
 
     [Header("Fire Point")]
     [SerializeField] private Transform muzzlePoint;
 
-    #endregion
-
-    #region Projectiles
+    [Header("Projectile Speed")]
+    [SerializeField] private float projectileSpeed = 40f;
 
     [Header("Projectiles")]
     [SerializeField] private GameObject rifleProjectile;
@@ -51,26 +37,14 @@ public class CarRoofTurretGun : MonoBehaviour
     [SerializeField] private GameObject shotgunProjectile;
     [SerializeField] private GameObject cannonProjectile;
 
-    #endregion
-
-    #region Rifle
-
     [Header("Rifle")]
     [SerializeField] private float rifleFireRate = 0.25f;
     private float rifleTimer;
-
-    #endregion
-
-    #region Machine Gun
 
     [Header("Machine Gun")]
     [SerializeField] private float machineFireRate = 0.08f;
     [SerializeField] private float machineSpread = 3f;
     private float machineTimer;
-
-    #endregion
-
-    #region Shotgun
 
     [Header("Shotgun")]
     [SerializeField] private float shotgunCooldown = 1.2f;
@@ -78,28 +52,20 @@ public class CarRoofTurretGun : MonoBehaviour
     [SerializeField] private float shotgunSpread = 8f;
     private float shotgunTimer;
 
-    #endregion
-
-    #region Cannon
-
     [Header("Cannon")]
     [SerializeField] private float cannonCooldown = 2.5f;
     private float cannonTimer;
 
-    #endregion
-
-    #region Unity
+    private Transform currentTarget;
+    private Transform currentAimPoint;
 
     private void Update()
     {
         FindClosestTarget();
-        RotateTowardsTarget();
+        UpdateAimPoint();
+        RotateTurret();
         HandleShooting();
     }
-
-    #endregion
-
-    #region Targeting
 
     private void FindClosestTarget()
     {
@@ -122,32 +88,55 @@ public class CarRoofTurretGun : MonoBehaviour
         currentTarget = closest;
     }
 
-    #endregion
-
-    #region Rotation
-
-    private void RotateTowardsTarget()
+    private void UpdateAimPoint()
     {
-        if (currentTarget == null || turretHead == null) return;
+        currentAimPoint = null;
 
-        Vector3 dir = (currentTarget.position - turretHead.position).normalized;
+        if (currentTarget == null) return;
 
-        Quaternion lookRot = Quaternion.LookRotation(dir);
+        Transform[] children = currentTarget.GetComponentsInChildren<Transform>();
 
-        turretHead.rotation = Quaternion.Slerp(
-            turretHead.rotation,
-            lookRot,
-            rotationSpeed * Time.deltaTime
-        );
+        foreach (Transform t in children)
+        {
+            if (t.CompareTag(aimChildTag))
+            {
+                currentAimPoint = t;
+                return;
+            }
+        }
+
+        currentAimPoint = currentTarget;
     }
 
-    #endregion
+    private void RotateTurret()
+    {
+        if (currentAimPoint != null)
+        {
+            Vector3 dir = (currentAimPoint.position - turretHead.position).normalized;
 
-    #region Shooting Controller
+            Quaternion lookRot = Quaternion.LookRotation(dir);
+
+            turretHead.rotation = Quaternion.Slerp(
+                turretHead.rotation,
+                lookRot,
+                rotationSpeed * Time.deltaTime
+            );
+        }
+        else
+        {
+            Quaternion defaultRot = Quaternion.Euler(defaultLocalEuler);
+
+            turretHead.localRotation = Quaternion.Slerp(
+                turretHead.localRotation,
+                defaultRot,
+                returnSpeed * Time.deltaTime
+            );
+        }
+    }
 
     private void HandleShooting()
     {
-        if (currentTarget == null) return;
+        if (currentAimPoint == null) return;
 
         switch (currentMode)
         {
@@ -169,10 +158,6 @@ public class CarRoofTurretGun : MonoBehaviour
         }
     }
 
-    #endregion
-
-    #region Rifle
-
     private void Rifle()
     {
         rifleTimer += Time.deltaTime;
@@ -184,10 +169,6 @@ public class CarRoofTurretGun : MonoBehaviour
         }
     }
 
-    #endregion
-
-    #region Machine Gun
-
     private void MachineGun()
     {
         machineTimer += Time.deltaTime;
@@ -198,10 +179,6 @@ public class CarRoofTurretGun : MonoBehaviour
             Fire(machineProjectile, machineSpread);
         }
     }
-
-    #endregion
-
-    #region Shotgun
 
     private void Shotgun()
     {
@@ -223,10 +200,6 @@ public class CarRoofTurretGun : MonoBehaviour
         }
     }
 
-    #endregion
-
-    #region Cannon
-
     private void Cannon()
     {
         cannonTimer += Time.deltaTime;
@@ -238,15 +211,11 @@ public class CarRoofTurretGun : MonoBehaviour
         }
     }
 
-    #endregion
-
-    #region Fire System
-
     private void Fire(GameObject prefab, float spread)
     {
-        if (prefab == null || muzzlePoint == null || currentTarget == null) return;
+        if (prefab == null || muzzlePoint == null || currentAimPoint == null) return;
 
-        Vector3 direction = (currentTarget.position - muzzlePoint.position).normalized;
+        Vector3 direction = (currentAimPoint.position - muzzlePoint.position).normalized;
 
         direction += new Vector3(
             Random.Range(-spread, spread) * 0.01f,
@@ -254,32 +223,30 @@ public class CarRoofTurretGun : MonoBehaviour
             Random.Range(-spread, spread) * 0.01f
         );
 
-        GameObject proj = Instantiate(prefab, muzzlePoint.position, Quaternion.LookRotation(direction));
+        GameObject projectile = Instantiate(
+            prefab,
+            muzzlePoint.position,
+            Quaternion.LookRotation(direction)
+        );
 
-        Rigidbody rb = proj.GetComponent<Rigidbody>();
+        Rigidbody rb = projectile.GetComponent<Rigidbody>();
 
         if (rb != null)
         {
-            rb.linearVelocity = direction * 40f;
+            rb.linearVelocity = direction * projectileSpeed;
         }
 
-        // IMPORTANT: attacker assignment
-        Projectile p = proj.GetComponent<Projectile>();
-        if (p != null)
+        Projectile proj = projectile.GetComponent<Projectile>();
+
+        if (proj != null)
         {
-            p.attacker = transform.root.gameObject;
+            proj.attacker = transform.root.gameObject;
         }
     }
-
-    #endregion
-
-    #region Gizmos
 
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, detectionRadius);
     }
-
-    #endregion
 }
