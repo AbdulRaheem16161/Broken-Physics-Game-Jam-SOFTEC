@@ -126,11 +126,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 8892501315859209307}
   target: {fileID: 0}
-  moveForce: 8
-  maxSpeed: 12
-  bounceForce: 6
-  upwardBias: 1.5
-  airControl: 0.5
+  moveForce: 12
+  maxSpeed: 20
+  bounceForce: 7
+  upwardBias: 2
+  airControl: 1
 --- !u!54 &8892501315859209307
 Rigidbody:
   m_ObjectHideFlags: 0
