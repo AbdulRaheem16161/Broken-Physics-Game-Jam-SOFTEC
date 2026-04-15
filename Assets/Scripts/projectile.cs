@@ -7,8 +7,9 @@ public class Projectile : MonoBehaviour
 
     [HideInInspector] public GameObject attacker;
 
-    [Header("Allowed Target Layer")]
+    [Header("Layers")]
     public LayerMask targetLayer;
+    public LayerMask sacredLayer;
 
     private void Start()
     {
@@ -21,18 +22,20 @@ public class Projectile : MonoBehaviour
         Debug.Log($"[Projectile] Hit: {other.gameObject.name}");
         Debug.Log($"[Projectile] Hit Layer: {LayerMask.LayerToName(other.gameObject.layer)}");
 
-        // Check if hit object is in allowed target layer
-        bool isValidTarget = ((1 << other.gameObject.layer) & targetLayer) != 0;
+        int otherLayerBit = 1 << other.gameObject.layer;
 
-        if (isValidTarget)
+        bool isTarget = (targetLayer.value & otherLayerBit) != 0;
+        bool isSacred = (sacredLayer.value & otherLayerBit) != 0;
+
+        // 1. TARGET LAYER → damage + destroy
+        if (isTarget)
         {
-            Debug.Log("[Projectile] Valid target hit. Checking health...");
+            Debug.Log("[Projectile] Target hit → dealing damage");
 
             Health health = other.GetComponent<Health>();
 
             if (health != null)
             {
-                Debug.Log("[Projectile] Damage applied!");
                 health.TakeDamage(damage, attacker);
             }
             else
@@ -40,12 +43,19 @@ public class Projectile : MonoBehaviour
                 Debug.Log("[Projectile] No Health component found.");
             }
 
-            // Only destroy on valid hit
             Destroy(gameObject);
+            return;
         }
-        else
+
+        // 2. SACRED LAYER → do nothing
+        if (isSacred)
         {
-            Debug.Log("[Projectile] Ignored collision (not target layer). Projectile continues.");
+            Debug.Log("[Projectile] Sacred object hit → ignoring completely");
+            return;
         }
+
+        // 3. EVERYTHING ELSE → destroy projectile
+        Debug.Log("[Projectile] Non-valid collision → projectile destroyed");
+        Destroy(gameObject);
     }
 }

@@ -155,3 +155,6 @@ MonoBehaviour:
   targetLayer:
     serializedVersion: 2
     m_Bits: 8
+  sacredLayer:
+    serializedVersion: 2
+    m_Bits: 512
