@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 3065747617815776719}
   - component: {fileID: 3542051596642880285}
   m_Layer: 0
-  m_Name: Player Projectile
+  m_Name: P-Cannon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

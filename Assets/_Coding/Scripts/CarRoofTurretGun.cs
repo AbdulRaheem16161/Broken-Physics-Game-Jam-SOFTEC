@@ -17,6 +17,7 @@ public class CarRoofTurretGun : MonoBehaviour
     [Header("Targeting")]
     [SerializeField] private float detectionRange = 25f;
     [SerializeField] [Range(1f, 360f)] private float detectionAngle = 90f;
+    [SerializeField] private float pointBlankRange = 6f;
     [SerializeField] private LayerMask targetLayer;
     [SerializeField] private string aimChildTag = "AimPoint";
     [SerializeField] private Transform turretHead;
@@ -77,12 +78,14 @@ public class CarRoofTurretGun : MonoBehaviour
 
         foreach (Collider hit in hits)
         {
-            Vector3 dirToTarget = (hit.transform.position - transform.position).normalized;
-            float angle = Vector3.Angle(transform.forward, dirToTarget);
-
-            if (angle > detectionAngle * 0.5f) continue;
-
             float dist = Vector3.Distance(transform.position, hit.transform.position);
+
+            if (dist > pointBlankRange)
+            {
+                Vector3 dirToTarget = (hit.transform.position - transform.position).normalized;
+                float angle = Vector3.Angle(transform.forward, dirToTarget);
+                if (angle > detectionAngle * 0.5f) continue;
+            }
 
             if (dist < closestDist)
             {
@@ -135,10 +138,10 @@ public class CarRoofTurretGun : MonoBehaviour
 
         switch (currentMode)
         {
-            case GunMode.Rifle:     Rifle();     break;
+            case GunMode.Rifle:      Rifle();      break;
             case GunMode.MachineGun: MachineGun(); break;
-            case GunMode.Shotgun:   Shotgun();   break;
-            case GunMode.Cannon:    Cannon();    break;
+            case GunMode.Shotgun:    Shotgun();    break;
+            case GunMode.Cannon:     Cannon();     break;
         }
     }
 
@@ -151,7 +154,11 @@ public class CarRoofTurretGun : MonoBehaviour
     private void MachineGun()
     {
         machineTimer += Time.deltaTime;
-        if (machineTimer >= machineFireRate) { machineTimer = 0f; Fire(machineProjectile, machineSpread); }
+        if (machineTimer >= machineFireRate)
+        {
+            machineTimer = 0f;
+            FireMachineGun();
+        }
     }
 
     private void Shotgun()
@@ -175,6 +182,31 @@ public class CarRoofTurretGun : MonoBehaviour
         if (cannonTimer >= cannonCooldown) { cannonTimer = 0f; Fire(cannonProjectile, 0f); }
     }
 
+    private void FireMachineGun()
+    {
+        if (machineProjectile == null || muzzlePoint == null || currentAimPoint == null) return;
+
+        Vector3 direction = (currentAimPoint.position - muzzlePoint.position).normalized;
+
+        // Spread only on the horizontal plane (X and Z), no Y deviation
+        Vector3 horizontalSpread = new Vector3(
+            Random.Range(-machineSpread, machineSpread) * 0.01f,
+            0f,
+            Random.Range(-machineSpread, machineSpread) * 0.01f
+        );
+
+        direction += horizontalSpread;
+        direction.Normalize();
+
+        GameObject projectile = Instantiate(machineProjectile, muzzlePoint.position, Quaternion.LookRotation(direction));
+
+        Rigidbody rb = projectile.GetComponent<Rigidbody>();
+        if (rb != null) rb.linearVelocity = direction * projectileSpeed;
+
+        Projectile proj = projectile.GetComponent<Projectile>();
+        if (proj != null) proj.attacker = transform.root.gameObject;
+    }
+
     private void Fire(GameObject prefab, float spread)
     {
         if (prefab == null || muzzlePoint == null || currentAimPoint == null) return;
@@ -186,6 +218,8 @@ public class CarRoofTurretGun : MonoBehaviour
             Random.Range(-spread, spread) * 0.01f,
             Random.Range(-spread, spread) * 0.01f
         );
+
+        direction.Normalize();
 
         GameObject projectile = Instantiate(prefab, muzzlePoint.position, Quaternion.LookRotation(direction));
 
@@ -225,6 +259,9 @@ public class CarRoofTurretGun : MonoBehaviour
 
         Gizmos.DrawLine(origin, origin + leftBound);
         Gizmos.DrawLine(origin, origin + rightBound);
+
+        Gizmos.color = new Color(1f, 1f, 0f, 0.2f);
+        Gizmos.DrawWireSphere(origin, pointBlankRange);
 
         if (currentTarget != null)
         {
