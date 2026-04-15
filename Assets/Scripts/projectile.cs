@@ -22,7 +22,9 @@ public class Projectile : MonoBehaviour
         Debug.Log($"[Projectile] Hit Layer: {LayerMask.LayerToName(other.gameObject.layer)}");
 
         // Check if hit object is in allowed target layer
-        if (((1 << other.gameObject.layer) & targetLayer) != 0)
+        bool isValidTarget = ((1 << other.gameObject.layer) & targetLayer) != 0;
+
+        if (isValidTarget)
         {
             Debug.Log("[Projectile] Valid target hit. Checking health...");
 
@@ -37,13 +39,13 @@ public class Projectile : MonoBehaviour
             {
                 Debug.Log("[Projectile] No Health component found.");
             }
+
+            // Only destroy on valid hit
+            Destroy(gameObject);
         }
         else
         {
-            Debug.Log("[Projectile] Hit object NOT in target layer. No damage.");
+            Debug.Log("[Projectile] Ignored collision (not target layer). Projectile continues.");
         }
-
-        Debug.Log("[Projectile] Destroying projectile.");
-        Destroy(gameObject);
     }
 }

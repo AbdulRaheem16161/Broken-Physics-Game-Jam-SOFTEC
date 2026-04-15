@@ -3,20 +3,19 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 3
-  tags:
-  - GunTarget
+  tags: []
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Enemy
+  - Player
   - Water
   - UI
   - drivable
   - carbody
   - SphereRB
+  - Enemy
   - 
-  - Player
   - 
   - 
   - 
