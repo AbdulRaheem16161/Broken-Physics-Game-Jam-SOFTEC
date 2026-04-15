@@ -41,6 +41,22 @@ public class SimpleNavMeshFollower : MonoBehaviour
         }
 
         #endregion
+
+        #region Auto Find Player Target
+
+        // Try to find player by tag and assign it as target
+        GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+
+        if (playerObj != null)
+        {
+            target = playerObj.transform;
+        }
+        else
+        {
+            Debug.LogWarning("No GameObject found with tag 'Player'. AI is blind now. Very cinematic. Very tragic.");
+        }
+
+        #endregion
     }
 
     private void Update()
