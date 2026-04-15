@@ -811,7 +811,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetBody: {fileID: 6618771685048210452}
-  scaleMultiplier: 1.35
+  scaleMultiplier: 1.75
   duration: 0.15
   punchCurve:
     serializedVersion: 2

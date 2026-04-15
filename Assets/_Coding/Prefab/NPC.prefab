@@ -5885,8 +5885,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b2ae9d52a89fbe4abe3afdec211e532, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetBody: {fileID: 175556557017649296}
-  scaleMultiplier: 1.15
+  targetBody: {fileID: 3525872987807081611}
+  scaleMultiplier: 1.65
   duration: 0.15
   punchCurve:
     serializedVersion: 2
