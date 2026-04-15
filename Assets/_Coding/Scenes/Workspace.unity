@@ -402,6 +402,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab66c9cb11b5b644c9bd81458d5abcf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  targetRotationEuler: {x: 0, y: 0, z: 0}
+  useLocalRotation: 1
 --- !u!1 &195025664
 GameObject:
   m_ObjectHideFlags: 0
@@ -3045,7 +3047,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2276493017171641860, guid: 83c6a154c05a8f3418eb4eb92f8e1e61, type: 3}
       propertyPath: m_Name
-      value: 30 machine gun
+      value: MachineGun
       objectReference: {fileID: 0}
     - target: {fileID: 2276493017171641860, guid: 83c6a154c05a8f3418eb4eb92f8e1e61, type: 3}
       propertyPath: m_Layer
@@ -3073,7 +3075,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4384867118190543583, guid: 83c6a154c05a8f3418eb4eb92f8e1e61, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.35
+      value: 2.23
       objectReference: {fileID: 0}
     - target: {fileID: 4384867118190543583, guid: 83c6a154c05a8f3418eb4eb92f8e1e61, type: 3}
       propertyPath: m_LocalRotation.w
@@ -3121,11 +3123,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4611127467777198071, guid: 83c6a154c05a8f3418eb4eb92f8e1e61, type: 3}
       propertyPath: detectionAngle
-      value: 30
+      value: 83
+      objectReference: {fileID: 0}
+    - target: {fileID: 4611127467777198071, guid: 83c6a154c05a8f3418eb4eb92f8e1e61, type: 3}
+      propertyPath: detectionRange
+      value: 21
       objectReference: {fileID: 0}
     - target: {fileID: 4611127467777198071, guid: 83c6a154c05a8f3418eb4eb92f8e1e61, type: 3}
       propertyPath: machineFireRate
       value: 0.04
+      objectReference: {fileID: 0}
+    - target: {fileID: 4611127467777198071, guid: 83c6a154c05a8f3418eb4eb92f8e1e61, type: 3}
+      propertyPath: pointBlankRange
+      value: 2.14
       objectReference: {fileID: 0}
     - target: {fileID: 4611127467777198071, guid: 83c6a154c05a8f3418eb4eb92f8e1e61, type: 3}
       propertyPath: projectileSpeed
@@ -4068,7 +4078,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1921799307}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a0b013ba8d2674b478f1b61880f50916, type: 3}
   m_Name: 
@@ -4660,7 +4670,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5269657887995944273, guid: 4c04b8a4d4a8bb748a16e8ccaa2e8cc6, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5437660918245332757, guid: 4c04b8a4d4a8bb748a16e8ccaa2e8cc6, type: 3}
       propertyPath: cantDie
@@ -4775,6 +4785,10 @@ PrefabInstance:
       value: 360
       objectReference: {fileID: 0}
     - target: {fileID: 7586361658106256546, guid: 4c04b8a4d4a8bb748a16e8ccaa2e8cc6, type: 3}
+      propertyPath: detectionRange
+      value: 25.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7586361658106256546, guid: 4c04b8a4d4a8bb748a16e8ccaa2e8cc6, type: 3}
       propertyPath: detectionRadius
       value: 24.5
       objectReference: {fileID: 0}
@@ -4878,7 +4892,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8754189658762325299, guid: 21c3fbdb8bd52cc4b995e1ca8543f584, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8754189658762325299, guid: 21c3fbdb8bd52cc4b995e1ca8543f584, type: 3}
       propertyPath: acceleration
