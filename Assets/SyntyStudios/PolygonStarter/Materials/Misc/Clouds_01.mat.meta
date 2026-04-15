@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 8e0d4bb09b79f5447a693ab534646be8
+timeCreated: 1572398896
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 156819
+  packageName: POLYGON - Starter Pack - Art by Synty
+  packageVersion: 1.1.0
+  assetPath: Assets/SyntyStudios/PolygonStarter/Materials/Misc/Clouds_01.mat
+  uploadId: 883500
