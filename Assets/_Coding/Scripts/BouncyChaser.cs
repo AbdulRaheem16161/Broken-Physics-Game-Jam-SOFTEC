@@ -16,6 +16,11 @@ public class BouncyChaser : MonoBehaviour
     [Header("Control")]
     public float airControl = 0.5f;
 
+    private void Awake()
+    {
+        FindTarget();
+    }
+
     private void Reset()
     {
         rb = GetComponent<Rigidbody>();
@@ -23,6 +28,11 @@ public class BouncyChaser : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (!target)
+        {
+            FindTarget();
+        }
+
         if (!target) return;
 
         // Direction towards target
@@ -37,7 +47,11 @@ public class BouncyChaser : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (!target) return;
+        if (!target)
+        {
+            FindTarget();
+            if (!target) return;
+        }
 
         ContactPoint contact = collision.contacts[0];
 
@@ -52,5 +66,15 @@ public class BouncyChaser : MonoBehaviour
 
         // Apply bounce impulse
         rb.AddForce(finalDir * bounceForce, ForceMode.Impulse);
+    }
+
+    private void FindTarget()
+    {
+        GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+
+        if (playerObj != null)
+        {
+            target = playerObj.transform;
+        }
     }
 }

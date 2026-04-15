@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using ArcadeVP;
 
 public class EnemySpawner : MonoBehaviour
 {
@@ -7,6 +8,7 @@ public class EnemySpawner : MonoBehaviour
     public class SpawnableEnemy
     {
         public GameObject prefab;
+
         [Range(0f, 100f)]
         public float spawnChance = 50f;
     }
@@ -25,6 +27,17 @@ public class EnemySpawner : MonoBehaviour
     public Transform spawnCenter;
 
     private float timer;
+    private Transform player;
+
+    private void Start()
+    {
+        player = GameObject.FindGameObjectWithTag("Player")?.transform;
+
+        if (player == null)
+        {
+            Debug.LogError("EnemySpawner: Player not found! Make sure Player tag exists.");
+        }
+    }
 
     private void Update()
     {
@@ -48,12 +61,34 @@ public class EnemySpawner : MonoBehaviour
 
     private void SpawnEnemy()
     {
-        GameObject selected = GetRandomEnemy();
+        GameObject prefab = GetRandomEnemy();
 
-        if (selected == null) return;
+        if (prefab == null) return;
 
         Vector3 spawnPos = GetRandomPosition();
-        Instantiate(selected, spawnPos, Quaternion.identity);
+
+        GameObject enemy = Instantiate(prefab, spawnPos, Quaternion.identity);
+
+        AssignTarget(enemy);
+    }
+
+    private void AssignTarget(GameObject enemy)
+    {
+        if (player == null) return;
+
+        // 🚗 Car AI enemy
+        AICarBrain carAI = enemy.GetComponent<AICarBrain>();
+        if (carAI != null)
+        {
+            carAI.target = player;
+        }
+
+        // 🧲 Bouncy enemy
+        BouncyChaser bouncy = enemy.GetComponent<BouncyChaser>();
+        if (bouncy != null)
+        {
+            bouncy.target = player;
+        }
     }
 
     private GameObject GetRandomEnemy()
@@ -62,6 +97,7 @@ public class EnemySpawner : MonoBehaviour
 
         foreach (var e in enemies)
         {
+            if (e.prefab == null) continue;
             totalWeight += e.spawnChance;
         }
 
@@ -70,12 +106,12 @@ public class EnemySpawner : MonoBehaviour
 
         foreach (var e in enemies)
         {
+            if (e.prefab == null) continue;
+
             current += e.spawnChance;
 
             if (random <= current)
-            {
                 return e.prefab;
-            }
         }
 
         return enemies[0].prefab;

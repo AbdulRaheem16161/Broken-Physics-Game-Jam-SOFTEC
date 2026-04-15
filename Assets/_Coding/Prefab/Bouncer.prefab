@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 5643962544469244234}
   - component: {fileID: 6100918955038121543}
   - component: {fileID: 8892501315859209307}
+  - component: {fileID: -8223874504163405857}
   m_Layer: 9
   m_Name: Bouncer
   m_TagString: Untagged
@@ -157,6 +158,22 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 80
   m_CollisionDetection: 0
+--- !u!114 &-8223874504163405857
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2753960387329610114}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff7dd954ca025824da52bd589d8a20be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHp: 30
+  hp: 30
+  cantDie: 0
+  healthBar: {fileID: 0}
 --- !u!1001 &1555766446838956955
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -275,13 +292,35 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1435215116862488817, guid: d75f43f834177b847ab9b9b1e0de4487, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6472322017834542748}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4135619687817387230, guid: d75f43f834177b847ab9b9b1e0de4487, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 9022211954704406084}
   m_SourcePrefab: {fileID: 100100000, guid: d75f43f834177b847ab9b9b1e0de4487, type: 3}
 --- !u!4 &467769476332569450 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1435215116862488817, guid: d75f43f834177b847ab9b9b1e0de4487, type: 3}
   m_PrefabInstance: {fileID: 1555766446838956955}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &3239105622233931589 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4135619687817387230, guid: d75f43f834177b847ab9b9b1e0de4487, type: 3}
+  m_PrefabInstance: {fileID: 1555766446838956955}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &9022211954704406084
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3239105622233931589}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1af3b084671c89d4799460d4445bcedf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rotationSmoothness: 5
+  minMoveThreshold: 0.001
 --- !u!1001 &1863932034245105554
 PrefabInstance:
   m_ObjectHideFlags: 0

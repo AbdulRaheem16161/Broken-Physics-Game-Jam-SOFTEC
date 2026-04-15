@@ -15,7 +15,8 @@ public class CarRoofTurretGun : MonoBehaviour
     [SerializeField] private GunMode currentMode;
 
     [Header("Targeting")]
-    [SerializeField] private float detectionRadius = 25f;
+    [SerializeField] private float detectionRange = 25f;
+    [SerializeField] [Range(1f, 360f)] private float detectionAngle = 90f;
     [SerializeField] private LayerMask targetLayer;
     [SerializeField] private string aimChildTag = "AimPoint";
     [SerializeField] private Transform turretHead;
@@ -61,21 +62,26 @@ public class CarRoofTurretGun : MonoBehaviour
 
     private void Update()
     {
-        FindClosestTarget();
+        FindClosestTargetInCone();
         UpdateAimPoint();
         RotateTurret();
         HandleShooting();
     }
 
-    private void FindClosestTarget()
+    private void FindClosestTargetInCone()
     {
-        Collider[] hits = Physics.OverlapSphere(transform.position, detectionRadius, targetLayer);
+        Collider[] hits = Physics.OverlapSphere(transform.position, detectionRange, targetLayer);
 
         float closestDist = Mathf.Infinity;
         Transform closest = null;
 
         foreach (Collider hit in hits)
         {
+            Vector3 dirToTarget = (hit.transform.position - transform.position).normalized;
+            float angle = Vector3.Angle(transform.forward, dirToTarget);
+
+            if (angle > detectionAngle * 0.5f) continue;
+
             float dist = Vector3.Distance(transform.position, hit.transform.position);
 
             if (dist < closestDist)
@@ -113,24 +119,13 @@ public class CarRoofTurretGun : MonoBehaviour
         if (currentAimPoint != null)
         {
             Vector3 dir = (currentAimPoint.position - turretHead.position).normalized;
-
             Quaternion lookRot = Quaternion.LookRotation(dir);
-
-            turretHead.rotation = Quaternion.Slerp(
-                turretHead.rotation,
-                lookRot,
-                rotationSpeed * Time.deltaTime
-            );
+            turretHead.rotation = Quaternion.Slerp(turretHead.rotation, lookRot, rotationSpeed * Time.deltaTime);
         }
         else
         {
             Quaternion defaultRot = Quaternion.Euler(defaultLocalEuler);
-
-            turretHead.localRotation = Quaternion.Slerp(
-                turretHead.localRotation,
-                defaultRot,
-                returnSpeed * Time.deltaTime
-            );
+            turretHead.localRotation = Quaternion.Slerp(turretHead.localRotation, defaultRot, returnSpeed * Time.deltaTime);
         }
     }
 
@@ -140,55 +135,29 @@ public class CarRoofTurretGun : MonoBehaviour
 
         switch (currentMode)
         {
-            case GunMode.Rifle:
-                Rifle();
-                break;
-
-            case GunMode.MachineGun:
-                MachineGun();
-                break;
-
-            case GunMode.Shotgun:
-                Shotgun();
-                break;
-
-            case GunMode.Cannon:
-                Cannon();
-                break;
+            case GunMode.Rifle:     Rifle();     break;
+            case GunMode.MachineGun: MachineGun(); break;
+            case GunMode.Shotgun:   Shotgun();   break;
+            case GunMode.Cannon:    Cannon();    break;
         }
     }
 
     private void Rifle()
     {
         rifleTimer += Time.deltaTime;
-
-        if (rifleTimer >= rifleFireRate)
-        {
-            rifleTimer = 0f;
-            Fire(rifleProjectile, 0f);
-        }
+        if (rifleTimer >= rifleFireRate) { rifleTimer = 0f; Fire(rifleProjectile, 0f); }
     }
 
     private void MachineGun()
     {
         machineTimer += Time.deltaTime;
-
-        if (machineTimer >= machineFireRate)
-        {
-            machineTimer = 0f;
-            Fire(machineProjectile, machineSpread);
-        }
+        if (machineTimer >= machineFireRate) { machineTimer = 0f; Fire(machineProjectile, machineSpread); }
     }
 
     private void Shotgun()
     {
         shotgunTimer += Time.deltaTime;
-
-        if (shotgunTimer >= shotgunCooldown)
-        {
-            shotgunTimer = 0f;
-            StartCoroutine(ShotgunBurst());
-        }
+        if (shotgunTimer >= shotgunCooldown) { shotgunTimer = 0f; StartCoroutine(ShotgunBurst()); }
     }
 
     private IEnumerator ShotgunBurst()
@@ -203,12 +172,7 @@ public class CarRoofTurretGun : MonoBehaviour
     private void Cannon()
     {
         cannonTimer += Time.deltaTime;
-
-        if (cannonTimer >= cannonCooldown)
-        {
-            cannonTimer = 0f;
-            Fire(cannonProjectile, 0f);
-        }
+        if (cannonTimer >= cannonCooldown) { cannonTimer = 0f; Fire(cannonProjectile, 0f); }
     }
 
     private void Fire(GameObject prefab, float spread)
@@ -223,30 +187,50 @@ public class CarRoofTurretGun : MonoBehaviour
             Random.Range(-spread, spread) * 0.01f
         );
 
-        GameObject projectile = Instantiate(
-            prefab,
-            muzzlePoint.position,
-            Quaternion.LookRotation(direction)
-        );
+        GameObject projectile = Instantiate(prefab, muzzlePoint.position, Quaternion.LookRotation(direction));
 
         Rigidbody rb = projectile.GetComponent<Rigidbody>();
-
-        if (rb != null)
-        {
-            rb.linearVelocity = direction * projectileSpeed;
-        }
+        if (rb != null) rb.linearVelocity = direction * projectileSpeed;
 
         Projectile proj = projectile.GetComponent<Projectile>();
-
-        if (proj != null)
-        {
-            proj.attacker = transform.root.gameObject;
-        }
+        if (proj != null) proj.attacker = transform.root.gameObject;
     }
 
     private void OnDrawGizmosSelected()
     {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, detectionRadius);
+        Vector3 origin = transform.position;
+        Vector3 forward = transform.forward;
+        float halfAngle = detectionAngle * 0.5f;
+
+        Gizmos.color = new Color(1f, 0.4f, 0f, 0.15f);
+
+        int segments = 40;
+        float angleStep = detectionAngle / segments;
+        float startAngle = -halfAngle;
+
+        Vector3 prevPoint = origin + Quaternion.Euler(0f, startAngle, 0f) * forward * detectionRange;
+
+        for (int i = 1; i <= segments; i++)
+        {
+            float currentAngle = startAngle + angleStep * i;
+            Vector3 nextPoint = origin + Quaternion.Euler(0f, currentAngle, 0f) * forward * detectionRange;
+            Gizmos.DrawLine(prevPoint, nextPoint);
+            prevPoint = nextPoint;
+        }
+
+        Gizmos.color = new Color(1f, 0.4f, 0f, 0.6f);
+
+        Vector3 leftBound  = Quaternion.Euler(0f, -halfAngle, 0f) * forward * detectionRange;
+        Vector3 rightBound = Quaternion.Euler(0f,  halfAngle, 0f) * forward * detectionRange;
+
+        Gizmos.DrawLine(origin, origin + leftBound);
+        Gizmos.DrawLine(origin, origin + rightBound);
+
+        if (currentTarget != null)
+        {
+            Gizmos.color = Color.green;
+            Gizmos.DrawLine(origin, currentTarget.position);
+            Gizmos.DrawWireSphere(currentTarget.position, 0.4f);
+        }
     }
 }

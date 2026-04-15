@@ -5418,7 +5418,7 @@ MonoBehaviour:
   drivableSurface:
     serializedVersion: 2
     m_Bits: 64
-  maxSpeed: 100
+  maxSpeed: 40
   acceleration: 20
   turn: 10
   gravity: 5
@@ -5797,8 +5797,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff7dd954ca025824da52bd589d8a20be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHp: 100
-  hp: 100
+  maxHp: 30
+  hp: 30
   cantDie: 0
   healthBar: {fileID: 0}
 --- !u!1 &3863021923780768303
@@ -21206,6 +21206,10 @@ PrefabInstance:
     - target: {fileID: 7152241659318941141, guid: a0de44209995b6045864ad720ece14ec, type: 3}
       propertyPath: m_Name
       value: Gun
+      objectReference: {fileID: 0}
+    - target: {fileID: 7152241659318941141, guid: a0de44209995b6045864ad720ece14ec, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
