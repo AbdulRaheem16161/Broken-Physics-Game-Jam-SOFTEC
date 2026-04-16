@@ -19,7 +19,7 @@ GameObject:
   - component: {fileID: 2266284812103476501}
   - component: {fileID: 1084480411042620565}
   - component: {fileID: -2841816752908007990}
-  m_Layer: 9
+  m_Layer: 3
   m_Name: Bouncer
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -199,10 +199,10 @@ MonoBehaviour:
   offset: {x: 0, y: 0, z: 0}
   hitLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   targetLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   damage: 20
   bounceForce: 10
   upwardBoost: 2
@@ -398,6 +398,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 9
       objectReference: {fileID: 0}
+    - target: {fileID: 4205669194001410179, guid: d75f43f834177b847ab9b9b1e0de4487, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 99162d368d778d94d98383f625b10bae, type: 2}
     - target: {fileID: 4372725320964540150, guid: d75f43f834177b847ab9b9b1e0de4487, type: 3}
       propertyPath: m_Layer
       value: 9

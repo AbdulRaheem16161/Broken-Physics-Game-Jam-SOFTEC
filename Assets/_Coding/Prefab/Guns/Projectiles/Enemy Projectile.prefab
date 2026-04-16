@@ -154,7 +154,7 @@ MonoBehaviour:
   attacker: {fileID: 0}
   targetLayer:
     serializedVersion: 2
-    m_Bits: 8
+    m_Bits: 64
   sacredLayer:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 8
