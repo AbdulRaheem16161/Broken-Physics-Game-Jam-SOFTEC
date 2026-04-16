@@ -5382,13 +5382,13 @@ GameObject:
   - component: {fileID: 8950612766397421795}
   - component: {fileID: 631842371278766362}
   - component: {fileID: 3879554023016223053}
-  - component: {fileID: 7688099864558683658}
   - component: {fileID: 8279253941702896944}
   - component: {fileID: 2820641411989746797}
   - component: {fileID: 9192493431402981335}
   - component: {fileID: 1282641202414740813}
   - component: {fileID: 6835987666176234177}
   - component: {fileID: 8867876241775616168}
+  - component: {fileID: 890801502465788057}
   m_Layer: 9
   m_Name: NPC
   m_TagString: Enemy
@@ -5553,7 +5553,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3121546575763796119}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 0.1
   m_Drag: 0
   m_AngularDrag: 40
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -5784,27 +5784,6 @@ MonoBehaviour:
   maxSteerAngle: 45
   idealDistance: 8
   slowDistance: 4
---- !u!114 &7688099864558683658
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3121546575763796119}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f20adf5169b1e3647ac1746e2649a811, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  carBody: {fileID: 8187777600946659252}
-  bounceLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  impactThreshold: 4
-  forceMultiplier: 1.5
-  upwardBoost: 10
-  torqueMultiplier: 1
-  maxForce: 20
 --- !u!114 &8279253941702896944
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5821,6 +5800,7 @@ MonoBehaviour:
   impactThreshold: 5
   recoveryDelay: 0.5
   uprightDotThreshold: 0.98
+  turnOff: 0
 --- !u!114 &2820641411989746797
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5837,8 +5817,8 @@ MonoBehaviour:
   hp: 100
   cantDie: 0
   healthBar: {fileID: 0}
-  damageFeedback: {fileID: 0}
-  damageNumbers: {fileID: 0}
+  damageFeedback: {fileID: 6835987666176234177}
+  damageNumbers: {fileID: 8867876241775616168}
 --- !u!114 &9192493431402981335
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5930,6 +5910,20 @@ MonoBehaviour:
   spawnPoint: {fileID: 3301042207147929940}
   offset: {x: 0, y: 1.5, z: 0}
   spawnCooldown: 0.12
+--- !u!114 &890801502465788057
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3121546575763796119}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f70905d4ed754d4b9969409018c985b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  vehicleController: {fileID: 8754189658762325299}
+  affectedByTimeSlow: 1
 --- !u!1 &3863021923780768303
 GameObject:
   m_ObjectHideFlags: 0

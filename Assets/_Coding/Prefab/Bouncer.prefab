@@ -143,7 +143,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2753960387329610114}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 0.1
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -178,8 +178,8 @@ MonoBehaviour:
   hp: 100
   cantDie: 0
   healthBar: {fileID: 0}
-  damageFeedback: {fileID: 0}
-  damageNumbers: {fileID: 0}
+  damageFeedback: {fileID: 2266284812103476501}
+  damageNumbers: {fileID: 1084480411042620565}
 --- !u!114 &6592389513268305462
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -250,7 +250,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2753960387329610114}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d61ae7b3e814c4646910167f98f24196, type: 3}
   m_Name: 

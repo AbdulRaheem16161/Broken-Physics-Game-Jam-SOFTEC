@@ -4,6 +4,8 @@ public class RKeyLiftAndReset : MonoBehaviour
 {
     #region Unity Methods
 
+    public float respawnHeight;
+
     private void Update()
     {
         #region Input Check
@@ -26,7 +28,7 @@ public class RKeyLiftAndReset : MonoBehaviour
         #region Position Update
 
         // Move object up by 2 units on Y axis
-        transform.position += new Vector3(0f, 4f, 0f);
+        transform.position += new Vector3(0f, respawnHeight, 0f);
 
         #endregion
 
