@@ -149,6 +149,39 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6375348351109458303}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &883854538571548942
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8733306671455754752}
+  m_Layer: 9
+  m_Name: Mesh
+  m_TagString: Mesh
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8733306671455754752
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 883854538571548942}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 6618771685048210452}
+  - {fileID: 8510522918079893851}
+  m_Father: {fileID: 6375348351109458303}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1404059852415080385
 GameObject:
   m_ObjectHideFlags: 0
@@ -377,8 +410,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5738360834447404631}
   serializedVersion: 2
-  m_LocalRotation: {x: 7.1054274e-15, y: 0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0.0000000016726699, z: 0.00000030517577}
+  m_LocalRotation: {x: 7.1054274e-15, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -386,7 +419,7 @@ Transform:
   - {fileID: 284326647772031898}
   - {fileID: 4767020595383316568}
   - {fileID: 9042702489334563522}
-  m_Father: {fileID: 6375348351109458303}
+  m_Father: {fileID: 8733306671455754752}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7174339272567390722
 GameObject:
@@ -431,7 +464,7 @@ GameObject:
   - component: {fileID: 6618771685048210452}
   m_Layer: 0
   m_Name: CarBody_14
-  m_TagString: Untagged
+  m_TagString: Mesh
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -444,13 +477,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7340831344541928859}
   serializedVersion: 2
-  m_LocalRotation: {x: 7.1054274e-15, y: 0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0.0000000016726699, z: 0.00000030517577}
+  m_LocalRotation: {x: 7.1054274e-15, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2283036477550626945}
-  m_Father: {fileID: 6375348351109458303}
+  m_Father: {fileID: 8733306671455754752}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7585859340495908440
 GameObject:
@@ -673,6 +706,7 @@ GameObject:
   - component: {fileID: 8131378537605299611}
   - component: {fileID: 534752715383709340}
   - component: {fileID: -4809323550335726683}
+  - component: {fileID: 3373395769682813588}
   m_Layer: 9
   m_Name: Ghost Car
   m_TagString: Enemy
@@ -690,12 +724,11 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -70.81, y: 1.95, z: -254.4}
-  m_LocalScale: {x: 3, y: 3, z: 3}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
-  - {fileID: 6618771685048210452}
-  - {fileID: 8510522918079893851}
   - {fileID: 4901597368945599796}
+  - {fileID: 8733306671455754752}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!195 &724481926787674493
@@ -766,12 +799,15 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9038045198002785672}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3396f9fc06e2c694297a4e877b926bb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shape: 1
   radius: 2.29
+  boxSize: {x: 1.63, y: 0.95, z: 3.64}
+  offset: {x: 0, y: 0, z: 0}
   hitLayers:
     serializedVersion: 2
     m_Bits: 8
@@ -868,3 +904,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dcf02826a3b67d54eb475ad0b5e58ea8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &3373395769682813588
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9038045198002785672}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b925f9664dfa29845ad9bb8ca27a4ea4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  carType: 1
+  increaseSize: 0
+  targetScale: {x: 3, y: 3, z: 3}
+  healthIncrease: 100
+  newScaleMultiplier: 1.15

@@ -6,6 +6,7 @@ TagManager:
   tags:
   - GunTarget
   - Enemy
+  - Mesh
   layers:
   - Default
   - TransparentFX
