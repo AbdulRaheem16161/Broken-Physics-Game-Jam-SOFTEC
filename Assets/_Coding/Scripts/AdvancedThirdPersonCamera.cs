@@ -8,9 +8,17 @@ public class SimpleThirdPersonCamera : MonoBehaviour
     #endregion
 
     #region Distance Settings
-    [Header("Distance Settings")]
+    [Header("Base Distance Settings")]
     [SerializeField] private float distance = 6f;
     [SerializeField] private float heightOffset = 2f;
+    #endregion
+
+    #region Speed Based Camera (NEW)
+    [Header("Speed Based Camera Zoom Out")]
+    [SerializeField] private Rigidbody targetRigidbody;
+    [SerializeField] private float speedToDistanceMultiplier = 0.02f;
+    [SerializeField] private float maxExtraDistance = 6f;
+    [SerializeField] private float distanceSmoothness = 5f;
     #endregion
 
     #region Rotation Settings
@@ -28,6 +36,8 @@ public class SimpleThirdPersonCamera : MonoBehaviour
     #region Runtime Values
     private float currentX;
     private float currentY = 20f;
+
+    private float currentExtraDistance;
     #endregion
 
     private void Start()
@@ -57,14 +67,40 @@ public class SimpleThirdPersonCamera : MonoBehaviour
 
     private void LateUpdate()
     {
-        #region Camera Movement
+        #region Safety Check
 
         if (target == null)
             return;
 
+        #endregion
+
+        #region SPEED BASED CAMERA LOGIC (NEW)
+
+        float speed = 0f;
+
+        if (targetRigidbody != null)
+        {
+            speed = targetRigidbody.linearVelocity.magnitude;
+        }
+
+        float targetExtraDistance =
+            Mathf.Clamp(speed * speedToDistanceMultiplier, 0f, maxExtraDistance);
+
+        currentExtraDistance = Mathf.Lerp(
+            currentExtraDistance,
+            targetExtraDistance,
+            distanceSmoothness * Time.deltaTime
+        );
+
+        #endregion
+
+        #region Camera Movement
+
         Quaternion rotation = Quaternion.Euler(currentY, currentX, 0f);
 
-        Vector3 offset = new Vector3(0f, heightOffset, -distance);
+        float finalDistance = distance + currentExtraDistance;
+
+        Vector3 offset = new Vector3(0f, heightOffset, -finalDistance);
         Vector3 desiredPosition = target.position + rotation * offset;
 
         transform.position = Vector3.Lerp(

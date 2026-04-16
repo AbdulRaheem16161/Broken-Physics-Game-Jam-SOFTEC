@@ -10,15 +10,19 @@ namespace ArcadeVP
     {
         public ArcadeVehicleController arcadeVehicleController;
 
+        [Header("Nitro Reference")]
+        public Nitro nitroSystem;
+
         [HideInInspector] public float Horizontal;
         [HideInInspector] public float Vertical;
         [HideInInspector] public float Jump;
+
+        [HideInInspector] public bool nitroBeingPressed;
 
         #region Reverse Controls
 
         [Header("Reverse Controls")]
         public bool reverseControls = false;
-
         public bool reverseRightLeft = false;
         public bool reverseFrontBack = false;
 
@@ -34,7 +38,32 @@ namespace ArcadeVP
 
             #endregion
 
-            #region Apply Reverse Logic
+            #region Nitro State Check
+
+            nitroBeingPressed = false;
+
+            if (nitroSystem != null)
+            {
+                // Nitro is active ONLY while key is held AND nitro has fuel
+                nitroBeingPressed = Input.GetKey(nitroSystem.nitroKey) && nitroSystem.nitro > 0;
+            }
+
+            #endregion
+
+            #region Apply Reverse Lock (NEW)
+
+            if (nitroBeingPressed)
+            {
+                // 🚫 Block reverse completely
+                if (Vertical < 0f)
+                {
+                    Vertical = 0f;
+                }
+            }
+
+            #endregion
+
+            #region Apply Reverse Logic (existing system)
 
             if (reverseControls)
             {
