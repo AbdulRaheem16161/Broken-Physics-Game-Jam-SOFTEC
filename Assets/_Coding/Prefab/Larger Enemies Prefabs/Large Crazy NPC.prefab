@@ -5460,6 +5460,14 @@ MonoBehaviour:
   turn: 10
   gravity: 5
   downforce: 0
+  statSmoothness: 5
+  targetSpeedMultiplier: 1
+  targetAccelerationMultiplier: 1
+  targetTurnMultiplier: 1
+  speedMultiplier: 1
+  accelerationMultiplier: 1
+  turnMultiplier: 1
+  skidWidth: 0.14025125
   airControl: 0
   kartLike: 0
   driftMultiplier: 1.5
@@ -5545,7 +5553,6 @@ MonoBehaviour:
   minPitch: 0.3
   maxPitch: 3
   skidSound: {fileID: 631842371278766362}
-  skidWidth: 0.14025125
 --- !u!54 &8187777600946659252
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -5814,8 +5821,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff7dd954ca025824da52bd589d8a20be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHp: 100
-  hp: 100
+  maxHp: 300
+  hp: 300
   cantDie: 0
   healthBar: {fileID: 0}
   damageFeedback: {fileID: 6835987666176234177}
@@ -5845,7 +5852,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetBody: {fileID: 3525872987807081611}
-  scaleMultiplier: 1.65
+  scaleMultiplier: 1.15
   duration: 0.15
   punchCurve:
     serializedVersion: 2

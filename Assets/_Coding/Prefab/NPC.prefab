@@ -5455,11 +5455,19 @@ MonoBehaviour:
   drivableSurface:
     serializedVersion: 2
     m_Bits: 64
-  maxSpeed: 50
+  maxSpeed: 30
   acceleration: 50
   turn: 10
   gravity: 5
   downforce: 0
+  statSmoothness: 5
+  targetSpeedMultiplier: 1
+  targetAccelerationMultiplier: 1
+  targetTurnMultiplier: 1
+  speedMultiplier: 1
+  accelerationMultiplier: 1
+  turnMultiplier: 1
+  skidWidth: 0.14025125
   airControl: 0
   kartLike: 0
   driftMultiplier: 1.5
@@ -5545,7 +5553,6 @@ MonoBehaviour:
   minPitch: 0.3
   maxPitch: 3
   skidSound: {fileID: 631842371278766362}
-  skidWidth: 0.14025125
 --- !u!54 &8187777600946659252
 Rigidbody:
   m_ObjectHideFlags: 0

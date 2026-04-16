@@ -412,8 +412,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff7dd954ca025824da52bd589d8a20be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHp: 100
-  hp: 100
+  maxHp: 300
+  hp: 300
   cantDie: 0
   healthBar: {fileID: 0}
   damageFeedback: {fileID: 2266284812103476501}
@@ -456,7 +456,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetBody: {fileID: 467769476332569450}
-  scaleMultiplier: 2
+  scaleMultiplier: 1.25
   duration: 0.15
   punchCurve:
     serializedVersion: 2
