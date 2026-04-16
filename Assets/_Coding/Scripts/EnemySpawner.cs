@@ -9,6 +9,9 @@ public class EnemySpawner : MonoBehaviour
     {
         public GameObject prefab;
 
+        [Header("Large Variant")]
+        public GameObject largePrefab;
+
         [Range(0f, 100f)]
         public float spawnChance = 50f;
     }
@@ -24,6 +27,9 @@ public class EnemySpawner : MonoBehaviour
 
     [Header("Spawn Limit")]
     public int maxAliveEnemies = 30;
+
+    [Header("Variants")]
+    public bool spawnLargeEnemies = false;
     #endregion
 
     #region Spawn Points
@@ -73,7 +79,6 @@ public class EnemySpawner : MonoBehaviour
 
         if (enemies.Count == 0) return;
 
-        // Stop spawning if limit reached
         if (aliveEnemies.Count >= maxAliveEnemies) return;
 
         timer += Time.deltaTime;
@@ -93,17 +98,38 @@ public class EnemySpawner : MonoBehaviour
     {
         #region Spawn Enemy
 
-        GameObject prefab = GetRandomEnemy();
-        if (prefab == null) return;
+        SpawnableEnemy selectedEnemy = GetRandomEnemyData();
+        if (selectedEnemy == null) return;
+
+        GameObject prefabToSpawn = GetCorrectPrefab(selectedEnemy);
+
+        if (prefabToSpawn == null)
+        {
+            Debug.LogWarning("EnemySpawner: No valid prefab found!");
+            return;
+        }
 
         Vector3 spawnPos = GetRandomSpawnPoint();
 
-        GameObject enemy = Instantiate(prefab, spawnPos, Quaternion.identity);
+        GameObject enemy = Instantiate(prefabToSpawn, spawnPos, Quaternion.identity);
 
-        // Track enemy
         aliveEnemies.Add(enemy);
 
         AssignTarget(enemy);
+
+        #endregion
+    }
+
+    private GameObject GetCorrectPrefab(SpawnableEnemy enemyData)
+    {
+        #region Choose Variant
+
+        if (spawnLargeEnemies && enemyData.largePrefab != null)
+        {
+            return enemyData.largePrefab;
+        }
+
+        return enemyData.prefab;
 
         #endregion
     }
@@ -138,7 +164,7 @@ public class EnemySpawner : MonoBehaviour
         #endregion
     }
 
-    private GameObject GetRandomEnemy()
+    private SpawnableEnemy GetRandomEnemyData()
     {
         #region Weighted Random Enemy
 
@@ -160,10 +186,10 @@ public class EnemySpawner : MonoBehaviour
             current += e.spawnChance;
 
             if (random <= current)
-                return e.prefab;
+                return e;
         }
 
-        return enemies.Count > 0 ? enemies[0].prefab : null;
+        return enemies.Count > 0 ? enemies[0] : null;
 
         #endregion
     }
@@ -204,10 +230,7 @@ public class EnemySpawner : MonoBehaviour
         {
             if (point != null)
             {
-                // Center dot
                 Gizmos.DrawSphere(point.position, gizmoRadius * 0.3f);
-
-                // Outer circle
                 Gizmos.DrawWireSphere(point.position, gizmoRadius);
             }
         }

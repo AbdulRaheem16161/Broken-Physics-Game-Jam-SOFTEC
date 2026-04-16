@@ -1,16 +1,83 @@
 using UnityEngine;
 
-public class PowerUp_LargeEnemies : MonoBehaviour
+public class PowerUp_LargeEnemies : MonoBehaviour, IPowerUp
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    #region References
+
+    [Header("Spawner")]
+    [SerializeField] private EnemySpawner enemySpawner;
+
+    #endregion
+
+    #region Settings
+
+    [Header("PowerUp Settings")]
+    [SerializeField] private float boostedSpawnsPerMinute = 25f;
+
+    #endregion
+
+    #region Runtime
+
+    private float originalSpawnsPerMinute;
+
+    #endregion
+
+    private void Awake()
     {
-        
+        #region Auto Assign
+
+        if (enemySpawner == null)
+        {
+            enemySpawner = FindObjectOfType<EnemySpawner>();
+        }
+
+        if (enemySpawner != null)
+        {
+            originalSpawnsPerMinute = enemySpawner.spawnsPerMinute;
+        }
+
+        Debug.Log("[LargeEnemies] Spawner assigned: " + (enemySpawner != null));
+
+        #endregion
     }
 
-    // Update is called once per frame
-    void Update()
+    #region IPowerUp
+
+    public void ActivatePowerUp()
     {
-        
+        #region Enable Large Enemies + Increase Spawn Rate
+
+        if (enemySpawner == null)
+        {
+            Debug.LogWarning("[LargeEnemies] EnemySpawner is NULL!");
+            return;
+        }
+
+        enemySpawner.spawnLargeEnemies = true;
+        enemySpawner.spawnsPerMinute = boostedSpawnsPerMinute;
+
+        Debug.Log("[LargeEnemies] ACTIVATED → Big enemies + faster spawns (" + boostedSpawnsPerMinute + "/min)");
+
+        #endregion
     }
+
+    public void DeactivatePowerUp()
+    {
+        #region Restore Normal State
+
+        if (enemySpawner == null)
+        {
+            Debug.LogWarning("[LargeEnemies] EnemySpawner is NULL!");
+            return;
+        }
+
+        enemySpawner.spawnLargeEnemies = false;
+        enemySpawner.spawnsPerMinute = originalSpawnsPerMinute;
+
+        Debug.Log("[LargeEnemies] DEACTIVATED → Normal enemies + spawn rate restored");
+
+        #endregion
+    }
+
+    #endregion
 }
