@@ -60,6 +60,8 @@ public class PowerUpManager : MonoBehaviour
 
     public void ActivatePowerUpOnLevelUp()
     {
+        Debug.Log("PowerUp Manager Triggered Level Up PowerUp");
+        
         #region Deactivate Previous (if needed)
 
         if (activeEntry != null && activeEntry.stopMethod == StopMethod.UntilNextPowerUp)

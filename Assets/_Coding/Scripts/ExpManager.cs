@@ -21,6 +21,13 @@ public class ExpManager : MonoBehaviour
 
     #endregion
 
+    #region PowerUp System
+
+    [Header("PowerUp System")]
+    [SerializeField] private PowerUpManager powerUpManager;
+
+    #endregion
+
     #region Runtime Values
 
     private float currentExp = 0f;
@@ -30,7 +37,7 @@ public class ExpManager : MonoBehaviour
 
     private void Start()
     {
-        #region Initialize XP System
+        #region Initialize
 
         requiredExp = baseExpRequired;
         currentExp = 0f;
@@ -60,7 +67,7 @@ public class ExpManager : MonoBehaviour
 
     private void CheckLevelUp()
     {
-        #region Level Up Logic
+        #region Check Level Up
 
         while (currentExp >= requiredExp)
         {
@@ -78,9 +85,20 @@ public class ExpManager : MonoBehaviour
         currentLevel++;
         requiredExp *= expMultiplier;
 
-        UpdateUI();
-
         Debug.Log("Level Up! New Level: " + currentLevel);
+
+        // 🔥 TRIGGER POWERUPS HERE
+        if (powerUpManager != null)
+        {
+            Debug.Log("Calling PowerUp Manager...");
+            powerUpManager.ActivatePowerUpOnLevelUp();
+        }
+        else
+        {
+            Debug.LogWarning("PowerUpManager not assigned!");
+        }
+
+        UpdateUI();
 
         #endregion
     }
@@ -91,17 +109,16 @@ public class ExpManager : MonoBehaviour
 
     private void UpdateUI()
     {
-        #region Update EXP Bar
+        #region EXP Bar
 
         if (expBar != null)
         {
-            float fillAmount = currentExp / requiredExp;
-            expBar.fillAmount = Mathf.Clamp01(fillAmount);
+            expBar.fillAmount = Mathf.Clamp01(currentExp / requiredExp);
         }
 
         #endregion
 
-        #region Update Level Text
+        #region Level Text
 
         if (levelText != null)
         {

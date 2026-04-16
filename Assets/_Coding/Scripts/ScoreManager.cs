@@ -20,7 +20,7 @@ public class ScoreManager : MonoBehaviour
 
     #region Runtime Values
 
-    private List<GameObject> enemies = new List<GameObject>();
+    public List<GameObject> enemies = new List<GameObject>();
     private int score = 0;
 
     #endregion

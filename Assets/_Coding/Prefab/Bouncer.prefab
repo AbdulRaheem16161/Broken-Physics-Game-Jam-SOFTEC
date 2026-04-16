@@ -18,9 +18,10 @@ GameObject:
   - component: {fileID: 6592389513268305462}
   - component: {fileID: 2266284812103476501}
   - component: {fileID: 1084480411042620565}
+  - component: {fileID: -2841816752908007990}
   m_Layer: 9
   m_Name: Bouncer
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -259,6 +260,18 @@ MonoBehaviour:
   spawnPoint: {fileID: 2146814566088585049}
   offset: {x: 0, y: 1.5, z: 0}
   spawnCooldown: 0.08
+--- !u!114 &-2841816752908007990
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2753960387329610114}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dcf02826a3b67d54eb475ad0b5e58ea8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2798755854162560668
 GameObject:
   m_ObjectHideFlags: 0

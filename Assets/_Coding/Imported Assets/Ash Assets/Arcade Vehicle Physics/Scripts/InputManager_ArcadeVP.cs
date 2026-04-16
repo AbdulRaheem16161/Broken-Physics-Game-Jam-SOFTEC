@@ -1,4 +1,5 @@
 using UnityEngine;
+
 #if UNITY_EDITOR && ENABLE_INPUT_SYSTEM
 using UnityEditor;
 #endif
@@ -13,13 +14,48 @@ namespace ArcadeVP
         [HideInInspector] public float Vertical;
         [HideInInspector] public float Jump;
 
+        #region Reverse Controls
+
+        [Header("Reverse Controls")]
+        public bool reverseControls = false;
+
+        public bool reverseRightLeft = false;
+        public bool reverseFrontBack = false;
+
+        #endregion
+
         private void Update()
         {
+            #region Read Input
+
             Horizontal = Input.GetAxis("Horizontal");
             Vertical = Input.GetAxis("Vertical");
             Jump = Input.GetAxis("Jump");
 
+            #endregion
+
+            #region Apply Reverse Logic
+
+            if (reverseControls)
+            {
+                if (reverseRightLeft)
+                {
+                    Horizontal = -Horizontal;
+                }
+
+                if (reverseFrontBack)
+                {
+                    Vertical = -Vertical;
+                }
+            }
+
+            #endregion
+
+            #region Send Input To Vehicle
+
             arcadeVehicleController.ProvideInputs(Horizontal, Vertical, Jump);
+
+            #endregion
         }
     }
 
