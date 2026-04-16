@@ -3,42 +3,55 @@ using UnityEngine.UI;
 
 public class Health : MonoBehaviour
 {
-    public float maxHp = 100f;
-    public float hp = 100f;
+    #region Health
+    [SerializeField] private float maxHp = 100f;
+    [SerializeField] private float hp = 100f;
+    [SerializeField] private bool cantDie = false;
+    #endregion
 
-    public bool cantDie;
+    #region UI
+    [SerializeField] private Image healthBar;
+    #endregion
 
-    // UI reference (assign your Image here)
-    public Image healthBar;
+    #region Feedback
+    [SerializeField] private DamageFeedback damageFeedback;
+    [SerializeField] private DamageNumbers damageNumbers;
+    #endregion
 
     private void Start()
     {
-        // Ensure UI starts correct
+        if (hp <= 0f)
+            hp = maxHp;
+
+        if (damageFeedback == null)
+            damageFeedback = GetComponent<DamageFeedback>();
+
+        if (damageNumbers == null)
+            damageNumbers = GetComponent<DamageNumbers>();
+
         UpdateHealthUI();
     }
 
-    public void TakeDamage(float damage, GameObject attacker)
+    public void TakeDamage(float damage, GameObject attacker = null)
     {
         hp -= damage;
-
-        // Clamp so it doesn't go below 0 (because negative health is just emotional damage)
         hp = Mathf.Clamp(hp, 0f, maxHp);
+
+        if (damageFeedback != null)
+            damageFeedback.PlayDamageFeedback();
+
+        if (damageNumbers != null)
+            damageNumbers.ShowDamage(damage);
 
         UpdateHealthUI();
 
-        if (hp <= 0)
-        {
-            if (cantDie) return;
-
+        if (hp <= 0f && !cantDie)
             Destroy(gameObject);
-        }
     }
 
     private void UpdateHealthUI()
     {
         if (healthBar == null) return;
-
-        // Convert health into 0–1 range for Image.fillAmount
         healthBar.fillAmount = hp / maxHp;
     }
 }

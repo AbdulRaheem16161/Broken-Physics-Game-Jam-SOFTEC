@@ -21,7 +21,6 @@ public class Projectile : MonoBehaviour
 
     private void Start()
     {
-        Debug.Log($"[Projectile] Spawned: {gameObject.name}");
         Destroy(gameObject, lifeTime);
     }
 
@@ -34,12 +33,10 @@ public class Projectile : MonoBehaviour
         bool isTarget = (targetLayer.value & otherLayerBit) != 0;
         bool isSacred = (sacredLayer.value & otherLayerBit) != 0;
 
-        Debug.Log($"[Projectile] Hit: {other.gameObject.name} | Layer: {LayerMask.LayerToName(other.gameObject.layer)} | State: {_state}");
 
         // Sacred layer never affects the projectile — just flag that we passed through it
         if (isSacred)
         {
-            Debug.Log("[Projectile] Sacred layer passed through → state upgraded to PassedSacred");
             _state = ProjectileState.PassedSacred;
             return;
         }
@@ -47,12 +44,10 @@ public class Projectile : MonoBehaviour
         // Target layer → always deal damage and destroy, regardless of state
         if (isTarget)
         {
-            Debug.Log("[Projectile] Target hit → dealing damage");
             Health health = other.GetComponent<Health>();
             if (health != null)
                 health.TakeDamage(damage, attacker);
             else
-                Debug.Log("[Projectile] No Health component found.");
 
             DestroyProjectile();
             return;
@@ -61,7 +56,6 @@ public class Projectile : MonoBehaviour
         // Any other layer:
         //   Normal state       → destroy immediately
         //   PassedSacred state → destroy (sacred already let it pass, but now it hit something real)
-        Debug.Log($"[Projectile] Non-sacred, non-target hit in state {_state} → projectile destroyed");
         DestroyProjectile();
     }
 

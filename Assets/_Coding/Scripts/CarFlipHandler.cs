@@ -15,6 +15,8 @@ namespace ArcadeVP
         private bool isRecovering;
         private float lastHitTime;
 
+        public bool turnOff;
+
         private void Reset()
         {
             carBody = GetComponent<Rigidbody>();
@@ -22,6 +24,7 @@ namespace ArcadeVP
 
         private void OnCollisionEnter(Collision collision)
         {
+            if (turnOff) return;
             #region Enable Free Rotation On Impact
 
             if (collision.relativeVelocity.magnitude > impactThreshold)

@@ -20,8 +20,19 @@ namespace ArcadeVP
         private float currentAccel;
         private float currentBrake;
 
+        private void Awake()
+        {
+            FindTarget();
+        }
+
         private void Update()
         {
+            // If target is missing or got destroyed mid-game, re-acquire it
+            if (!target)
+            {
+                FindTarget();
+            }
+
             if (!car || !target) return;
 
             Vector3 toTarget = target.position - car.transform.position;
@@ -50,7 +61,6 @@ namespace ArcadeVP
 
             if (distance < slowDistance)
             {
-                // slow down smoothly
                 accel = 0.3f;
                 brake = 0.2f;
             }
@@ -65,14 +75,13 @@ namespace ArcadeVP
             // -----------------------------
             if (localPos.z < 0f)
             {
-                // target is behind → just turn harder, DO NOT brake
                 accel = 0.8f;
                 brake = 0f;
                 steer *= 1.2f;
             }
 
             // -----------------------------
-            // SMOOTH INPUTS (prevents stutter/freeze feeling)
+            // SMOOTH INPUTS
             // -----------------------------
             currentSteer = Mathf.Lerp(currentSteer, steer * steerStrength, Time.deltaTime * 5f);
             currentAccel = Mathf.Lerp(currentAccel, accel, Time.deltaTime * 3f);
@@ -82,6 +91,16 @@ namespace ArcadeVP
             // SEND TO CONTROLLER
             // -----------------------------
             car.ProvideInputs(currentSteer, currentAccel, currentBrake);
+        }
+
+        private void FindTarget()
+        {
+            GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+
+            if (playerObj != null)
+            {
+                target = playerObj.transform;
+            }
         }
     }
 }

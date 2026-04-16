@@ -5241,6 +5241,37 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!1 &1958786647292002157
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3301042207147929940}
+  m_Layer: 9
+  m_Name: DamageNumber SpawnPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3301042207147929940
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1958786647292002157}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.12, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 175556557017649296}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2191921529899479563
 GameObject:
   m_ObjectHideFlags: 0
@@ -5351,12 +5382,16 @@ GameObject:
   - component: {fileID: 8950612766397421795}
   - component: {fileID: 631842371278766362}
   - component: {fileID: 3879554023016223053}
-  - component: {fileID: 7688099864558683658}
   - component: {fileID: 8279253941702896944}
   - component: {fileID: 2820641411989746797}
+  - component: {fileID: 9192493431402981335}
+  - component: {fileID: 6835987666176234177}
+  - component: {fileID: 8867876241775616168}
+  - component: {fileID: 890801502465788057}
+  - component: {fileID: 8358602457397687547}
   m_Layer: 9
   m_Name: NPC
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5371,13 +5406,14 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -77.53466, y: 0.91, z: -381.8}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 3, y: 3, z: 3}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 893733397030210779}
   - {fileID: 2516097056853456222}
   - {fileID: 2731300615746919293}
   - {fileID: 3935767006483252931}
+  - {fileID: 3301042207147929940}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &1135631153948222371
@@ -5418,8 +5454,8 @@ MonoBehaviour:
   drivableSurface:
     serializedVersion: 2
     m_Bits: 64
-  maxSpeed: 100
-  acceleration: 20
+  maxSpeed: 50
+  acceleration: 50
   turn: 10
   gravity: 5
   downforce: 0
@@ -5503,7 +5539,7 @@ MonoBehaviour:
   - {fileID: 499233904202736139}
   - {fileID: 2614134683843861464}
   carVelocity: {x: 0, y: 0, z: 0}
-  bodyTilt: 10
+  bodyTilt: 1.27
   engineSound: {fileID: 8950612766397421795}
   minPitch: 0.3
   maxPitch: 3
@@ -5517,7 +5553,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3121546575763796119}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 0.1
   m_Drag: 0
   m_AngularDrag: 40
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -5748,27 +5784,6 @@ MonoBehaviour:
   maxSteerAngle: 45
   idealDistance: 8
   slowDistance: 4
---- !u!114 &7688099864558683658
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3121546575763796119}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f20adf5169b1e3647ac1746e2649a811, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  carBody: {fileID: 8187777600946659252}
-  bounceLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  impactThreshold: 4
-  forceMultiplier: 1.5
-  upwardBoost: 10
-  torqueMultiplier: 1
-  maxForce: 20
 --- !u!114 &8279253941702896944
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5785,6 +5800,7 @@ MonoBehaviour:
   impactThreshold: 5
   recoveryDelay: 0.5
   uprightDotThreshold: 0.98
+  turnOff: 0
 --- !u!114 &2820641411989746797
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5801,6 +5817,116 @@ MonoBehaviour:
   hp: 100
   cantDie: 0
   healthBar: {fileID: 0}
+  damageFeedback: {fileID: 6835987666176234177}
+  damageNumbers: {fileID: 8867876241775616168}
+--- !u!114 &9192493431402981335
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3121546575763796119}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dcf02826a3b67d54eb475ad0b5e58ea8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6835987666176234177
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3121546575763796119}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b2ae9d52a89fbe4abe3afdec211e532, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetBody: {fileID: 3525872987807081611}
+  scaleMultiplier: 1.65
+  duration: 0.15
+  punchCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  restartOnDamage: 1
+  cooldown: 0.1
+--- !u!114 &8867876241775616168
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3121546575763796119}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d61ae7b3e814c4646910167f98f24196, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damageNumberPrefab: {fileID: 5403281379471352006, guid: b3ec4b33dadb0254fb7cc11b6b46ed14, type: 3}
+  spawnPoint: {fileID: 3301042207147929940}
+  offset: {x: 0, y: 1.5, z: 0}
+  spawnCooldown: 0.12
+--- !u!114 &890801502465788057
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3121546575763796119}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f70905d4ed754d4b9969409018c985b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  vehicleController: {fileID: 8754189658762325299}
+  affectedByTimeSlow: 1
+--- !u!114 &8358602457397687547
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3121546575763796119}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3396f9fc06e2c694297a4e877b926bb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shape: 1
+  radius: 2
+  boxSize: {x: 5.01, y: 4.23, z: 12.28}
+  offset: {x: 0, y: 0, z: 0}
+  hitLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  targetLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  damage: 20
+  bounceForce: 10
+  upwardBoost: 2
 --- !u!1 &3863021923780768303
 GameObject:
   m_ObjectHideFlags: 0
@@ -16023,7 +16149,7 @@ GameObject:
   - component: {fileID: 2516097056853456222}
   m_Layer: 9
   m_Name: Mesh
-  m_TagString: Untagged
+  m_TagString: Mesh
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -21207,7 +21333,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: Gun
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 7152241659318941141, guid: a0de44209995b6045864ad720ece14ec, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 1799658604542757790, guid: a0de44209995b6045864ad720ece14ec, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
