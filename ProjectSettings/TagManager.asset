@@ -7,6 +7,7 @@ TagManager:
   - GunTarget
   - Enemy
   - Mesh
+  - FxTemporaire
   layers:
   - Default
   - TransparentFX
@@ -18,7 +19,7 @@ TagManager:
   - carbody
   - SphereRB
   - Enemy
-  - 
+  - Zomboss
   - 
   - 
   - 

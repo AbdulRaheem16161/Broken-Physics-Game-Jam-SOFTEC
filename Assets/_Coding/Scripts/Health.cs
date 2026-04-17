@@ -16,6 +16,21 @@ public class Health : MonoBehaviour
 
     [SerializeField] private Image healthBar;
 
+    [Header("Low Health UI")]
+    [SerializeField] private Color normalColor = Color.green;
+    [SerializeField] private Color lowHealthColor = Color.red;
+    [SerializeField] private float lowHealthThreshold = 0.25f;
+
+    #endregion
+
+    #region Low Health Effect
+
+    [Header("Low Health Effect")]
+    [SerializeField] private GameObject lowHealthEffectPrefab;
+
+    private GameObject spawnedLowHealthEffect;
+    private bool lowHealthTriggered;
+
     #endregion
 
     #region Feedback
@@ -28,18 +43,11 @@ public class Health : MonoBehaviour
     #region Death Spawn
 
     [Header("Death Spawn")]
-
-    // List of objects to spawn randomly
     [SerializeField] private List<GameObject> deathPrefabs = new List<GameObject>();
-
-    // Local offset (relative to player)
     [SerializeField] private Vector3 spawnOffset = Vector3.zero;
-
-    // Toggle gizmos
     [SerializeField] private bool showGizmos = true;
 
     #endregion
-
 
     private void Start()
     {
@@ -55,18 +63,15 @@ public class Health : MonoBehaviour
         UpdateHealthUI();
     }
 
-
     private void Update()
     {
-        #region Debug Kill (Optional)
-        // Press K to test death instantly (remove if you’re emotionally stable)
+        #region Debug Kill
         if (Input.GetKeyDown(KeyCode.K))
         {
             TakeDamage(maxHp);
         }
         #endregion
     }
-
 
     public void TakeDamage(float damage, GameObject attacker = null)
     {
@@ -80,69 +85,80 @@ public class Health : MonoBehaviour
             damageNumbers.ShowDamage(damage);
 
         UpdateHealthUI();
+        CheckLowHealth();
 
         if (hp <= 0f && !cantDie)
             HandleDeath();
     }
 
-
     private void HandleDeath()
     {
-        #region Handle Death
-
         SpawnRandomObject();
-
         Destroy(gameObject);
-
-        #endregion
     }
-
 
     private void SpawnRandomObject()
     {
-        #region Spawn Random Object
-
-        // Safety check
         if (deathPrefabs == null || deathPrefabs.Count == 0)
             return;
 
-        // Pick random prefab
         int randomIndex = Random.Range(0, deathPrefabs.Count);
         GameObject prefabToSpawn = deathPrefabs[randomIndex];
 
-        // Convert offset from local to world space
         Vector3 spawnPosition = transform.TransformPoint(spawnOffset);
 
-        // Spawn it
         Instantiate(prefabToSpawn, spawnPosition, Quaternion.identity);
-
-        #endregion
     }
 
+    #region LOW HEALTH LOGIC
+
+    private void CheckLowHealth()
+    {
+        float healthPercent = hp / maxHp;
+
+        if (healthPercent <= lowHealthThreshold && !lowHealthTriggered)
+        {
+            lowHealthTriggered = true;
+            ActivateLowHealthEffect();
+        }
+    }
+
+    private void ActivateLowHealthEffect()
+    {
+        if (lowHealthEffectPrefab == null) return;
+
+        spawnedLowHealthEffect = Instantiate(lowHealthEffectPrefab);
+
+        spawnedLowHealthEffect.transform.SetParent(transform);
+        spawnedLowHealthEffect.transform.localPosition = Vector3.zero;
+        spawnedLowHealthEffect.transform.localRotation = Quaternion.identity;
+    }
+
+    #endregion
 
     private void UpdateHealthUI()
     {
         if (healthBar == null) return;
-        healthBar.fillAmount = hp / maxHp;
-    }
 
+        healthBar.fillAmount = hp / maxHp;
+
+        float healthPercent = hp / maxHp;
+
+        healthBar.color = (healthPercent <= lowHealthThreshold)
+            ? lowHealthColor
+            : normalColor;
+    }
 
     private void OnDrawGizmos()
     {
-        #region Draw Gizmos
-
         if (!showGizmos)
             return;
 
         Gizmos.color = Color.red;
 
-        // Draw sphere at spawn point
         Vector3 spawnPosition = transform.TransformPoint(spawnOffset);
+
         Gizmos.DrawSphere(spawnPosition, 0.3f);
-
-        // Draw line from player to spawn point
         Gizmos.DrawLine(transform.position, spawnPosition);
-
-        #endregion
     }
 }

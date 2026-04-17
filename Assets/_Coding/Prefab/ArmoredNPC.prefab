@@ -5824,7 +5824,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHp: 100
   hp: 100
-  cantDie: 1
+  cantDie: 0
   healthBar: {fileID: 0}
   damageFeedback: {fileID: 6835987666176234177}
   damageNumbers: {fileID: 8867876241775616168}

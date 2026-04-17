@@ -30,8 +30,6 @@ public class MaceImpact : MonoBehaviour
     [Header("Damage Settings")]
     [SerializeField] private LayerMask targetLayer;
     [SerializeField] private float damage = 20f;
-
-    // NEW: Damage cooldown per target
     [SerializeField] private float damageCooldown = 0.5f;
 
     #endregion
@@ -46,7 +44,6 @@ public class MaceImpact : MonoBehaviour
 
     #region Runtime Values
 
-    // Track last hit time per target
     private Dictionary<GameObject, float> lastHitTime = new Dictionary<GameObject, float>();
 
     #endregion
@@ -68,25 +65,32 @@ public class MaceImpact : MonoBehaviour
 
         foreach (Collider hit in hits)
         {
-            #region Force Calculation
-
             Rigidbody rb = hit.attachedRigidbody;
-
-            Vector3 dir = (hit.transform.position - GetCenter()).normalized;
-            Vector3 force = dir * bounceForce + Vector3.up * upwardBoost;
-
-            #endregion
-
-            #region Apply Bounce (ALWAYS, no cooldown)
 
             if (rb != null)
             {
+                #region LAYER MATRIX CHECK (IMPORTANT FIX)
+
+                int selfLayer = gameObject.layer;
+                int otherLayer = hit.gameObject.layer;
+
+                // If Unity says these layers should NOT collide → skip bounce
+                if (Physics.GetIgnoreLayerCollision(selfLayer, otherLayer))
+                    continue;
+
+                #endregion
+
+                #region Force Calculation
+
+                Vector3 dir = (hit.transform.position - GetCenter()).normalized;
+                Vector3 force = dir * bounceForce + Vector3.up * upwardBoost;
+
                 rb.AddForce(force, ForceMode.Impulse);
+
+                #endregion
             }
 
-            #endregion
-
-            #region Apply Damage (WITH COOLDOWN)
+            #region Damage Logic (unchanged)
 
             int hitLayerBit = 1 << hit.gameObject.layer;
             bool isTarget = (targetLayer.value & hitLayerBit) != 0;
@@ -95,7 +99,6 @@ public class MaceImpact : MonoBehaviour
             {
                 GameObject target = hit.gameObject;
 
-                // Check cooldown
                 if (CanDamage(target))
                 {
                     Health health = target.GetComponent<Health>();
@@ -103,8 +106,6 @@ public class MaceImpact : MonoBehaviour
                     if (health != null)
                     {
                         health.TakeDamage(damage, gameObject);
-
-                        // Record hit time
                         lastHitTime[target] = Time.time;
                     }
                 }
@@ -114,25 +115,25 @@ public class MaceImpact : MonoBehaviour
         }
     }
 
+    #endregion
+
+    #region Cooldown
+
     private bool CanDamage(GameObject target)
     {
-        #region Cooldown Check
-
         if (!lastHitTime.ContainsKey(target))
             return true;
 
-        float lastTime = lastHitTime[target];
-
-        return Time.time >= lastTime + damageCooldown;
-
-        #endregion
+        return Time.time >= lastHitTime[target] + damageCooldown;
     }
+
+    #endregion
+
+    #region Detection
 
     private Collider[] GetHits()
     {
         Vector3 center = GetCenter();
-
-        #region Shape Switch
 
         switch (shape)
         {
@@ -145,17 +146,11 @@ public class MaceImpact : MonoBehaviour
             default:
                 return new Collider[0];
         }
-
-        #endregion
     }
 
     private Vector3 GetCenter()
     {
-        #region Offset Calculation (LOCAL → WORLD)
-
         return transform.position + transform.TransformDirection(offset);
-
-        #endregion
     }
 
     #endregion
