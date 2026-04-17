@@ -2,6 +2,10 @@ using UnityEngine;
 
 public class PowerUp_GlobalSlowMotion : MonoBehaviour, IPowerUp
 {
+      [SerializeField] private string displayName = "Slow Motion";
+
+    public string DisplayName => displayName;
+
     #region References
 
     [Header("Slow Motion System")]

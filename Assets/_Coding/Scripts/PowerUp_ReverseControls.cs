@@ -3,6 +3,9 @@ using ArcadeVP;
 
 public class PowerUp_ReverseControls : MonoBehaviour, IPowerUp
 {
+    [SerializeField] private string displayName = "Reverse Controls";
+
+    public string DisplayName => displayName;
     #region References
 
     [Header("Input System")]

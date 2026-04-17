@@ -4,6 +4,10 @@ public class PowerUP_PlayerInvisible : MonoBehaviour, IPowerUp
 {
     #region Settings
 
+    [SerializeField] private string displayName = "No Collisions";
+
+    public string DisplayName => displayName;
+
     [Header("Layers")]
     [SerializeField] private string playerLayerName = "Player";
     [SerializeField] private string enemyLayerName = "Enemy";

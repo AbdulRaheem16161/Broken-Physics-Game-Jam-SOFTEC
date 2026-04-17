@@ -1,107 +1,109 @@
-using UnityEngine;
-using System.Collections.Generic;
+// using UnityEngine;
+// using System.Collections.Generic;
 
-public class PowerUp_EnemyScaleIncreaser : MonoBehaviour, IPowerUp
-{
-    #region References
+// public class PowerUp_EnemyScaleIncreaser : MonoBehaviour, IPowerUp
+// {
+//     #region References
 
-    [SerializeField] private ScoreManager scoreManager;
+//     [SerializeField] private string displayName = "Giant Enemies";
 
-    #endregion
+//     public string DisplayName => displayName;
 
-    #region Settings
+//     #endregion
 
-    [Header("Behavior")]
-    public bool dontResetSize = false;
+//     #region Settings
 
-    [Header("Position Adjustment")]
-    [SerializeField] private float yOffset = 2f;
+//     [Header("Behavior")]
+//     public bool dontResetSize = false;
 
-    #endregion
+//     [Header("Position Adjustment")]
+//     [SerializeField] private float yOffset = 2f;
 
-    #region Runtime
+//     #endregion
 
-    public List<SizeMultiplierHelper> affectedEnemies = new List<SizeMultiplierHelper>();
-    private Dictionary<Transform, Vector3> originalPositions = new Dictionary<Transform, Vector3>();
+//     #region Runtime
 
-    #endregion
+//     public List<SizeMultiplierHelper> affectedEnemies = new List<SizeMultiplierHelper>();
+//     private Dictionary<Transform, Vector3> originalPositions = new Dictionary<Transform, Vector3>();
 
-    #region IPowerUp
+//     #endregion
 
-    public void ActivatePowerUp()
-    {
-        #region Activate
+//     #region IPowerUp
 
-        if (scoreManager == null)
-        {
-            Debug.LogWarning("[EnemyScaleIncreaser] ScoreManager missing!");
-            return;
-        }
+//     public void ActivatePowerUp()
+//     {
+//         #region Activate
 
-        affectedEnemies.Clear();
-        originalPositions.Clear();
+//         if (scoreManager == null)
+//         {
+//             Debug.LogWarning("[EnemyScaleIncreaser] ScoreManager missing!");
+//             return;
+//         }
 
-        foreach (GameObject enemy in scoreManager.enemies)
-        {
-            if (enemy == null) continue;
+//         affectedEnemies.Clear();
+//         originalPositions.Clear();
 
-            SizeMultiplierHelper helper = enemy.GetComponent<SizeMultiplierHelper>();
+//         foreach (GameObject enemy in scoreManager.enemies)
+//         {
+//             if (enemy == null) continue;
 
-            if (helper != null)
-            {
-                // Store original position
-                Transform t = enemy.transform;
+//             SizeMultiplierHelper helper = enemy.GetComponent<SizeMultiplierHelper>();
 
-                if (!originalPositions.ContainsKey(t))
-                {
-                    originalPositions.Add(t, t.position);
-                }
+//             if (helper != null)
+//             {
+//                 // Store original position
+//                 Transform t = enemy.transform;
 
-                // Apply Y offset
-                t.position += new Vector3(0f, yOffset, 0f);
+//                 if (!originalPositions.ContainsKey(t))
+//                 {
+//                     originalPositions.Add(t, t.position);
+//                 }
 
-                // Activate scaling
-                helper.increaseSize = true;
+//                 // Apply Y offset
+//                 t.position += new Vector3(0f, yOffset, 0f);
 
-                affectedEnemies.Add(helper);
-            }
-        }
+//                 // Activate scaling
+//                 helper.increaseSize = true;
 
-        Debug.Log("[EnemyScaleIncreaser] ACTIVATED + Y Offset Applied");
+//                 affectedEnemies.Add(helper);
+//             }
+//         }
 
-        #endregion
-    }
+//         Debug.Log("[EnemyScaleIncreaser] ACTIVATED + Y Offset Applied");
 
-    public void DeactivatePowerUp()
-    {
-        #region Deactivate
+//         #endregion
+//     }
 
-        if (dontResetSize)
-        {
-            Debug.Log("[EnemyScaleIncreaser] Deactivate skipped (dontResetSize ON)");
-            return;
-        }
+//     public void DeactivatePowerUp()
+//     {
+//         #region Deactivate
 
-        foreach (var helper in affectedEnemies)
-        {
-            if (helper != null)
-            {
-                helper.increaseSize = false;
-            }
-        }
+//         if (dontResetSize)
+//         {
+//             Debug.Log("[EnemyScaleIncreaser] Deactivate skipped (dontResetSize ON)");
+//             return;
+//         }
 
-        foreach (var pair in originalPositions)
-        {
-            if (pair.Key != null)
-            {
-                pair.Key.position = pair.Value;
-            }
-        }
+//         foreach (var helper in affectedEnemies)
+//         {
+//             if (helper != null)
+//             {
+//                 helper.increaseSize = false;
+//             }
+//         }
 
-        Debug.Log("[EnemyScaleIncreaser] DEACTIVATED + Positions Restored");
+//         foreach (var pair in originalPositions)
+//         {
+//             if (pair.Key != null)
+//             {
+//                 pair.Key.position = pair.Value;
+//             }
+//         }
 
-        #endregion
-    }
+//         Debug.Log("[EnemyScaleIncreaser] DEACTIVATED + Positions Restored");
 
-    #endregion
-}
+//         #endregion
+//     }
+
+//     #endregion
+// }

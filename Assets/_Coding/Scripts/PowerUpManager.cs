@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class PowerUpManager : MonoBehaviour
 {
@@ -39,6 +40,9 @@ public class PowerUpManager : MonoBehaviour
     [Header("Mode")]
     [SerializeField] private Mode mode = Mode.Random;
 
+    [Header("UI")]
+    [SerializeField] private TextMeshProUGUI modeText;
+
     [Header("Controlled Sequence")]
     [SerializeField] private List<PowerUpEntry> controlledSequence = new List<PowerUpEntry>();
 
@@ -61,12 +65,13 @@ public class PowerUpManager : MonoBehaviour
     public void ActivatePowerUpOnLevelUp()
     {
         Debug.Log("PowerUp Manager Triggered Level Up PowerUp");
-        
+
         #region Deactivate Previous (if needed)
 
         if (activeEntry != null && activeEntry.stopMethod == StopMethod.UntilNextPowerUp)
         {
             activePowerUp?.DeactivatePowerUp();
+            UpdateModeUI();
         }
 
         if (activeRoutine != null)
@@ -92,6 +97,8 @@ public class PowerUpManager : MonoBehaviour
         }
 
         activePowerUp.ActivatePowerUp();
+
+        UpdateModeUI();
 
         #endregion
 
@@ -134,8 +141,6 @@ public class PowerUpManager : MonoBehaviour
 
         if (controlledSequence.Count == 0) return null;
 
-        int startIndex = sequenceIndex;
-
         for (int i = 0; i < controlledSequence.Count; i++)
         {
             PowerUpEntry entry = controlledSequence[sequenceIndex];
@@ -157,13 +162,29 @@ public class PowerUpManager : MonoBehaviour
 
     private IEnumerator StopAfterTime(float duration)
     {
-        #region Timer Stop
-
         yield return new WaitForSeconds(duration);
 
         activePowerUp?.DeactivatePowerUp();
 
-        #endregion
+        UpdateModeUI();
+    }
+
+    #endregion
+
+    #region UI
+
+    private void UpdateModeUI()
+    {
+        if (modeText == null) return;
+
+        string displayName = "None";
+
+        if (activePowerUp != null)
+        {
+            displayName = activePowerUp.DisplayName;
+        }
+
+        modeText.text = "Reality Mode: " + displayName;
     }
 
     #endregion

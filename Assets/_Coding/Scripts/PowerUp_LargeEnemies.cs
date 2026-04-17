@@ -2,6 +2,10 @@ using UnityEngine;
 
 public class PowerUp_LargeEnemies : MonoBehaviour, IPowerUp
 {
+
+    [SerializeField] private string displayName = "Giant Enemies";
+
+    public string DisplayName => displayName;
     #region References
 
     [Header("Spawner")]

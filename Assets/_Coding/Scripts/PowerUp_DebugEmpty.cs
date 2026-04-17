@@ -2,7 +2,10 @@ using UnityEngine;
 
 public class PowerUp_DebugEmpty : MonoBehaviour, IPowerUp
 {
-    #region IPowerUp
+    [SerializeField] private string displayName = "";
+
+    public string DisplayName => displayName;
+
 
     public void ActivatePowerUp()
     {
@@ -22,5 +25,4 @@ public class PowerUp_DebugEmpty : MonoBehaviour, IPowerUp
         #endregion
     }
 
-    #endregion
 }
