@@ -37,7 +37,7 @@ public class PowerUp_LargeEnemies : MonoBehaviour, IPowerUp
 
         if (enemySpawner != null)
         {
-            originalSpawnsPerMinute = enemySpawner.spawnsPerMinute;
+            originalSpawnsPerMinute = enemySpawner.currentSpawnsPerMinute;
         }
 
         Debug.Log("[LargeEnemies] Spawner assigned: " + (enemySpawner != null));
@@ -58,7 +58,7 @@ public class PowerUp_LargeEnemies : MonoBehaviour, IPowerUp
         }
 
         enemySpawner.spawnLargeEnemies = true;
-        enemySpawner.spawnsPerMinute = boostedSpawnsPerMinute;
+        enemySpawner.currentSpawnsPerMinute = boostedSpawnsPerMinute;
 
         Debug.Log("[LargeEnemies] ACTIVATED → Big enemies + faster spawns (" + boostedSpawnsPerMinute + "/min)");
 
@@ -76,7 +76,7 @@ public class PowerUp_LargeEnemies : MonoBehaviour, IPowerUp
         }
 
         enemySpawner.spawnLargeEnemies = false;
-        enemySpawner.spawnsPerMinute = originalSpawnsPerMinute;
+        enemySpawner.currentSpawnsPerMinute = originalSpawnsPerMinute;
 
         Debug.Log("[LargeEnemies] DEACTIVATED → Normal enemies + spawn rate restored");
 

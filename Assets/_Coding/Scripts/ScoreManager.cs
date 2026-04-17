@@ -1,3 +1,4 @@
+// ScoreManager.cs
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
@@ -16,12 +17,16 @@ public class ScoreManager : MonoBehaviour
     [SerializeField] private ExpManager expManager;
     [SerializeField] private int expPerKill = 10;
 
+    [Header("KPM Tracking")]
+    [SerializeField] private float kpmWindowSeconds = 60f;
+
     #endregion
 
     #region Runtime Values
 
     public List<GameObject> enemies = new List<GameObject>();
     private int score = 0;
+    private List<float> killTimestamps = new List<float>();
 
     #endregion
 
@@ -29,11 +34,9 @@ public class ScoreManager : MonoBehaviour
 
     private void Start()
     {
-        #region Initialize Score
-
+        #region Init
         score = 0;
         UpdateUI();
-
         #endregion
     }
 
@@ -41,13 +44,16 @@ public class ScoreManager : MonoBehaviour
     {
         #region Track Enemies
 
-        // NOTE: This is still not ideal performance-wise,
-        // but keeping your original logic intact.
-
         GameObject[] foundEnemies = GameObject.FindGameObjectsWithTag(enemyTag);
-
         enemies.Clear();
         enemies.AddRange(foundEnemies);
+
+        #endregion
+
+        #region Prune Old Timestamps
+
+        float cutoff = Time.time - kpmWindowSeconds;
+        killTimestamps.RemoveAll(t => t < cutoff);
 
         #endregion
     }
@@ -61,9 +67,9 @@ public class ScoreManager : MonoBehaviour
         #region Add Score
 
         score += amount;
+        killTimestamps.Add(Time.time);
         UpdateUI();
 
-        // Send XP to ExpManager
         if (expManager != null)
         {
             expManager.AddExp(expPerKill);
@@ -74,11 +80,28 @@ public class ScoreManager : MonoBehaviour
 
     #endregion
 
+    #region Public Accessors
+
+    public int KillCount => score;
+
+    public float GetKillsPerMinute()
+    {
+        #region Calculate KPM
+
+        float cutoff = Time.time - kpmWindowSeconds;
+        int recentKills = killTimestamps.FindAll(t => t >= cutoff).Count;
+        return recentKills * (60f / kpmWindowSeconds);
+
+        #endregion
+    }
+
+    #endregion
+
     #region Private Methods
 
     private void UpdateUI()
     {
-        #region Update UI Text
+        #region UI Update
 
         if (scoreText != null)
         {

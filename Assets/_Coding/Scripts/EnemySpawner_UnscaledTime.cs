@@ -31,7 +31,7 @@ public class EnemySpawnerTimeOverride : MonoBehaviour
         // Manually run spawn timer using unscaled time
         realTimer += Time.unscaledDeltaTime;
 
-        float interval = 60f / Mathf.Max(spawner.spawnsPerMinute, 0.1f);
+        float interval = 60f / Mathf.Max(spawner.currentSpawnsPerMinute, 0.1f);
 
         if (realTimer >= interval)
         {

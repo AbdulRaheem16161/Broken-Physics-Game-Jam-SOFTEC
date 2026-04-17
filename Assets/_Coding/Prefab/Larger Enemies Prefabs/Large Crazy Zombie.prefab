@@ -20678,9 +20678,9 @@ MonoBehaviour:
   drivableSurface:
     serializedVersion: 2
     m_Bits: 64
-  maxSpeed: 50
-  acceleration: 50
-  turn: 10
+  maxSpeed: 80
+  acceleration: 80
+  turn: 50
   gravity: 5
   downforce: 5
   statSmoothness: 5

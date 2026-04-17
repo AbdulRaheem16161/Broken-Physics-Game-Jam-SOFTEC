@@ -16,10 +16,7 @@ public class MCarRoofTurretGun_LevelSystem : MonoBehaviour
 
     [Header("Level Settings")]
 
-    // Current level of THIS gun (syncs with player level)
     [SerializeField] private int currentLevel = 1;
-
-    // Level at which gun unlocks
     [SerializeField] private int unlockLevel = 1;
 
     #endregion
@@ -38,6 +35,21 @@ public class MCarRoofTurretGun_LevelSystem : MonoBehaviour
 
     [Header("Levels Data")]
     [SerializeField] private List<LevelStats> levels = new List<LevelStats>();
+
+    #endregion
+
+    #region Runtime Debug Info (LIVE)
+
+    [Header("Debug - Live Runtime Values")]
+    [SerializeField] private bool isUnlocked;
+    [SerializeField] private int resolvedLevelIndex;
+
+    [SerializeField] private MCarRoofTurretGun.GunMode currentGunType;
+    [SerializeField] private float currentFireRate;
+    [SerializeField] private float currentSpread;
+
+    [SerializeField] private float lastAppliedFireRate;
+    [SerializeField] private float lastAppliedSpread;
 
     #endregion
 
@@ -110,28 +122,34 @@ public class MCarRoofTurretGun_LevelSystem : MonoBehaviour
         #region Apply Stats
 
         // LOCK SYSTEM
-        if (currentLevel < unlockLevel)
+        isUnlocked = currentLevel >= unlockLevel;
+
+        if (!isUnlocked)
         {
             SetGunActive(false);
+            ResetDebugValues();
             return;
         }
 
         SetGunActive(true);
 
-        // 🔥 RELATIVE INDEX (FIXED SYSTEM)
-        int index = currentLevel - unlockLevel;
+        if (levels.Count == 0) return;
 
-        // Clamp so it reaches max properly
+        int index = currentLevel - unlockLevel;
         index = Mathf.Clamp(index, 0, levels.Count - 1);
 
-        if (levels.Count == 0) return;
+        resolvedLevelIndex = index;
 
         LevelStats stats = levels[index];
 
-        // Apply gun mode
+        // Apply mode
         modeField.SetValue(gun, stats.gunType);
 
-        // Apply stats
+        currentGunType = stats.gunType;
+        currentFireRate = stats.fireRate;
+        currentSpread = stats.spread;
+
+        // Apply stats based on mode
         if (stats.gunType == MCarRoofTurretGun.GunMode.Rifle)
         {
             rifleRateField.SetValue(gun, stats.fireRate);
@@ -142,6 +160,9 @@ public class MCarRoofTurretGun_LevelSystem : MonoBehaviour
             machineSpreadField.SetValue(gun, stats.spread);
         }
 
+        lastAppliedFireRate = stats.fireRate;
+        lastAppliedSpread = stats.spread;
+
         #endregion
     }
 
@@ -150,6 +171,22 @@ public class MCarRoofTurretGun_LevelSystem : MonoBehaviour
         #region Enable / Disable
 
         gun.enabled = state;
+
+        #endregion
+    }
+
+    private void ResetDebugValues()
+    {
+        #region Reset Debug
+
+        resolvedLevelIndex = -1;
+
+        currentGunType = default;
+        currentFireRate = 0;
+        currentSpread = 0;
+
+        lastAppliedFireRate = 0;
+        lastAppliedSpread = 0;
 
         #endregion
     }

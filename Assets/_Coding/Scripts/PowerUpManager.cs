@@ -209,7 +209,7 @@ public class PowerUpManager : MonoBehaviour
             displayName = activePowerUp.DisplayName;
         }
 
-        modeText.text = "Reality Mode: " + displayName;
+        modeText.text = "Physics Mode: " + displayName;
     }
 
     #endregion
