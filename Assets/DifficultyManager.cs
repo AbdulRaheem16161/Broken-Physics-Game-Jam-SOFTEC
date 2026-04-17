@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using ArcadeVP;
 
-public class EnemySpawner : MonoBehaviour
+public class DifficultyManager : MonoBehaviour
 {
     [System.Serializable]
     public class SpawnableEnemy

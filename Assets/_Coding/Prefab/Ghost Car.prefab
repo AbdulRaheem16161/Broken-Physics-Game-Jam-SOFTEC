@@ -768,8 +768,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   agent: {fileID: 724481926787674493}
   target: {fileID: 0}
-  speed: 40
-  acceleration: 100
+  speed: 25
+  acceleration: 60
   angularSpeed: 500
   stoppingDistance: 1.5
 --- !u!65 &4577232195024913338

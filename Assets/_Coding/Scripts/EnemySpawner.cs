@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using ArcadeVP;
 
-public class EnemySpawnerObsolete : MonoBehaviour
+public class EnemySpawner : MonoBehaviour
 {
     [System.Serializable]
     public class SpawnableEnemy
@@ -25,9 +25,18 @@ public class EnemySpawnerObsolete : MonoBehaviour
     [Header("Spawn Settings")]
     public float spawnsPerMinute = 10f;
 
+    [Header("Step Increase Settings")]
+    public float increaseInterval = 10f;
+    public float spawnIncreasePerStep = 2f;
+    public float maxSpawnsPerMinute = 100f;
+    #endregion
+
+    #region Spawn Limit
     [Header("Spawn Limit")]
     public int maxAliveEnemies = 30;
+    #endregion
 
+    #region Variants
     [Header("Variants")]
     public bool spawnLargeEnemies = false;
     #endregion
@@ -45,20 +54,25 @@ public class EnemySpawnerObsolete : MonoBehaviour
 
     #region Runtime
     private float timer;
+    private float increaseTimer;
+    public float currentSpawnsPerMinute;
+
     private Transform player;
     private List<GameObject> aliveEnemies = new List<GameObject>();
     #endregion
 
     private void Start()
     {
-        #region Find Player
+        #region Initialize
 
         player = GameObject.FindGameObjectWithTag("Player")?.transform;
 
         if (player == null)
         {
-            Debug.LogError("EnemySpawner: Player not found! Make sure Player tag exists.");
+            Debug.LogError("EnemySpawner: Player not found!");
         }
+
+        currentSpawnsPerMinute = spawnsPerMinute;
 
         #endregion
     }
@@ -67,8 +81,27 @@ public class EnemySpawnerObsolete : MonoBehaviour
     {
         #region Update Loop
 
+        HandleSpawnIncrease();
         CleanupDestroyedEnemies();
         HandleSpawning();
+
+        #endregion
+    }
+
+    private void HandleSpawnIncrease()
+    {
+        #region Step-Based Increase
+
+        increaseTimer += Time.deltaTime;
+
+        if (increaseTimer >= increaseInterval)
+        {
+            increaseTimer = 0f;
+
+            currentSpawnsPerMinute += spawnIncreasePerStep;
+
+            currentSpawnsPerMinute = Mathf.Min(currentSpawnsPerMinute, maxSpawnsPerMinute);
+        }
 
         #endregion
     }
@@ -83,7 +116,7 @@ public class EnemySpawnerObsolete : MonoBehaviour
 
         timer += Time.deltaTime;
 
-        float interval = 60f / Mathf.Max(spawnsPerMinute, 0.1f);
+        float interval = 60f / Mathf.Max(currentSpawnsPerMinute, 0.1f);
 
         if (timer >= interval)
         {
