@@ -151,6 +151,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 15
+  minDamageOffset: -5
+  maxDamageOffset: 5
   lifeTime: 5
   attacker: {fileID: 0}
   targetLayer:

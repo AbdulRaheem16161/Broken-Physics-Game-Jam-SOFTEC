@@ -416,6 +416,10 @@ MonoBehaviour:
   hp: 100
   cantDie: 0
   healthBar: {fileID: 0}
+  normalColor: {r: 0, g: 1, b: 0, a: 1}
+  lowHealthColor: {r: 1, g: 0, b: 0, a: 1}
+  lowHealthThreshold: 0.25
+  lowHealthEffectPrefab: {fileID: 0}
   damageFeedback: {fileID: 2266284812103476501}
   damageNumbers: {fileID: 1084480411042620565}
   deathPrefabs:
@@ -423,7 +427,7 @@ MonoBehaviour:
   - {fileID: 5339739117810204693, guid: 6c0b101ea4d2e154b87924f1201953e9, type: 3}
   - {fileID: 119183615461286708, guid: fea3e386f2b6b8f43aa6b81d0db9cd90, type: 3}
   - {fileID: 904662820145583817, guid: 261921534d013c3419b07053b2cb1cf3, type: 3}
-  - {fileID: 2708598583397607911, guid: ddfed91c0b2ee16488d7957aba4ebb49, type: 3}
+  - {fileID: 0}
   - {fileID: 5985634496115995773, guid: caba445afe7312f41925d92d5f7398d1, type: 3}
   spawnOffset: {x: 0, y: 0.46, z: 0}
   showGizmos: 1

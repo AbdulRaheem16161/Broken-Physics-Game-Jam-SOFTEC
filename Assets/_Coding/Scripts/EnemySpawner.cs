@@ -32,6 +32,21 @@ public class EnemySpawner : MonoBehaviour
     public bool spawnLargeEnemies = false;
     #endregion
 
+    #region Spawn Rate Scaling
+
+    [Header("Spawn Rate Scaling")]
+    
+    // Multiplier that increases over time
+    [SerializeField] private float spawnRateMultiplier = 1f;
+
+    // How fast multiplier grows per second
+    [SerializeField] private float multiplierGrowthRate = 0.05f;
+
+    // Optional cap so your PC doesn’t explode 💀
+    [SerializeField] private float maxMultiplier = 5f;
+
+    #endregion
+
     #region Spawn Points
     [Header("Spawn Points")]
     public List<Transform> spawnPoints = new List<Transform>();
@@ -67,8 +82,19 @@ public class EnemySpawner : MonoBehaviour
     {
         #region Update Loop
 
+        UpdateSpawnMultiplier();
         CleanupDestroyedEnemies();
         HandleSpawning();
+
+        #endregion
+    }
+
+    private void UpdateSpawnMultiplier()
+    {
+        #region Increase Spawn Rate Over Time
+
+        spawnRateMultiplier += multiplierGrowthRate * Time.deltaTime;
+        spawnRateMultiplier = Mathf.Clamp(spawnRateMultiplier, 1f, maxMultiplier);
 
         #endregion
     }
@@ -83,7 +109,10 @@ public class EnemySpawner : MonoBehaviour
 
         timer += Time.deltaTime;
 
-        float interval = 60f / Mathf.Max(spawnsPerMinute, 0.1f);
+        // Apply multiplier here 🔥
+        float currentSPM = spawnsPerMinute * spawnRateMultiplier;
+
+        float interval = 60f / Mathf.Max(currentSPM, 0.1f);
 
         if (timer >= interval)
         {

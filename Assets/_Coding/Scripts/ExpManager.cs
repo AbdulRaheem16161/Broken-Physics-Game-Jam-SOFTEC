@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Collections.Generic;
 
 public class ExpManager : MonoBehaviour
 {
@@ -18,6 +19,13 @@ public class ExpManager : MonoBehaviour
     [SerializeField] private int currentLevel = 1;
     [SerializeField] private float baseExpRequired = 100f;
     [SerializeField] private float expMultiplier = 1.25f;
+
+    #endregion
+
+    #region Gun System
+
+    [Header("Gun Systems")]
+    [SerializeField] private List<MCarRoofTurretGun_LevelSystem> guns = new List<MCarRoofTurretGun_LevelSystem>();
 
     #endregion
 
@@ -39,6 +47,7 @@ public class ExpManager : MonoBehaviour
     {
         #region Initialize
 
+        currentLevel = Mathf.Max(1, currentLevel);
         requiredExp = baseExpRequired;
         currentExp = 0f;
 
@@ -51,7 +60,7 @@ public class ExpManager : MonoBehaviour
 
     public void AddExp(int amount)
     {
-        #region Add XP
+        #region Add EXP
 
         currentExp += amount;
 
@@ -83,20 +92,40 @@ public class ExpManager : MonoBehaviour
         #region Level Up
 
         currentLevel++;
+
         requiredExp *= expMultiplier;
 
-        Debug.Log("Level Up! New Level: " + currentLevel);
+        Debug.Log("LEVEL UP → Level: " + currentLevel);
 
-        // 🔥 TRIGGER POWERUPS HERE
-        if (powerUpManager != null)
+        #region Level Up ALL Guns
+
+        if (guns.Count > 0)
         {
-            Debug.Log("Calling PowerUp Manager...");
-            powerUpManager.ActivatePowerUpOnLevelUp();
+            foreach (var gun in guns)
+            {
+                if (gun != null)
+                {
+                    gun.LevelUp();
+                }
+            }
+
+            Debug.Log("All guns leveled up.");
         }
         else
         {
-            Debug.LogWarning("PowerUpManager not assigned!");
+            Debug.LogWarning("No guns assigned!");
         }
+
+        #endregion
+
+        #region PowerUp Trigger
+
+        if (powerUpManager != null)
+        {
+            powerUpManager.ActivatePowerUpOnLevelUp();
+        }
+
+        #endregion
 
         UpdateUI();
 
@@ -123,6 +152,22 @@ public class ExpManager : MonoBehaviour
         if (levelText != null)
         {
             levelText.text = "Level: " + currentLevel;
+        }
+
+        #endregion
+    }
+
+    #endregion
+
+    #region Debug
+
+    private void Update()
+    {
+        #region Debug Keys
+
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            AddExp(50);
         }
 
         #endregion
