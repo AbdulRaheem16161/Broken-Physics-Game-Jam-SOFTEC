@@ -5821,8 +5821,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff7dd954ca025824da52bd589d8a20be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHp: 150
-  hp: 150
+  maxHp: 100
+  hp: 100
   cantDie: 0
   healthBar: {fileID: 0}
   normalColor: {r: 0, g: 1, b: 0, a: 1}
