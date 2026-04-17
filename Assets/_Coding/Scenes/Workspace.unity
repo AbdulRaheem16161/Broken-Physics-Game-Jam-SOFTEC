@@ -4669,10 +4669,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de989dc44af0ac84995e71b0f481f3da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mode: 0
+  mode: 1
   modeText: {fileID: 1545633970}
   controlledSequence:
+  - powerUpBehaviour: {fileID: 721990428}
+    enabled: 0
+    stopMethod: 1
+    duration: 0
   - powerUpBehaviour: {fileID: 1160752080}
+    enabled: 0
+    stopMethod: 1
+    duration: 0
+  - powerUpBehaviour: {fileID: 1072912475}
+    enabled: 0
+    stopMethod: 1
+    duration: 0
+  - powerUpBehaviour: {fileID: 1160752080}
+    enabled: 0
+    stopMethod: 1
+    duration: 0
+  - powerUpBehaviour: {fileID: 1856288339}
     enabled: 0
     stopMethod: 1
     duration: 0
@@ -6374,8 +6390,12 @@ PrefabInstance:
       value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 2003539738425638421, guid: ef09529ed2ce65040a24a6823fb62059, type: 3}
+      propertyPath: spawnsPerMinute
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2003539738425638421, guid: ef09529ed2ce65040a24a6823fb62059, type: 3}
       propertyPath: spawnRateMultiplier
-      value: 1.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2121062477880154779, guid: ef09529ed2ce65040a24a6823fb62059, type: 3}
       propertyPath: m_Name
@@ -6425,6 +6445,10 @@ PrefabInstance:
       propertyPath: rifleProjectile
       value: 
       objectReference: {fileID: 5305424356513139640, guid: c7f9b98623ef0db4da8869680832817a, type: 3}
+    - target: {fileID: 4803719770417945082, guid: ef09529ed2ce65040a24a6823fb62059, type: 3}
+      propertyPath: shotgunProjectile
+      value: 
+      objectReference: {fileID: 5305424356513139640, guid: 91f2399a0c82201448ccf15ceb9b341f, type: 3}
     - target: {fileID: 6196514319039389597, guid: ef09529ed2ce65040a24a6823fb62059, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -6433,6 +6457,14 @@ PrefabInstance:
       propertyPath: healthBar
       value: 
       objectReference: {fileID: 1397145552}
+    - target: {fileID: 7278400424669499304, guid: ef09529ed2ce65040a24a6823fb62059, type: 3}
+      propertyPath: deathPrefabs.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7278400424669499304, guid: ef09529ed2ce65040a24a6823fb62059, type: 3}
+      propertyPath: 'deathPrefabs.Array.data[0]'
+      value: 
+      objectReference: {fileID: 725748389856807714, guid: 660494a9886e9244e81dcc5da3b052b4, type: 3}
     - target: {fileID: 8222577360072093496, guid: ef09529ed2ce65040a24a6823fb62059, type: 3}
       propertyPath: nitroBar
       value: 
@@ -6482,17 +6514,14 @@ MonoBehaviour:
   unlockLevel: 1
   levels:
   - gunType: 0
-    fireRate: 0.7
-    spread: 1
-  - gunType: 0
     fireRate: 0.6
-    spread: 1
+    spread: 5
   - gunType: 0
     fireRate: 0.5
-    spread: 1
+    spread: 10
   - gunType: 0
     fireRate: 0.4
-    spread: 1
+    spread: 10
   - gunType: 0
     fireRate: 0.3
     spread: 1
@@ -6500,20 +6529,17 @@ MonoBehaviour:
     fireRate: 0.1
     spread: 5
   - gunType: 1
-    fireRate: 0.1
+    fireRate: 0.08
     spread: 10
   - gunType: 1
-    fireRate: 0.08
+    fireRate: 0.06
     spread: 15
   - gunType: 1
-    fireRate: 0.06
+    fireRate: 0.04
     spread: 20
   - gunType: 1
-    fireRate: 0.04
+    fireRate: 0.02
     spread: 25
-  - gunType: 1
-    fireRate: 0.8
-    spread: 5
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
