@@ -12,10 +12,14 @@ public class MCarRoofTurretGun_LevelSystem : MonoBehaviour
 
     #endregion
 
-    #region Level System
+    #region Level Settings
 
-    [Header("Level System")]
+    [Header("Level Settings")]
+
+    // Current level of THIS gun (syncs with player level)
     [SerializeField] private int currentLevel = 1;
+
+    // Level at which gun unlocks
     [SerializeField] private int unlockLevel = 1;
 
     #endregion
@@ -37,7 +41,7 @@ public class MCarRoofTurretGun_LevelSystem : MonoBehaviour
 
     #endregion
 
-    #region Reflection Cache
+    #region Reflection Fields
 
     private FieldInfo modeField;
     private FieldInfo rifleRateField;
@@ -54,6 +58,14 @@ public class MCarRoofTurretGun_LevelSystem : MonoBehaviour
             gun = GetComponent<MCarRoofTurretGun>();
 
         CacheFields();
+
+        #endregion
+    }
+
+    private void Start()
+    {
+        #region Init Apply
+
         ApplyLevelStats();
 
         #endregion
@@ -63,7 +75,7 @@ public class MCarRoofTurretGun_LevelSystem : MonoBehaviour
 
     private void CacheFields()
     {
-        #region Cache Private Fields
+        #region Cache Fields
 
         Type type = typeof(MCarRoofTurretGun);
 
@@ -77,20 +89,21 @@ public class MCarRoofTurretGun_LevelSystem : MonoBehaviour
 
     #endregion
 
-    #region Level Logic
+    #region Public API
 
-    public void LevelUp()
+    public void SyncLevel(int playerLevel)
     {
-        #region Increase Level
+        #region Sync Level
 
-        currentLevel++;
-
-        Debug.Log("Gun Level Up → " + currentLevel);
-
+        currentLevel = playerLevel;
         ApplyLevelStats();
 
         #endregion
     }
+
+    #endregion
+
+    #region Core Logic
 
     private void ApplyLevelStats()
     {
@@ -105,17 +118,20 @@ public class MCarRoofTurretGun_LevelSystem : MonoBehaviour
 
         SetGunActive(true);
 
-        int index = currentLevel - 2; // because level 2 = index 0
+        // 🔥 RELATIVE INDEX (FIXED SYSTEM)
+        int index = currentLevel - unlockLevel;
 
-        if (index < 0 || index >= levels.Count)
-            return;
+        // Clamp so it reaches max properly
+        index = Mathf.Clamp(index, 0, levels.Count - 1);
+
+        if (levels.Count == 0) return;
 
         LevelStats stats = levels[index];
 
-        // Set gun mode
+        // Apply gun mode
         modeField.SetValue(gun, stats.gunType);
 
-        // Apply based on mode
+        // Apply stats
         if (stats.gunType == MCarRoofTurretGun.GunMode.Rifle)
         {
             rifleRateField.SetValue(gun, stats.fireRate);
@@ -131,7 +147,7 @@ public class MCarRoofTurretGun_LevelSystem : MonoBehaviour
 
     private void SetGunActive(bool state)
     {
-        #region Enable/Disable Gun
+        #region Enable / Disable
 
         gun.enabled = state;
 

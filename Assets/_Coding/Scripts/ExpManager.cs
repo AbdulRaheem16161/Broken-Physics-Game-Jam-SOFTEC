@@ -16,13 +16,17 @@ public class ExpManager : MonoBehaviour
     #region Level Settings
 
     [Header("Level System")]
+
+    // 🧠 NEW: starting level control
+    [SerializeField] private int startingLevel = 1;
+
     [SerializeField] private int currentLevel = 1;
     [SerializeField] private float baseExpRequired = 100f;
     [SerializeField] private float expMultiplier = 1.25f;
 
     #endregion
 
-    #region Gun System
+    #region Gun Systems
 
     [Header("Gun Systems")]
     [SerializeField] private List<MCarRoofTurretGun_LevelSystem> guns = new List<MCarRoofTurretGun_LevelSystem>();
@@ -47,9 +51,13 @@ public class ExpManager : MonoBehaviour
     {
         #region Initialize
 
-        currentLevel = Mathf.Max(1, currentLevel);
+        // 🧠 APPLY STARTING LEVEL
+        currentLevel = Mathf.Max(1, startingLevel);
+
         requiredExp = baseExpRequired;
         currentExp = 0f;
+
+        SyncAllGuns();
 
         UpdateUI();
 
@@ -92,33 +100,13 @@ public class ExpManager : MonoBehaviour
         #region Level Up
 
         currentLevel++;
-
         requiredExp *= expMultiplier;
 
         Debug.Log("LEVEL UP → Level: " + currentLevel);
 
-        #region Level Up ALL Guns
+        SyncAllGuns();
 
-        if (guns.Count > 0)
-        {
-            foreach (var gun in guns)
-            {
-                if (gun != null)
-                {
-                    gun.LevelUp();
-                }
-            }
-
-            Debug.Log("All guns leveled up.");
-        }
-        else
-        {
-            Debug.LogWarning("No guns assigned!");
-        }
-
-        #endregion
-
-        #region PowerUp Trigger
+        #region PowerUps
 
         if (powerUpManager != null)
         {
@@ -134,7 +122,32 @@ public class ExpManager : MonoBehaviour
 
     #endregion
 
-    #region UI Update
+    #region Gun Sync
+
+    private void SyncAllGuns()
+    {
+        #region Sync Guns
+
+        if (guns.Count == 0)
+        {
+            Debug.LogWarning("No guns assigned!");
+            return;
+        }
+
+        foreach (var gun in guns)
+        {
+            if (gun != null)
+            {
+                gun.SyncLevel(currentLevel);
+            }
+        }
+
+        #endregion
+    }
+
+    #endregion
+
+    #region UI
 
     private void UpdateUI()
     {
@@ -163,7 +176,7 @@ public class ExpManager : MonoBehaviour
 
     private void Update()
     {
-        #region Debug Keys
+        #region Debug Key
 
         if (Input.GetKeyDown(KeyCode.L))
         {
