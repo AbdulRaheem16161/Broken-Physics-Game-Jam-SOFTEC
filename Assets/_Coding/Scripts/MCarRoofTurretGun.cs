@@ -11,24 +11,45 @@ public class MCarRoofTurretGun : MonoBehaviour
         Cannon
     }
 
+    #region Gun Mode
+
     [Header("Gun Mode")]
     [SerializeField] private GunMode currentMode;
 
+    #endregion
+
+    #region Targeting
+
     [Header("Targeting")]
     [SerializeField] private float detectionRange = 25f;
-    [SerializeField] [Range(1f, 360f)] private float detectionAngle = 90f;
+
+    [SerializeField, Range(1f, 360f)]
+    private float detectionAngle = 90f;
+
     [SerializeField] private float pointBlankRange = 6f;
     [SerializeField] private LayerMask targetLayer;
     [SerializeField] private string aimChildTag = "AimPoint";
     [SerializeField] private Transform turretHead;
+
+    #endregion
+
+    #region Rotation
 
     [Header("Rotation")]
     [SerializeField] private float rotationSpeed = 8f;
     [SerializeField] private float returnSpeed = 4f;
     [SerializeField] private Vector3 defaultLocalEuler;
 
+    #endregion
+
+    #region Fire Point
+
     [Header("Fire Point")]
     [SerializeField] private Transform muzzlePoint;
+
+    #endregion
+
+    #region Projectile Settings
 
     [Header("Projectile Speed")]
     [SerializeField] private float projectileSpeed = 40f;
@@ -39,21 +60,37 @@ public class MCarRoofTurretGun : MonoBehaviour
     [SerializeField] private GameObject shotgunProjectile;
     [SerializeField] private GameObject cannonProjectile;
 
-    [Header("🔊 Audio")]
+    #endregion
+
+    #region Audio
+
+    [Header("Audio")]
     [SerializeField] private AudioClip shootClip;
     [SerializeField] private float baseVolume = 1f;
     [SerializeField] private Vector2 pitchVariation = new Vector2(0.95f, 1.05f);
 
     private AudioSource audioSource;
 
+    #endregion
+
+    #region Rifle
+
     [Header("Rifle")]
     [SerializeField] private float rifleFireRate = 0.25f;
     private float rifleTimer;
+
+    #endregion
+
+    #region Machine Gun
 
     [Header("Machine Gun")]
     [SerializeField] private float machineFireRate = 0.08f;
     [SerializeField] private float machineSpread = 3f;
     private float machineTimer;
+
+    #endregion
+
+    #region Shotgun
 
     [Header("Shotgun")]
     [SerializeField] private float shotgunCooldown = 1.2f;
@@ -61,19 +98,29 @@ public class MCarRoofTurretGun : MonoBehaviour
     [SerializeField] private float shotgunSpread = 8f;
     private float shotgunTimer;
 
+    #endregion
+
+    #region Cannon
+
     [Header("Cannon")]
     [SerializeField] private float cannonCooldown = 2.5f;
     private float cannonTimer;
 
+    #endregion
+
+    #region Runtime Targets
+
     private Transform currentTarget;
     private Transform currentAimPoint;
+
+    #endregion
 
     private void Awake()
     {
         #region Audio Setup
 
         audioSource = gameObject.AddComponent<AudioSource>();
-        audioSource.spatialBlend = 1f; // FULL 3D SOUND (important)
+        audioSource.spatialBlend = 1f;
         audioSource.rolloffMode = AudioRolloffMode.Logarithmic;
         audioSource.minDistance = 5f;
         audioSource.maxDistance = 60f;
@@ -84,11 +131,17 @@ public class MCarRoofTurretGun : MonoBehaviour
 
     private void Update()
     {
+        #region Core Loop
+
         FindClosestTargetInCone();
         UpdateAimPoint();
         RotateTurret();
         HandleShooting();
+
+        #endregion
     }
+
+    #region Targeting
 
     private void FindClosestTargetInCone()
     {
@@ -103,9 +156,11 @@ public class MCarRoofTurretGun : MonoBehaviour
 
             if (dist > pointBlankRange)
             {
-                Vector3 dirToTarget = (hit.transform.position - transform.position).normalized;
-                float angle = Vector3.Angle(transform.forward, dirToTarget);
-                if (angle > detectionAngle * 0.5f) continue;
+                Vector3 dir = (hit.transform.position - transform.position).normalized;
+                float angle = Vector3.Angle(transform.forward, dir);
+
+                if (angle > detectionAngle * 0.5f)
+                    continue;
             }
 
             if (dist < closestDist)
@@ -138,20 +193,38 @@ public class MCarRoofTurretGun : MonoBehaviour
         currentAimPoint = currentTarget;
     }
 
+    #endregion
+
+    #region Rotation
+
     private void RotateTurret()
     {
         if (currentAimPoint != null)
         {
             Vector3 dir = (currentAimPoint.position - turretHead.position).normalized;
-            Quaternion lookRot = Quaternion.LookRotation(dir);
-            turretHead.rotation = Quaternion.Slerp(turretHead.rotation, lookRot, rotationSpeed * Time.deltaTime);
+            Quaternion rot = Quaternion.LookRotation(dir);
+
+            turretHead.rotation = Quaternion.Slerp(
+                turretHead.rotation,
+                rot,
+                rotationSpeed * Time.deltaTime
+            );
         }
         else
         {
             Quaternion defaultRot = Quaternion.Euler(defaultLocalEuler);
-            turretHead.localRotation = Quaternion.Slerp(turretHead.localRotation, defaultRot, returnSpeed * Time.deltaTime);
+
+            turretHead.localRotation = Quaternion.Slerp(
+                turretHead.localRotation,
+                defaultRot,
+                returnSpeed * Time.deltaTime
+            );
         }
     }
+
+    #endregion
+
+    #region Shooting
 
     private void HandleShooting()
     {
@@ -159,28 +232,40 @@ public class MCarRoofTurretGun : MonoBehaviour
 
         switch (currentMode)
         {
-            case GunMode.Rifle: Rifle(); break;
-            case GunMode.MachineGun: MachineGun(); break;
-            case GunMode.Shotgun: Shotgun(); break;
-            case GunMode.Cannon: Cannon(); break;
+            case GunMode.Rifle:
+                Rifle();
+                break;
+
+            case GunMode.MachineGun:
+                MachineGun();
+                break;
+
+            case GunMode.Shotgun:
+                Shotgun();
+                break;
+
+            case GunMode.Cannon:
+                Cannon();
+                break;
         }
     }
 
     private void PlayShootSound()
     {
-        #region 3D Sound Playback
-
         if (shootClip == null || audioSource == null) return;
 
         audioSource.pitch = Random.Range(pitchVariation.x, pitchVariation.y);
         audioSource.PlayOneShot(shootClip, baseVolume);
-
-        #endregion
     }
+
+    #endregion
+
+    #region Rifle
 
     private void Rifle()
     {
         rifleTimer += Time.deltaTime;
+
         if (rifleTimer >= rifleFireRate)
         {
             rifleTimer = 0f;
@@ -188,9 +273,14 @@ public class MCarRoofTurretGun : MonoBehaviour
         }
     }
 
+    #endregion
+
+    #region Machine Gun
+
     private void MachineGun()
     {
         machineTimer += Time.deltaTime;
+
         if (machineTimer >= machineFireRate)
         {
             machineTimer = 0f;
@@ -198,9 +288,14 @@ public class MCarRoofTurretGun : MonoBehaviour
         }
     }
 
+    #endregion
+
+    #region Shotgun
+
     private void Shotgun()
     {
         shotgunTimer += Time.deltaTime;
+
         if (shotgunTimer >= shotgunCooldown)
         {
             shotgunTimer = 0f;
@@ -217,9 +312,14 @@ public class MCarRoofTurretGun : MonoBehaviour
         }
     }
 
+    #endregion
+
+    #region Cannon
+
     private void Cannon()
     {
         cannonTimer += Time.deltaTime;
+
         if (cannonTimer >= cannonCooldown)
         {
             cannonTimer = 0f;
@@ -227,95 +327,81 @@ public class MCarRoofTurretGun : MonoBehaviour
         }
     }
 
-    private void FireMachineGun()
-    {
-        if (machineProjectile == null || muzzlePoint == null || currentAimPoint == null) return;
+    #endregion
 
-        Vector3 direction = (currentAimPoint.position - muzzlePoint.position).normalized;
-
-        Vector3 horizontalSpread = new Vector3(
-            Random.Range(-machineSpread, machineSpread) * 0.01f,
-            0f,
-            Random.Range(-machineSpread, machineSpread) * 0.01f
-        );
-
-        direction += horizontalSpread;
-        direction.Normalize();
-
-        GameObject projectile = Instantiate(machineProjectile, muzzlePoint.position, Quaternion.LookRotation(direction));
-
-        Rigidbody rb = projectile.GetComponent<Rigidbody>();
-        if (rb != null) rb.linearVelocity = direction * projectileSpeed;
-
-        Projectile proj = projectile.GetComponent<Projectile>();
-        if (proj != null) proj.attacker = transform.root.gameObject;
-
-        PlayShootSound();
-    }
+    #region Core Fire Logic
 
     private void Fire(GameObject prefab, float spread)
     {
         if (prefab == null || muzzlePoint == null || currentAimPoint == null) return;
 
-        Vector3 direction = (currentAimPoint.position - muzzlePoint.position).normalized;
+        Vector3 dir = (currentAimPoint.position - muzzlePoint.position).normalized;
 
-        direction += new Vector3(
+        dir += new Vector3(
             Random.Range(-spread, spread) * 0.01f,
             Random.Range(-spread, spread) * 0.01f,
             Random.Range(-spread, spread) * 0.01f
         );
 
-        direction.Normalize();
+        dir.Normalize();
 
-        GameObject projectile = Instantiate(prefab, muzzlePoint.position, Quaternion.LookRotation(direction));
+        GameObject obj = Instantiate(prefab, muzzlePoint.position, Quaternion.LookRotation(dir));
 
-        Rigidbody rb = projectile.GetComponent<Rigidbody>();
-        if (rb != null) rb.linearVelocity = direction * projectileSpeed;
+        Rigidbody rb = obj.GetComponent<Rigidbody>();
+        if (rb != null)
+            rb.linearVelocity = dir * projectileSpeed;
 
-        Projectile proj = projectile.GetComponent<Projectile>();
-        if (proj != null) proj.attacker = transform.root.gameObject;
+        Projectile proj = obj.GetComponent<Projectile>();
+
+        if (proj != null)
+        {
+            proj.attacker = transform.root.gameObject;
+
+            var levelSystem = GetComponent<MCarRoofTurretGun_LevelSystem>();
+            if (levelSystem != null)
+            {
+                proj.damage = levelSystem.GetCurrentDamage();
+            }
+        }
 
         PlayShootSound();
     }
 
-    private void OnDrawGizmosSelected()
+    private void FireMachineGun()
     {
-        Vector3 origin = transform.position;
-        Vector3 forward = transform.forward;
-        float halfAngle = detectionAngle * 0.5f;
+        if (machineProjectile == null || muzzlePoint == null || currentAimPoint == null) return;
 
-        Gizmos.color = new Color(1f, 0.4f, 0f, 0.15f);
+        Vector3 dir = (currentAimPoint.position - muzzlePoint.position).normalized;
 
-        int segments = 40;
-        float angleStep = detectionAngle / segments;
-        float startAngle = -halfAngle;
+        dir += new Vector3(
+            Random.Range(-machineSpread, machineSpread) * 0.01f,
+            0f,
+            Random.Range(-machineSpread, machineSpread) * 0.01f
+        );
 
-        Vector3 prevPoint = origin + Quaternion.Euler(0f, startAngle, 0f) * forward * detectionRange;
+        dir.Normalize();
 
-        for (int i = 1; i <= segments; i++)
+        GameObject obj = Instantiate(machineProjectile, muzzlePoint.position, Quaternion.LookRotation(dir));
+
+        Rigidbody rb = obj.GetComponent<Rigidbody>();
+        if (rb != null)
+            rb.linearVelocity = dir * projectileSpeed;
+
+        Projectile proj = obj.GetComponent<Projectile>();
+
+        if (proj != null)
         {
-            float currentAngle = startAngle + angleStep * i;
-            Vector3 nextPoint = origin + Quaternion.Euler(0f, currentAngle, 0f) * forward * detectionRange;
-            Gizmos.DrawLine(prevPoint, nextPoint);
-            prevPoint = nextPoint;
+            proj.attacker = transform.root.gameObject;
+
+            var levelSystem = GetComponent<MCarRoofTurretGun_LevelSystem>();
+            if (levelSystem != null)
+            {
+                proj.damage = levelSystem.GetCurrentDamage();
+            }
         }
 
-        Gizmos.color = new Color(1f, 0.4f, 0f, 0.6f);
-
-        Vector3 leftBound  = Quaternion.Euler(0f, -halfAngle, 0f) * forward * detectionRange;
-        Vector3 rightBound = Quaternion.Euler(0f,  halfAngle, 0f) * forward * detectionRange;
-
-        Gizmos.DrawLine(origin, origin + leftBound);
-        Gizmos.DrawLine(origin, origin + rightBound);
-
-        Gizmos.color = new Color(1f, 1f, 0f, 0.2f);
-        Gizmos.DrawWireSphere(origin, pointBlankRange);
-
-        if (currentTarget != null)
-        {
-            Gizmos.color = Color.green;
-            Gizmos.DrawLine(origin, currentTarget.position);
-            Gizmos.DrawWireSphere(currentTarget.position, 0.4f);
-        }
+        PlayShootSound();
     }
+
+    #endregion
 }

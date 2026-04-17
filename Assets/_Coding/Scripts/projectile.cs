@@ -27,15 +27,14 @@ public class Projectile : MonoBehaviour
 
     #endregion
 
-    #region 🔊 Audio (NEW)
+    #region Audio
 
-    [Header("Hit / Impact Sounds")]
+    [Header("Hit Sounds")]
     [SerializeField] private List<AudioClip> hitClips = new List<AudioClip>();
 
-    [Header("Spawn / Launch Sound (PLAYS ONCE)")]
+    [Header("Spawn Sounds")]
     [SerializeField] private List<AudioClip> spawnClips = new List<AudioClip>();
 
-    [Header("Audio Settings")]
     [SerializeField] private float volume = 1f;
     [SerializeField] private Vector2 pitchVariation = new Vector2(0.95f, 1.05f);
 
@@ -45,31 +44,24 @@ public class Projectile : MonoBehaviour
 
     #region State
 
-    private enum ProjectileState
-    {
-        Normal,
-        PassedSacred
-    }
-
+    private enum ProjectileState { Normal, PassedSacred }
     private ProjectileState _state = ProjectileState.Normal;
     private bool _destroyed = false;
 
     #endregion
-
-    #region Unity Methods
 
     private void Awake()
     {
         #region Audio Setup
 
         audioSource = gameObject.AddComponent<AudioSource>();
-        audioSource.spatialBlend = 1f; // FULL 3D
+        audioSource.spatialBlend = 1f;
         audioSource.rolloffMode = AudioRolloffMode.Logarithmic;
         audioSource.minDistance = 5f;
         audioSource.maxDistance = 60f;
         audioSource.playOnAwake = false;
 
-        PlaySpawnSound(); // 🔥 PLAY ONCE HERE
+        PlaySpawnSound();
 
         #endregion
     }
@@ -79,29 +71,20 @@ public class Projectile : MonoBehaviour
         Destroy(gameObject, lifeTime);
     }
 
-    #endregion
-
-    #region Collision
-
     private void OnTriggerEnter(Collider other)
     {
         if (_destroyed) return;
 
-        int otherLayerBit = 1 << other.gameObject.layer;
-        bool isTarget = (targetLayer.value & otherLayerBit) != 0;
-        bool isSacred = (sacredLayer.value & otherLayerBit) != 0;
+        int layerBit = 1 << other.gameObject.layer;
 
-        #region Sacred Handling
+        bool isTarget = (targetLayer.value & layerBit) != 0;
+        bool isSacred = (sacredLayer.value & layerBit) != 0;
 
         if (isSacred)
         {
             _state = ProjectileState.PassedSacred;
             return;
         }
-
-        #endregion
-
-        #region Target Handling
 
         if (isTarget)
         {
@@ -113,68 +96,39 @@ public class Projectile : MonoBehaviour
                 health.TakeDamage(finalDamage, attacker);
             }
 
-            PlayHitSound(); // 🔊 NEW
-
+            PlayHitSound();
             DestroyProjectile();
             return;
         }
 
-        #endregion
-
-        #region Default Collision
-
         DestroyProjectile();
-
-        #endregion
     }
-
-    #endregion
-
-    #region Damage
 
     private float GetRandomDamage()
     {
-        float randomOffset = Random.Range(minDamageOffset, maxDamageOffset);
-        float finalDamage = damage + randomOffset;
-
-        return Mathf.Max(0f, finalDamage);
+        float offset = Random.Range(minDamageOffset, maxDamageOffset);
+        return Mathf.Max(0f, damage + offset);
     }
-
-    #endregion
-
-    #region 🔊 Audio Logic (NEW)
 
     private void PlaySpawnSound()
     {
-        if (spawnClips == null || spawnClips.Count == 0 || audioSource == null)
-            return;
-
-        AudioClip clip = spawnClips[Random.Range(0, spawnClips.Count)];
+        if (spawnClips.Count == 0) return;
 
         audioSource.pitch = Random.Range(pitchVariation.x, pitchVariation.y);
-        audioSource.PlayOneShot(clip, volume);
+        audioSource.PlayOneShot(spawnClips[Random.Range(0, spawnClips.Count)], volume);
     }
 
     private void PlayHitSound()
     {
-        if (hitClips == null || hitClips.Count == 0 || audioSource == null)
-            return;
-
-        AudioClip clip = hitClips[Random.Range(0, hitClips.Count)];
+        if (hitClips.Count == 0) return;
 
         audioSource.pitch = Random.Range(pitchVariation.x, pitchVariation.y);
-        audioSource.PlayOneShot(clip, volume);
+        audioSource.PlayOneShot(hitClips[Random.Range(0, hitClips.Count)], volume);
     }
-
-    #endregion
-
-    #region Destroy
 
     private void DestroyProjectile()
     {
         _destroyed = true;
         Destroy(gameObject);
     }
-
-    #endregion
 }
