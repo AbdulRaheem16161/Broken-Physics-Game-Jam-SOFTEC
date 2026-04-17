@@ -7,26 +7,31 @@ public class SceneChanger : MonoBehaviour
     #region Settings
 
     [Header("Detection")]
-    // Radius within which the player triggers the scene change
     [SerializeField] private float radius = 5f;
 
     [Header("Scene")]
-    // Name of the scene to load next (must be added in Build Settings)
     [SerializeField] private string nextSceneName;
 
     [Header("Delay")]
-    // Delay before scene change after player enters radius
     [SerializeField] private float delayBeforeChange = 2f;
 
     #endregion
 
-    #region Runtime Values
+    #region Audio
 
-    // Prevent multiple triggers
-    private bool isTriggered = false;
+    [Header("Audio Source")]
+    [SerializeField] private AudioSource audioSource;
 
-    // Cached player transform
+    [Header("Clips")]
+    [SerializeField] private AudioClip loopClip;
+    [SerializeField] private AudioClip finalClip;
+
+    #endregion
+
+    #region Runtime
+
     private Transform player;
+    private bool isTriggered = false;
 
     #endregion
 
@@ -43,36 +48,67 @@ public class SceneChanger : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("SceneChanger: No object with tag 'Player' found in scene.");
+            Debug.LogWarning("SceneChanger: Player not found.");
+        }
+        #endregion
+
+        #region Start Loop Sound
+        if (audioSource != null && loopClip != null)
+        {
+            audioSource.clip = loopClip;
+            audioSource.loop = true;
+            audioSource.spatialBlend = 1f; // 3D sound
+            audioSource.Play();
         }
         #endregion
     }
 
     private void Update()
     {
-        #region Radius Check
+        #region Safety Check
         if (isTriggered || player == null) return;
 
         float distance = Vector3.Distance(transform.position, player.position);
 
+        HandleLoopVolume(distance);
+
         if (distance <= radius)
         {
-            StartCoroutine(ChangeSceneAfterDelay());
+            StartCoroutine(ChangeScene());
         }
         #endregion
     }
 
     #endregion
 
-    #region Scene Change Logic
+    #region Loop Sound Control
 
-    private IEnumerator ChangeSceneAfterDelay()
+    private void HandleLoopVolume(float distance)
     {
-        #region Trigger Guard
+        if (audioSource == null) return;
+
+        float t = Mathf.Clamp01(1f - (distance / (radius * 2f)));
+        audioSource.volume = t;
+    }
+
+    #endregion
+
+    #region Scene Change
+
+    private IEnumerator ChangeScene()
+    {
+        #region Lock Trigger
         isTriggered = true;
         #endregion
 
-        #region Wait Before Scene Load
+        #region Play Final Sound
+        if (audioSource != null && finalClip != null)
+        {
+            audioSource.PlayOneShot(finalClip);
+        }
+        #endregion
+
+        #region Wait
         yield return new WaitForSeconds(delayBeforeChange);
         #endregion
 
@@ -80,10 +116,6 @@ public class SceneChanger : MonoBehaviour
         if (!string.IsNullOrEmpty(nextSceneName))
         {
             SceneManager.LoadScene(nextSceneName);
-        }
-        else
-        {
-            Debug.LogWarning("SceneChanger: Next scene name is empty.");
         }
         #endregion
     }
@@ -94,10 +126,8 @@ public class SceneChanger : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
-        #region Draw Radius
         Gizmos.color = Color.cyan;
         Gizmos.DrawWireSphere(transform.position, radius);
-        #endregion
     }
 
     #endregion

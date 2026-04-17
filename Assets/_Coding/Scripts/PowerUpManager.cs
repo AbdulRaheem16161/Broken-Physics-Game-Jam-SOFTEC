@@ -31,6 +31,9 @@ public class PowerUpManager : MonoBehaviour
 
         public StopMethod stopMethod = StopMethod.Timer;
         public float duration = 5f;
+
+        [Header("Audio")]
+        public AudioClip activationClip;
     }
 
     #endregion
@@ -42,6 +45,9 @@ public class PowerUpManager : MonoBehaviour
 
     [Header("UI")]
     [SerializeField] private TextMeshProUGUI modeText;
+
+    [Header("Audio Source")]
+    [SerializeField] private AudioSource audioSource;
 
     [Header("Controlled Sequence")]
     [SerializeField] private List<PowerUpEntry> controlledSequence = new List<PowerUpEntry>();
@@ -77,6 +83,7 @@ public class PowerUpManager : MonoBehaviour
         if (activeRoutine != null)
         {
             StopCoroutine(activeRoutine);
+            activeRoutine = null;
         }
 
         #endregion
@@ -96,7 +103,13 @@ public class PowerUpManager : MonoBehaviour
             return;
         }
 
+        #endregion
+
+        #region Activate PowerUp
+
         activePowerUp.ActivatePowerUp();
+
+        PlayPowerUpAudio(entry);
 
         UpdateModeUI();
 
@@ -110,6 +123,18 @@ public class PowerUpManager : MonoBehaviour
         }
 
         #endregion
+    }
+
+    #endregion
+
+    #region Audio
+
+    private void PlayPowerUpAudio(PowerUpEntry entry)
+    {
+        if (audioSource == null) return;
+        if (entry.activationClip == null) return;
+
+        audioSource.PlayOneShot(entry.activationClip);
     }
 
     #endregion

@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class Projectile : MonoBehaviour
 {
@@ -6,7 +7,6 @@ public class Projectile : MonoBehaviour
 
     public float damage = 10f;
 
-    // NEW: Random damage range offsets
     [SerializeField] private float minDamageOffset = -5f;
     [SerializeField] private float maxDamageOffset = 5f;
 
@@ -27,6 +27,22 @@ public class Projectile : MonoBehaviour
 
     #endregion
 
+    #region 🔊 Audio (NEW)
+
+    [Header("Hit / Impact Sounds")]
+    [SerializeField] private List<AudioClip> hitClips = new List<AudioClip>();
+
+    [Header("Spawn / Launch Sound (PLAYS ONCE)")]
+    [SerializeField] private List<AudioClip> spawnClips = new List<AudioClip>();
+
+    [Header("Audio Settings")]
+    [SerializeField] private float volume = 1f;
+    [SerializeField] private Vector2 pitchVariation = new Vector2(0.95f, 1.05f);
+
+    private AudioSource audioSource;
+
+    #endregion
+
     #region State
 
     private enum ProjectileState
@@ -40,12 +56,32 @@ public class Projectile : MonoBehaviour
 
     #endregion
 
+    #region Unity Methods
+
+    private void Awake()
+    {
+        #region Audio Setup
+
+        audioSource = gameObject.AddComponent<AudioSource>();
+        audioSource.spatialBlend = 1f; // FULL 3D
+        audioSource.rolloffMode = AudioRolloffMode.Logarithmic;
+        audioSource.minDistance = 5f;
+        audioSource.maxDistance = 60f;
+        audioSource.playOnAwake = false;
+
+        PlaySpawnSound(); // 🔥 PLAY ONCE HERE
+
+        #endregion
+    }
 
     private void Start()
     {
         Destroy(gameObject, lifeTime);
     }
 
+    #endregion
+
+    #region Collision
 
     private void OnTriggerEnter(Collider other)
     {
@@ -77,6 +113,8 @@ public class Projectile : MonoBehaviour
                 health.TakeDamage(finalDamage, attacker);
             }
 
+            PlayHitSound(); // 🔊 NEW
+
             DestroyProjectile();
             return;
         }
@@ -90,24 +128,53 @@ public class Projectile : MonoBehaviour
         #endregion
     }
 
+    #endregion
+
+    #region Damage
 
     private float GetRandomDamage()
     {
-        #region Random Damage Calculation
-
         float randomOffset = Random.Range(minDamageOffset, maxDamageOffset);
         float finalDamage = damage + randomOffset;
 
-        // Optional: prevent negative damage (unless you're into healing enemies 💀)
         return Mathf.Max(0f, finalDamage);
-
-        #endregion
     }
 
+    #endregion
+
+    #region 🔊 Audio Logic (NEW)
+
+    private void PlaySpawnSound()
+    {
+        if (spawnClips == null || spawnClips.Count == 0 || audioSource == null)
+            return;
+
+        AudioClip clip = spawnClips[Random.Range(0, spawnClips.Count)];
+
+        audioSource.pitch = Random.Range(pitchVariation.x, pitchVariation.y);
+        audioSource.PlayOneShot(clip, volume);
+    }
+
+    private void PlayHitSound()
+    {
+        if (hitClips == null || hitClips.Count == 0 || audioSource == null)
+            return;
+
+        AudioClip clip = hitClips[Random.Range(0, hitClips.Count)];
+
+        audioSource.pitch = Random.Range(pitchVariation.x, pitchVariation.y);
+        audioSource.PlayOneShot(clip, volume);
+    }
+
+    #endregion
+
+    #region Destroy
 
     private void DestroyProjectile()
     {
         _destroyed = true;
         Destroy(gameObject);
     }
+
+    #endregion
 }

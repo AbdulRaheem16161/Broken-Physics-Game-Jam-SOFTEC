@@ -5297,7 +5297,7 @@ Transform:
   m_GameObject: {fileID: 2191921529899479563}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 6.1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5390,6 +5390,7 @@ GameObject:
   - component: {fileID: 890801502465788057}
   - component: {fileID: 8358602457397687547}
   - component: {fileID: -3181824793495222977}
+  - component: {fileID: 2920715840100768781}
   m_Layer: 9
   m_Name: NPC
   m_TagString: Enemy
@@ -5839,6 +5840,15 @@ MonoBehaviour:
   - {fileID: 5985634496115995773, guid: caba445afe7312f41925d92d5f7398d1, type: 3}
   spawnOffset: {x: 0, y: 0.46, z: 0}
   showGizmos: 1
+  damageClips:
+  - {fileID: 8300000, guid: 40f4dfc78515b5841848a7be6d2fc861, type: 3}
+  deathClips:
+  - {fileID: 8300000, guid: b8958171d732d1f47925f326e710b843, type: 3}
+  - {fileID: 8300000, guid: ab03417a721f180498cdd53c77d05f29, type: 3}
+  - {fileID: 8300000, guid: b12432f7380d57b499ba1f49cabb7424, type: 3}
+  - {fileID: 8300000, guid: 85f87de8d20936648bb2eccac8f8eafc, type: 3}
+  volume: 1
+  pitchVariation: {x: 0.95, y: 1.05}
 --- !u!114 &9192493431402981335
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5965,6 +5975,20 @@ MonoBehaviour:
   targetScale: {x: 3, y: 3, z: 3}
   healthIncrease: 100
   newScaleMultiplier: 1.15
+--- !u!114 &2920715840100768781
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3121546575763796119}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3dc9f295bd9698844ab4705b69cbd8f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  movementThreshold: 0.05
+  idleTimeRequired: 10
 --- !u!1 &3863021923780768303
 GameObject:
   m_ObjectHideFlags: 0

@@ -427,10 +427,18 @@ MonoBehaviour:
   - {fileID: 5339739117810204693, guid: 6c0b101ea4d2e154b87924f1201953e9, type: 3}
   - {fileID: 119183615461286708, guid: fea3e386f2b6b8f43aa6b81d0db9cd90, type: 3}
   - {fileID: 904662820145583817, guid: 261921534d013c3419b07053b2cb1cf3, type: 3}
-  - {fileID: 0}
   - {fileID: 5985634496115995773, guid: caba445afe7312f41925d92d5f7398d1, type: 3}
   spawnOffset: {x: 0, y: 0.46, z: 0}
   showGizmos: 1
+  damageClips:
+  - {fileID: 8300000, guid: 40f4dfc78515b5841848a7be6d2fc861, type: 3}
+  deathClips:
+  - {fileID: 8300000, guid: b8958171d732d1f47925f326e710b843, type: 3}
+  - {fileID: 8300000, guid: ab03417a721f180498cdd53c77d05f29, type: 3}
+  - {fileID: 8300000, guid: b12432f7380d57b499ba1f49cabb7424, type: 3}
+  - {fileID: 8300000, guid: 85f87de8d20936648bb2eccac8f8eafc, type: 3}
+  volume: 1
+  pitchVariation: {x: 0.95, y: 1.05}
 --- !u!114 &6592389513268305462
 MonoBehaviour:
   m_ObjectHideFlags: 0

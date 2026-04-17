@@ -590,6 +590,12 @@ MonoBehaviour:
   - {fileID: 5642766282230003982, guid: c894207e16be1404a9e4d62d4b2da8fc, type: 3}
   spawnOffset: {x: 0, y: 0.46, z: 0}
   showGizmos: 1
+  damageClips:
+  - {fileID: 8300000, guid: 40f4dfc78515b5841848a7be6d2fc861, type: 3}
+  deathClips:
+  - {fileID: 0}
+  volume: 1
+  pitchVariation: {x: 0.95, y: 1.05}
 --- !u!114 &6688823392443963495
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -614,8 +620,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b2ae9d52a89fbe4abe3afdec211e532, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetBody: {fileID: 7019499185464125899}
-  scaleMultiplier: 1.65
+  targetBody: {fileID: 5622283859733718217}
+  scaleMultiplier: 1.15
   duration: 0.15
   punchCurve:
     serializedVersion: 2

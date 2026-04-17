@@ -412,8 +412,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff7dd954ca025824da52bd589d8a20be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHp: 300
-  hp: 300
+  maxHp: 150
+  hp: 150
   cantDie: 0
   healthBar: {fileID: 0}
   normalColor: {r: 0, g: 1, b: 0, a: 1}
@@ -430,6 +430,10 @@ MonoBehaviour:
   - {fileID: 5985634496115995773, guid: caba445afe7312f41925d92d5f7398d1, type: 3}
   spawnOffset: {x: 0, y: 0, z: 0}
   showGizmos: 1
+  damageClips: []
+  deathClips: []
+  volume: 1
+  pitchVariation: {x: 0.95, y: 1.05}
 --- !u!114 &6592389513268305462
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -39,6 +39,13 @@ public class MCarRoofTurretGun : MonoBehaviour
     [SerializeField] private GameObject shotgunProjectile;
     [SerializeField] private GameObject cannonProjectile;
 
+    [Header("🔊 Audio")]
+    [SerializeField] private AudioClip shootClip;
+    [SerializeField] private float baseVolume = 1f;
+    [SerializeField] private Vector2 pitchVariation = new Vector2(0.95f, 1.05f);
+
+    private AudioSource audioSource;
+
     [Header("Rifle")]
     [SerializeField] private float rifleFireRate = 0.25f;
     private float rifleTimer;
@@ -60,6 +67,20 @@ public class MCarRoofTurretGun : MonoBehaviour
 
     private Transform currentTarget;
     private Transform currentAimPoint;
+
+    private void Awake()
+    {
+        #region Audio Setup
+
+        audioSource = gameObject.AddComponent<AudioSource>();
+        audioSource.spatialBlend = 1f; // FULL 3D SOUND (important)
+        audioSource.rolloffMode = AudioRolloffMode.Logarithmic;
+        audioSource.minDistance = 5f;
+        audioSource.maxDistance = 60f;
+        audioSource.playOnAwake = false;
+
+        #endregion
+    }
 
     private void Update()
     {
@@ -138,17 +159,33 @@ public class MCarRoofTurretGun : MonoBehaviour
 
         switch (currentMode)
         {
-            case GunMode.Rifle:      Rifle();      break;
+            case GunMode.Rifle: Rifle(); break;
             case GunMode.MachineGun: MachineGun(); break;
-            case GunMode.Shotgun:    Shotgun();    break;
-            case GunMode.Cannon:     Cannon();     break;
+            case GunMode.Shotgun: Shotgun(); break;
+            case GunMode.Cannon: Cannon(); break;
         }
+    }
+
+    private void PlayShootSound()
+    {
+        #region 3D Sound Playback
+
+        if (shootClip == null || audioSource == null) return;
+
+        audioSource.pitch = Random.Range(pitchVariation.x, pitchVariation.y);
+        audioSource.PlayOneShot(shootClip, baseVolume);
+
+        #endregion
     }
 
     private void Rifle()
     {
         rifleTimer += Time.deltaTime;
-        if (rifleTimer >= rifleFireRate) { rifleTimer = 0f; Fire(rifleProjectile, 0f); }
+        if (rifleTimer >= rifleFireRate)
+        {
+            rifleTimer = 0f;
+            Fire(rifleProjectile, 0f);
+        }
     }
 
     private void MachineGun()
@@ -164,7 +201,11 @@ public class MCarRoofTurretGun : MonoBehaviour
     private void Shotgun()
     {
         shotgunTimer += Time.deltaTime;
-        if (shotgunTimer >= shotgunCooldown) { shotgunTimer = 0f; StartCoroutine(ShotgunBurst()); }
+        if (shotgunTimer >= shotgunCooldown)
+        {
+            shotgunTimer = 0f;
+            StartCoroutine(ShotgunBurst());
+        }
     }
 
     private IEnumerator ShotgunBurst()
@@ -179,7 +220,11 @@ public class MCarRoofTurretGun : MonoBehaviour
     private void Cannon()
     {
         cannonTimer += Time.deltaTime;
-        if (cannonTimer >= cannonCooldown) { cannonTimer = 0f; Fire(cannonProjectile, 0f); }
+        if (cannonTimer >= cannonCooldown)
+        {
+            cannonTimer = 0f;
+            Fire(cannonProjectile, 0f);
+        }
     }
 
     private void FireMachineGun()
@@ -188,7 +233,6 @@ public class MCarRoofTurretGun : MonoBehaviour
 
         Vector3 direction = (currentAimPoint.position - muzzlePoint.position).normalized;
 
-        // Spread only on the horizontal plane (X and Z), no Y deviation
         Vector3 horizontalSpread = new Vector3(
             Random.Range(-machineSpread, machineSpread) * 0.01f,
             0f,
@@ -205,6 +249,8 @@ public class MCarRoofTurretGun : MonoBehaviour
 
         Projectile proj = projectile.GetComponent<Projectile>();
         if (proj != null) proj.attacker = transform.root.gameObject;
+
+        PlayShootSound();
     }
 
     private void Fire(GameObject prefab, float spread)
@@ -228,6 +274,8 @@ public class MCarRoofTurretGun : MonoBehaviour
 
         Projectile proj = projectile.GetComponent<Projectile>();
         if (proj != null) proj.attacker = transform.root.gameObject;
+
+        PlayShootSound();
     }
 
     private void OnDrawGizmosSelected()

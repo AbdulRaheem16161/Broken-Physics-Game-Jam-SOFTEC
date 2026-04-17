@@ -5297,7 +5297,7 @@ Transform:
   m_GameObject: {fileID: 2191921529899479563}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 6.1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5389,6 +5389,7 @@ GameObject:
   - component: {fileID: 8867876241775616168}
   - component: {fileID: 890801502465788057}
   - component: {fileID: 8358602457397687547}
+  - component: {fileID: 1164365726362550965}
   m_Layer: 9
   m_Name: ArmoredNPC
   m_TagString: Enemy
@@ -5821,10 +5822,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff7dd954ca025824da52bd589d8a20be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHp: 300
-  hp: 300
+  maxHp: 150
+  hp: 150
   cantDie: 1
   healthBar: {fileID: 0}
+  normalColor: {r: 0, g: 1, b: 0, a: 1}
+  lowHealthColor: {r: 1, g: 0, b: 0, a: 1}
+  lowHealthThreshold: 0.25
+  lowHealthEffectPrefab: {fileID: 0}
   damageFeedback: {fileID: 6835987666176234177}
   damageNumbers: {fileID: 8867876241775616168}
   deathPrefabs:
@@ -5836,6 +5841,10 @@ MonoBehaviour:
   - {fileID: 5985634496115995773, guid: caba445afe7312f41925d92d5f7398d1, type: 3}
   spawnOffset: {x: 0, y: 0.46, z: 0}
   showGizmos: 1
+  damageClips: []
+  deathClips: []
+  volume: 1
+  pitchVariation: {x: 0.95, y: 1.05}
 --- !u!114 &9192493431402981335
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5945,6 +5954,20 @@ MonoBehaviour:
   damageCooldown: 0.5
   bounceForce: 10
   upwardBoost: 2
+--- !u!114 &1164365726362550965
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3121546575763796119}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3dc9f295bd9698844ab4705b69cbd8f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  movementThreshold: 0.05
+  idleTimeRequired: 10
 --- !u!1 &3863021923780768303
 GameObject:
   m_ObjectHideFlags: 0

@@ -13,16 +13,24 @@ public class ExpManager : MonoBehaviour
 
     #endregion
 
-    #region Level Settings
+    #region Level System
 
     [Header("Level System")]
-
-    // 🧠 NEW: starting level control
     [SerializeField] private int startingLevel = 1;
-
     [SerializeField] private int currentLevel = 1;
     [SerializeField] private float baseExpRequired = 100f;
     [SerializeField] private float expMultiplier = 1.25f;
+
+    #endregion
+
+    #region Level Up FX
+
+    [Header("Level Up Effect")]
+    [SerializeField] private GameObject levelUpEffectPrefab;
+    [SerializeField] private float levelUpEffectDuration = 0.75f;
+
+    [Header("Player Reference")]
+    [SerializeField] private Transform playerRef;
 
     #endregion
 
@@ -51,14 +59,12 @@ public class ExpManager : MonoBehaviour
     {
         #region Initialize
 
-        // 🧠 APPLY STARTING LEVEL
         currentLevel = Mathf.Max(1, startingLevel);
 
         requiredExp = baseExpRequired;
         currentExp = 0f;
 
         SyncAllGuns();
-
         UpdateUI();
 
         #endregion
@@ -107,16 +113,40 @@ public class ExpManager : MonoBehaviour
         SyncAllGuns();
 
         #region PowerUps
-
         if (powerUpManager != null)
         {
             powerUpManager.ActivatePowerUpOnLevelUp();
         }
+        #endregion
 
+        #region Level Up FX
+        SpawnLevelUpEffect();
         #endregion
 
         UpdateUI();
 
+        #endregion
+    }
+
+    #endregion
+
+    #region Level Up FX Logic
+
+    private void SpawnLevelUpEffect()
+    {
+        #region Guard
+        if (levelUpEffectPrefab == null) return;
+        if (playerRef == null) return;
+        #endregion
+
+        #region Spawn + Attach
+        GameObject fx = Instantiate(levelUpEffectPrefab, playerRef);
+        fx.transform.localPosition = Vector3.zero;
+        fx.transform.localRotation = Quaternion.identity;
+        #endregion
+
+        #region Destroy After Time
+        Destroy(fx, levelUpEffectDuration);
         #endregion
     }
 

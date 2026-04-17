@@ -20611,6 +20611,7 @@ GameObject:
   - component: {fileID: 3408972061071910907}
   - component: {fileID: 2693008437340529311}
   - component: {fileID: 3258512485340768812}
+  - component: {fileID: -9199924916608875229}
   m_Layer: 9
   m_Name: Large Crazy Zombie
   m_TagString: Enemy
@@ -21043,8 +21044,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff7dd954ca025824da52bd589d8a20be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHp: 300
-  hp: 300
+  maxHp: 150
+  hp: 150
   cantDie: 0
   healthBar: {fileID: 0}
   normalColor: {r: 0, g: 1, b: 0, a: 1}
@@ -21061,6 +21062,10 @@ MonoBehaviour:
   - {fileID: 5985634496115995773, guid: caba445afe7312f41925d92d5f7398d1, type: 3}
   spawnOffset: {x: 0, y: 0.46, z: 0}
   showGizmos: 1
+  damageClips: []
+  deathClips: []
+  volume: 1
+  pitchVariation: {x: 0.95, y: 1.05}
 --- !u!114 &4212335399348143165
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21204,6 +21209,20 @@ MonoBehaviour:
   uprightSpeed: 5
   liftForce: 20
   liftPointOffset: {x: 0, y: 0, z: 0}
+--- !u!114 &-9199924916608875229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8684800555007424885}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3dc9f295bd9698844ab4705b69cbd8f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  movementThreshold: 0.05
+  idleTimeRequired: 10
 --- !u!1 &9053637644956177238
 GameObject:
   m_ObjectHideFlags: 0

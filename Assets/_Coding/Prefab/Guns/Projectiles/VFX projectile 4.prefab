@@ -161,6 +161,11 @@ MonoBehaviour:
   sacredLayer:
     serializedVersion: 2
     m_Bits: 8
+  hitClips: []
+  spawnClips:
+  - {fileID: 8300000, guid: 4be3061d7c807174d9e29d99083f9041, type: 3}
+  volume: 1
+  pitchVariation: {x: 0.95, y: 1.05}
 --- !u!1001 &5843545023979197405
 PrefabInstance:
   m_ObjectHideFlags: 0
