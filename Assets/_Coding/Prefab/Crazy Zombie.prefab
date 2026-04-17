@@ -15477,6 +15477,7 @@ GameObject:
   - component: {fileID: 4640576014874760294}
   - component: {fileID: 6472783922178555672}
   - component: {fileID: 2361674277501720484}
+  - component: {fileID: 253448083496060805}
   m_Layer: 9
   m_Name: Crazy Zombie
   m_TagString: Enemy
@@ -15913,6 +15914,10 @@ MonoBehaviour:
   hp: 100
   cantDie: 0
   healthBar: {fileID: 0}
+  normalColor: {r: 0, g: 1, b: 0, a: 1}
+  lowHealthColor: {r: 1, g: 0, b: 0, a: 1}
+  lowHealthThreshold: 0.25
+  lowHealthEffectPrefab: {fileID: 0}
   damageFeedback: {fileID: 1426278762694950998}
   damageNumbers: {fileID: 6408283250969597450}
   deathPrefabs:
@@ -16050,6 +16055,23 @@ MonoBehaviour:
   targetScale: {x: 3, y: 3, z: 3}
   healthIncrease: 100
   newScaleMultiplier: 1.15
+--- !u!114 &253448083496060805
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7163504288936110383}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 880f4d0e7d5102d4aa6c7dc6ee8b0446, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  uprightDotThreshold: 0.3
+  timeBeforeUpright: 2
+  uprightSpeed: 5
+  liftForce: 10
+  liftPointOffset: {x: 0, y: 0, z: 0}
 --- !u!1 &7180104220453536997
 GameObject:
   m_ObjectHideFlags: 0
