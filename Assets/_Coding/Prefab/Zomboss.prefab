@@ -579,6 +579,10 @@ MonoBehaviour:
   hp: 300
   cantDie: 0
   healthBar: {fileID: 0}
+  normalColor: {r: 1, g: 0.1865443, b: 0, a: 1}
+  lowHealthColor: {r: 0.6301887, g: 0.07015303, b: 0.07015303, a: 1}
+  lowHealthThreshold: 0.25
+  lowHealthEffectPrefab: {fileID: 0}
   damageFeedback: {fileID: 3097138886532523428}
   damageNumbers: {fileID: 2922538396797691238}
   deathPrefabs:

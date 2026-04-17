@@ -5826,6 +5826,10 @@ MonoBehaviour:
   hp: 100
   cantDie: 0
   healthBar: {fileID: 0}
+  normalColor: {r: 0, g: 1, b: 0, a: 1}
+  lowHealthColor: {r: 1, g: 0, b: 0, a: 1}
+  lowHealthThreshold: 0.25
+  lowHealthEffectPrefab: {fileID: 0}
   damageFeedback: {fileID: 6835987666176234177}
   damageNumbers: {fileID: 8867876241775616168}
   deathPrefabs:
@@ -5861,7 +5865,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b2ae9d52a89fbe4abe3afdec211e532, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetBody: {fileID: 3525872987807081611}
+  targetBody: {fileID: 226315620174374397}
   scaleMultiplier: 1.65
   duration: 0.15
   punchCurve:
