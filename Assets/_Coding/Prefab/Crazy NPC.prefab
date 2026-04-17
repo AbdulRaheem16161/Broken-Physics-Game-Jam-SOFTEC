@@ -5297,7 +5297,7 @@ Transform:
   m_GameObject: {fileID: 2191921529899479563}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 6.1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5460,6 +5460,14 @@ MonoBehaviour:
   turn: 10
   gravity: 5
   downforce: 0
+  statSmoothness: 5
+  targetSpeedMultiplier: 1
+  targetAccelerationMultiplier: 1
+  targetTurnMultiplier: 1
+  speedMultiplier: 1
+  accelerationMultiplier: 1
+  turnMultiplier: 1
+  skidWidth: 0.14025125
   airControl: 0
   kartLike: 0
   driftMultiplier: 1.5
@@ -5545,7 +5553,6 @@ MonoBehaviour:
   minPitch: 0.3
   maxPitch: 3
   skidSound: {fileID: 631842371278766362}
-  skidWidth: 0.14025125
 --- !u!54 &8187777600946659252
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -5820,6 +5827,15 @@ MonoBehaviour:
   healthBar: {fileID: 0}
   damageFeedback: {fileID: 6835987666176234177}
   damageNumbers: {fileID: 8867876241775616168}
+  deathPrefabs:
+  - {fileID: 8547867254204328264, guid: 369b655ad6f572445aa17a64b274ac68, type: 3}
+  - {fileID: 5339739117810204693, guid: 6c0b101ea4d2e154b87924f1201953e9, type: 3}
+  - {fileID: 119183615461286708, guid: fea3e386f2b6b8f43aa6b81d0db9cd90, type: 3}
+  - {fileID: 904662820145583817, guid: 261921534d013c3419b07053b2cb1cf3, type: 3}
+  - {fileID: 2708598583397607911, guid: ddfed91c0b2ee16488d7957aba4ebb49, type: 3}
+  - {fileID: 5985634496115995773, guid: caba445afe7312f41925d92d5f7398d1, type: 3}
+  spawnOffset: {x: 0, y: 0.46, z: 0}
+  showGizmos: 1
 --- !u!114 &9192493431402981335
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5926,6 +5942,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   damage: 20
+  damageCooldown: 0.5
   bounceForce: 10
   upwardBoost: 2
 --- !u!114 &-3181824793495222977

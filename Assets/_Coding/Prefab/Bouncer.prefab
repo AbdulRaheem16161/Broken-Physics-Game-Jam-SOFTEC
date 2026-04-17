@@ -368,9 +368,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 8892501315859209307}
   target: {fileID: 0}
-  moveForce: 12
+  moveForce: 6
   maxSpeed: 20
-  bounceForce: 7
+  bounceForce: 3
   upwardBias: 2
   airControl: 1
 --- !u!54 &8892501315859209307
@@ -418,6 +418,15 @@ MonoBehaviour:
   healthBar: {fileID: 0}
   damageFeedback: {fileID: 2266284812103476501}
   damageNumbers: {fileID: 1084480411042620565}
+  deathPrefabs:
+  - {fileID: 8547867254204328264, guid: 369b655ad6f572445aa17a64b274ac68, type: 3}
+  - {fileID: 5339739117810204693, guid: 6c0b101ea4d2e154b87924f1201953e9, type: 3}
+  - {fileID: 119183615461286708, guid: fea3e386f2b6b8f43aa6b81d0db9cd90, type: 3}
+  - {fileID: 904662820145583817, guid: 261921534d013c3419b07053b2cb1cf3, type: 3}
+  - {fileID: 2708598583397607911, guid: ddfed91c0b2ee16488d7957aba4ebb49, type: 3}
+  - {fileID: 5985634496115995773, guid: caba445afe7312f41925d92d5f7398d1, type: 3}
+  spawnOffset: {x: 0, y: 0.46, z: 0}
+  showGizmos: 1
 --- !u!114 &6592389513268305462
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -431,9 +440,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shape: 0
-  radius: 1.94
+  radius: 2.24
   boxSize: {x: 2, y: 2, z: 2}
-  offset: {x: 0, y: 0, z: 0}
+  offset: {x: 0, y: -0.2, z: 0}
   hitLayers:
     serializedVersion: 2
     m_Bits: 8
@@ -441,6 +450,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   damage: 20
+  damageCooldown: 0.5
   bounceForce: 10
   upwardBoost: 2
 --- !u!114 &2266284812103476501
@@ -675,7 +685,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1af3b084671c89d4799460d4445bcedf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSmoothness: 5
+  rotationSmoothness: 20
   minMoveThreshold: 0.001
 --- !u!1 &3512384549463472079
 GameObject:

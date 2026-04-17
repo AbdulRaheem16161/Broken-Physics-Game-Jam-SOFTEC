@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class MaceImpact : MonoBehaviour
 {
@@ -18,11 +19,8 @@ public class MaceImpact : MonoBehaviour
     [SerializeField] private Shape shape;
 
     [SerializeField] private float radius = 2f;
-
     [SerializeField] private Vector3 boxSize = new Vector3(2f, 2f, 2f);
-
     [SerializeField] private Vector3 offset;
-
     [SerializeField] private LayerMask hitLayers;
 
     #endregion
@@ -33,6 +31,9 @@ public class MaceImpact : MonoBehaviour
     [SerializeField] private LayerMask targetLayer;
     [SerializeField] private float damage = 20f;
 
+    // NEW: Damage cooldown per target
+    [SerializeField] private float damageCooldown = 0.5f;
+
     #endregion
 
     #region Impact Force
@@ -40,6 +41,13 @@ public class MaceImpact : MonoBehaviour
     [Header("Impact Force")]
     [SerializeField] private float bounceForce = 10f;
     [SerializeField] private float upwardBoost = 2f;
+
+    #endregion
+
+    #region Runtime Values
+
+    // Track last hit time per target
+    private Dictionary<GameObject, float> lastHitTime = new Dictionary<GameObject, float>();
 
     #endregion
 
@@ -69,7 +77,7 @@ public class MaceImpact : MonoBehaviour
 
             #endregion
 
-            #region Apply Bounce
+            #region Apply Bounce (ALWAYS, no cooldown)
 
             if (rb != null)
             {
@@ -78,23 +86,46 @@ public class MaceImpact : MonoBehaviour
 
             #endregion
 
-            #region Apply Damage
+            #region Apply Damage (WITH COOLDOWN)
 
             int hitLayerBit = 1 << hit.gameObject.layer;
             bool isTarget = (targetLayer.value & hitLayerBit) != 0;
 
             if (isTarget)
             {
-                Health health = hit.GetComponent<Health>();
+                GameObject target = hit.gameObject;
 
-                if (health != null)
+                // Check cooldown
+                if (CanDamage(target))
                 {
-                    health.TakeDamage(damage, gameObject);
+                    Health health = target.GetComponent<Health>();
+
+                    if (health != null)
+                    {
+                        health.TakeDamage(damage, gameObject);
+
+                        // Record hit time
+                        lastHitTime[target] = Time.time;
+                    }
                 }
             }
 
             #endregion
         }
+    }
+
+    private bool CanDamage(GameObject target)
+    {
+        #region Cooldown Check
+
+        if (!lastHitTime.ContainsKey(target))
+            return true;
+
+        float lastTime = lastHitTime[target];
+
+        return Time.time >= lastTime + damageCooldown;
+
+        #endregion
     }
 
     private Collider[] GetHits()
