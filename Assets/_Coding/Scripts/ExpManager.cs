@@ -23,6 +23,16 @@ public class ExpManager : MonoBehaviour
 
     #endregion
 
+    #region Level 10 Spawn (NEW 🔥)
+
+    [Header("Level 10 Spawn")]
+    [SerializeField] private GameObject level10SpawnPrefab;
+    [SerializeField] private Transform level10SpawnPoint;
+
+    private bool level10Spawned = false;
+
+    #endregion
+
     #region Level Up FX
 
     [Header("Level Up Effect")]
@@ -55,6 +65,8 @@ public class ExpManager : MonoBehaviour
 
     #endregion
 
+    #region Unity Methods
+
     private void Start()
     {
         #region Initialize
@@ -69,6 +81,20 @@ public class ExpManager : MonoBehaviour
 
         #endregion
     }
+
+    private void Update()
+    {
+        #region Debug Key
+
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            AddExp(50);
+        }
+
+        #endregion
+    }
+
+    #endregion
 
     #region Public Methods
 
@@ -112,18 +138,85 @@ public class ExpManager : MonoBehaviour
 
         SyncAllGuns();
 
+        #region Level 10 Spawn Check
+
+        if (currentLevel >= 10 && !level10Spawned)
+        {
+            SpawnLevel10Object();
+            level10Spawned = true;
+        }
+
+        #endregion
+
         #region PowerUps
+
         if (powerUpManager != null)
         {
             powerUpManager.ActivatePowerUpOnLevelUp();
         }
+
         #endregion
 
         #region Level Up FX
+
         SpawnLevelUpEffect();
+
         #endregion
 
         UpdateUI();
+
+        #endregion
+    }
+
+    #endregion
+
+    #region Level 10 Spawn Logic
+
+    private void SpawnLevel10Object()
+    {
+        #region Safety Check
+
+        if (level10SpawnPrefab == null)
+        {
+            Debug.LogWarning("Level 10 prefab not assigned!");
+            return;
+        }
+
+        #endregion
+
+        #region Determine Spawn Position
+
+        Vector3 spawnPosition;
+        Quaternion spawnRotation;
+
+        if (level10SpawnPoint != null)
+        {
+            spawnPosition = level10SpawnPoint.position;
+            spawnRotation = level10SpawnPoint.rotation;
+        }
+        else
+        {
+            Debug.LogWarning("No spawn point assigned. Spawning at player.");
+
+            if (playerRef != null)
+            {
+                spawnPosition = playerRef.position;
+                spawnRotation = Quaternion.identity;
+            }
+            else
+            {
+                spawnPosition = transform.position;
+                spawnRotation = Quaternion.identity;
+            }
+        }
+
+        #endregion
+
+        #region Spawn
+
+        Instantiate(level10SpawnPrefab, spawnPosition, spawnRotation);
+
+        Debug.Log("🔥 LEVEL 10 → Special object spawned!");
 
         #endregion
     }
@@ -135,18 +228,24 @@ public class ExpManager : MonoBehaviour
     private void SpawnLevelUpEffect()
     {
         #region Guard
+
         if (levelUpEffectPrefab == null) return;
         if (playerRef == null) return;
+
         #endregion
 
         #region Spawn + Attach
+
         GameObject fx = Instantiate(levelUpEffectPrefab, playerRef);
         fx.transform.localPosition = Vector3.zero;
         fx.transform.localRotation = Quaternion.identity;
+
         #endregion
 
         #region Destroy After Time
+
         Destroy(fx, levelUpEffectDuration);
+
         #endregion
     }
 
@@ -195,22 +294,6 @@ public class ExpManager : MonoBehaviour
         if (levelText != null)
         {
             levelText.text = "Level: " + currentLevel;
-        }
-
-        #endregion
-    }
-
-    #endregion
-
-    #region Debug
-
-    private void Update()
-    {
-        #region Debug Key
-
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            AddExp(50);
         }
 
         #endregion

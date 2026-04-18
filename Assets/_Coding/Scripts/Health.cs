@@ -12,6 +12,17 @@ public class Health : MonoBehaviour
 
     #endregion
 
+    #region Regen (NEW 🔥)
+
+    [Header("Health Regen")]
+    [SerializeField] private bool enableRegen = true;
+    [SerializeField] private float regenPerSecond = 5f;
+    [SerializeField] private float regenDelay = 3f;
+
+    private float lastDamageTime;
+
+    #endregion
+
     #region UI
 
     [SerializeField] private Image healthBar;
@@ -49,7 +60,7 @@ public class Health : MonoBehaviour
 
     #endregion
 
-    #region 🔊 Audio (NEW)
+    #region 🔊 Audio
 
     [Header("Damage Sounds")]
     [SerializeField] private List<AudioClip> damageClips = new List<AudioClip>();
@@ -72,7 +83,7 @@ public class Health : MonoBehaviour
         #region Audio Setup
 
         audioSource = gameObject.AddComponent<AudioSource>();
-        audioSource.spatialBlend = 1f; // FULL 3D AUDIO
+        audioSource.spatialBlend = 1f;
         audioSource.rolloffMode = AudioRolloffMode.Logarithmic;
         audioSource.minDistance = 5f;
         audioSource.maxDistance = 50f;
@@ -103,6 +114,41 @@ public class Health : MonoBehaviour
             TakeDamage(maxHp);
         }
         #endregion
+
+        #region Regen Tick (NEW)
+
+        HandleRegen();
+
+        #endregion
+    }
+
+    #endregion
+
+    #region Regen Logic (NEW 🔥)
+
+    private void HandleRegen()
+    {
+        #region Conditions
+
+        if (!enableRegen)
+            return;
+
+        if (hp >= maxHp)
+            return;
+
+        if (Time.time < lastDamageTime + regenDelay)
+            return;
+
+        #endregion
+
+        #region Apply Regen
+
+        hp += regenPerSecond * Time.deltaTime;
+        hp = Mathf.Clamp(hp, 0f, maxHp);
+
+        UpdateHealthUI();
+
+        #endregion
     }
 
     #endregion
@@ -114,13 +160,17 @@ public class Health : MonoBehaviour
         hp -= damage;
         hp = Mathf.Clamp(hp, 0f, maxHp);
 
+        #region Reset Regen Timer
+        lastDamageTime = Time.time;
+        #endregion
+
         if (damageFeedback != null)
             damageFeedback.PlayDamageFeedback();
 
         if (damageNumbers != null)
             damageNumbers.ShowDamage(damage);
 
-        PlayRandomDamageSound(); // 🔊 NEW
+        PlayRandomDamageSound();
 
         UpdateHealthUI();
         CheckLowHealth();
@@ -135,10 +185,10 @@ public class Health : MonoBehaviour
 
     private void HandleDeath()
     {
-        PlayRandomDeathSound(); // 🔊 NEW
+        PlayRandomDeathSound();
 
         SpawnRandomObject();
-        Destroy(gameObject, 0.05f); // tiny delay so sound actually plays
+        Destroy(gameObject, 0.05f);
     }
 
     private void SpawnRandomObject()
@@ -156,7 +206,7 @@ public class Health : MonoBehaviour
 
     #endregion
 
-    #region 🔊 Audio Logic (NEW)
+    #region Audio
 
     private void PlayRandomDamageSound()
     {
@@ -177,8 +227,7 @@ public class Health : MonoBehaviour
         AudioClip clip = deathClips[Random.Range(0, deathClips.Count)];
 
         audioSource.pitch = Random.Range(pitchVariation.x, pitchVariation.y);
-        audioSource.PlayOneShot(clip, volume * 1.2f); // slightly louder for death
-
+        audioSource.PlayOneShot(clip, volume * 1.2f);
     }
 
     #endregion
