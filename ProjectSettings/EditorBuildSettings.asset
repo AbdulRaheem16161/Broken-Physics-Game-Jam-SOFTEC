@@ -11,14 +11,17 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/_Coding/Scenes/3rdPerson.unity
     guid: a187d0be75b895544857f1898f0d5421
-  - enabled: 1
-    path: Assets/_Coding/Scenes/Workspace.unity
-    guid: d3fcff7abd4be554fbe9aced051b280e
-  - enabled: 1
-    path: Assets/_Coding/Scenes/MainMenu.unity
-    guid: 74699c156934392448785f40063f8a98
   - enabled: 0
     path: Assets/_Coding/Scenes/GameLevel.unity
     guid: f69b07e9c8a260e4689e3d43ec351228
+  - enabled: 1
+    path: Assets/_Coding/Scenes/MainMenu.unity
+    guid: 74699c156934392448785f40063f8a98
+  - enabled: 1
+    path: Assets/_Coding/Scenes/Comic trailer.unity
+    guid: 8e04c937b7907fa4188f1e685d64ddee
+  - enabled: 1
+    path: Assets/_Coding/Scenes/Workspace.unity
+    guid: d3fcff7abd4be554fbe9aced051b280e
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0

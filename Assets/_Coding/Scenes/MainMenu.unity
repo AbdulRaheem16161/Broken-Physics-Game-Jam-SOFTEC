@@ -914,7 +914,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef94502bf9dd45b498fe792cf41c4afc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneName: GameLevel
+  sceneName: Comic trailer
 --- !u!114 &1924683709
 MonoBehaviour:
   m_ObjectHideFlags: 0

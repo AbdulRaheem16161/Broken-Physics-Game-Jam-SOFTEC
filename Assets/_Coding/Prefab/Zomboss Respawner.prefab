@@ -309,7 +309,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -2747611327115979810, guid: e3a5ab60fb4b3604c9a73f458500ea69, type: 3}
+  - {fileID: 2100000, guid: 587dff75b70d8c1408c154575c3712ca, type: 2}
   - {fileID: 1585245502356829148, guid: e3a5ab60fb4b3604c9a73f458500ea69, type: 3}
   - {fileID: 2576956483768403278, guid: e3a5ab60fb4b3604c9a73f458500ea69, type: 3}
   - {fileID: -2729756450268468618, guid: e3a5ab60fb4b3604c9a73f458500ea69, type: 3}
@@ -6322,7 +6322,7 @@ MonoBehaviour:
   muzzlePoint: {fileID: 1560494975074725623}
   projectileSpeed: 100
   rifleProjectile: {fileID: 5305424356513139640, guid: d8f196dcd32a1864f8bb658be39f35a5, type: 3}
-  machineProjectile: {fileID: 5305424356513139640, guid: 75acf69cf5252694981d4d3cb143dce7, type: 3}
+  machineProjectile: {fileID: 5305424356513139640, guid: d11cc23d2d73a1c499f6a6eaf43927dd, type: 3}
   shotgunProjectile: {fileID: 5305424356513139640, guid: d8f196dcd32a1864f8bb658be39f35a5, type: 3}
   cannonProjectile: {fileID: 5305424356513139640, guid: d8f196dcd32a1864f8bb658be39f35a5, type: 3}
   shootClip: {fileID: 0}

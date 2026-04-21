@@ -712,6 +712,9 @@ MonoBehaviour:
   maxHp: 100
   hp: 100
   cantDie: 0
+  enableRegen: 1
+  regenPerSecond: 5
+  regenDelay: 3
   healthBar: {fileID: 0}
   normalColor: {r: 0, g: 1, b: 0, a: 1}
   lowHealthColor: {r: 1, g: 0, b: 0, a: 1}
