@@ -5,8 +5,6 @@ using TMPro;
 
 public class PowerUpManager : MonoBehaviour
 {
-    #region Enums
-
     public enum StopMethod
     {
         Timer,
@@ -19,10 +17,6 @@ public class PowerUpManager : MonoBehaviour
         Controlled
     }
 
-    #endregion
-
-    #region PowerUp Entry
-
     [System.Serializable]
     public class PowerUpEntry
     {
@@ -32,13 +26,12 @@ public class PowerUpManager : MonoBehaviour
         public StopMethod stopMethod = StopMethod.Timer;
         public float duration = 5f;
 
+        [Header("Level Restriction")]
+        public int maxLevel = int.MaxValue;
+
         [Header("Audio")]
         public AudioClip activationClip;
     }
-
-    #endregion
-
-    #region Settings
 
     [Header("Mode")]
     [SerializeField] private Mode mode = Mode.Random;
@@ -55,24 +48,14 @@ public class PowerUpManager : MonoBehaviour
     [Header("Random Pool")]
     [SerializeField] private List<PowerUpEntry> randomPool = new List<PowerUpEntry>();
 
-    #endregion
-
-    #region Runtime
-
     private int sequenceIndex = 0;
     private IPowerUp activePowerUp;
     private PowerUpEntry activeEntry;
     private Coroutine activeRoutine;
 
-    #endregion
-
-    #region Public Trigger
-
-    public void ActivatePowerUpOnLevelUp()
+    public void ActivatePowerUpOnLevelUp(int currentLevel)
     {
         Debug.Log("PowerUp Manager Triggered Level Up PowerUp");
-
-        #region Deactivate Previous (if needed)
 
         if (activeEntry != null && activeEntry.stopMethod == StopMethod.UntilNextPowerUp)
         {
@@ -86,11 +69,7 @@ public class PowerUpManager : MonoBehaviour
             activeRoutine = null;
         }
 
-        #endregion
-
-        #region Pick PowerUp
-
-        PowerUpEntry entry = GetNextPowerUp();
+        PowerUpEntry entry = GetNextPowerUp(currentLevel);
 
         if (entry == null || entry.powerUpBehaviour == null) return;
 
@@ -103,31 +82,15 @@ public class PowerUpManager : MonoBehaviour
             return;
         }
 
-        #endregion
-
-        #region Activate PowerUp
-
         activePowerUp.ActivatePowerUp();
-
         PlayPowerUpAudio(entry);
-
         UpdateModeUI();
-
-        #endregion
-
-        #region Handle Stop Methods
 
         if (entry.stopMethod == StopMethod.Timer)
         {
             activeRoutine = StartCoroutine(StopAfterTime(entry.duration));
         }
-
-        #endregion
     }
-
-    #endregion
-
-    #region Audio
 
     private void PlayPowerUpAudio(PowerUpEntry entry)
     {
@@ -137,22 +100,21 @@ public class PowerUpManager : MonoBehaviour
         audioSource.PlayOneShot(entry.activationClip);
     }
 
-    #endregion
-
-    #region Power Selection
-
-    private PowerUpEntry GetNextPowerUp()
+    private PowerUpEntry GetNextPowerUp(int currentLevel)
     {
-        #region Random Mode
-
         if (mode == Mode.Random)
         {
             List<PowerUpEntry> valid = new List<PowerUpEntry>();
 
             foreach (var p in randomPool)
             {
-                if (p.enabled && p.powerUpBehaviour != null)
-                    valid.Add(p);
+                if (p == null) continue;
+
+                if (!p.enabled) continue;
+                if (p.powerUpBehaviour == null) continue;
+                if (currentLevel > p.maxLevel) continue;
+
+                valid.Add(p);
             }
 
             if (valid.Count == 0) return null;
@@ -160,43 +122,34 @@ public class PowerUpManager : MonoBehaviour
             return valid[Random.Range(0, valid.Count)];
         }
 
-        #endregion
-
-        #region Controlled Mode
-
         if (controlledSequence.Count == 0) return null;
 
-        for (int i = 0; i < controlledSequence.Count; i++)
+        int attempts = 0;
+
+        while (attempts < controlledSequence.Count)
         {
             PowerUpEntry entry = controlledSequence[sequenceIndex];
-
             sequenceIndex = (sequenceIndex + 1) % controlledSequence.Count;
+            attempts++;
 
-            if (entry.enabled && entry.powerUpBehaviour != null)
-                return entry;
+            if (entry == null) continue;
+            if (!entry.enabled) continue;
+            if (entry.powerUpBehaviour == null) continue;
+            if (currentLevel > entry.maxLevel) continue;
+
+            return entry;
         }
 
         return null;
-
-        #endregion
     }
-
-    #endregion
-
-    #region Coroutine
 
     private IEnumerator StopAfterTime(float duration)
     {
         yield return new WaitForSeconds(duration);
 
         activePowerUp?.DeactivatePowerUp();
-
         UpdateModeUI();
     }
-
-    #endregion
-
-    #region UI
 
     private void UpdateModeUI()
     {
@@ -211,6 +164,4 @@ public class PowerUpManager : MonoBehaviour
 
         modeText.text = "Physics Mode: " + displayName;
     }
-
-    #endregion
 }

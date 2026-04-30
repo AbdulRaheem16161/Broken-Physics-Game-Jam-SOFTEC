@@ -17,7 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Coding/Scenes/MainMenu.unity
     guid: 74699c156934392448785f40063f8a98
-  - enabled: 1
+  - enabled: 0
     path: Assets/_Coding/Scenes/Comic trailer.unity
     guid: 8e04c937b7907fa4188f1e685d64ddee
   - enabled: 1

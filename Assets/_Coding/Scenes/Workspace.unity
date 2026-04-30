@@ -359,7 +359,7 @@ PrefabInstance:
     - target: {fileID: 4611127467777198071, guid: 83c6a154c05a8f3418eb4eb92f8e1e61, type: 3}
       propertyPath: machineProjectile
       value: 
-      objectReference: {fileID: 5305424356513139640, guid: 91f2399a0c82201448ccf15ceb9b341f, type: 3}
+      objectReference: {fileID: 5305424356513139640, guid: d606da71a4ed33e468aac1ab5e92bc87, type: 3}
     - target: {fileID: 4611127467777198071, guid: 83c6a154c05a8f3418eb4eb92f8e1e61, type: 3}
       propertyPath: shotgunProjectile
       value: 
@@ -1108,6 +1108,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LookAtOffset: {x: 0, y: -1.79, z: 0}
+--- !u!4 &298915678 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: ffd88c3184adc9446b0064a0f781fdc6, type: 3}
+  m_PrefabInstance: {fileID: 1630742585}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &394587984
 GameObject:
   m_ObjectHideFlags: 0
@@ -5066,19 +5071,19 @@ MonoBehaviour:
     damage: 60
   - gunType: 0
     fireRate: 0.08
-    spread: 15
-    damage: 70
-  - gunType: 0
-    fireRate: 0.06
     spread: 20
     damage: 70
-  - gunType: 0
-    fireRate: 0.04
-    spread: 25
-    damage: 70
-  - gunType: 0
+  - gunType: 1
     fireRate: 0.06
-    spread: 5
+    spread: 30
+    damage: 70
+  - gunType: 1
+    fireRate: 0.04
+    spread: 40
+    damage: 70
+  - gunType: 1
+    fireRate: 0.06
+    spread: 50
     damage: 70
   isUnlocked: 0
   resolvedLevelIndex: 0
@@ -6210,6 +6215,9 @@ MonoBehaviour:
   - prefab: {fileID: 1650611855175884908, guid: 344e0453be3e0074c8a4b783c94e2e0a, type: 3}
     largePrefab: {fileID: 8684800555007424885, guid: cbbf4ebb35b6b294fa4b2d37b639a0f6, type: 3}
     spawnChance: 10
+  - prefab: {fileID: 3121546575763796119, guid: 21c3fbdb8bd52cc4b995e1ca8543f584, type: 3}
+    largePrefab: {fileID: 6764356318017205238, guid: 0a5f3025bc0a8814cbd33062b472dd89, type: 3}
+    spawnChance: 10
   baseSpawnsPerMinute: 10
   maxAliveEnemies: 30
   minSpawnsPerMinute: 20
@@ -6333,86 +6341,102 @@ MonoBehaviour:
   modeText: {fileID: 1545633970}
   audioSource: {fileID: 0}
   controlledSequence:
-  - powerUpBehaviour: {fileID: 721990428}
+  - powerUpBehaviour: {fileID: 1856288339}
     enabled: 1
     stopMethod: 1
     duration: 5
+    maxLevel: 1000
     activationClip: {fileID: 0}
   - powerUpBehaviour: {fileID: 1856288339}
     enabled: 1
     stopMethod: 1
     duration: 5
+    maxLevel: 1000
     activationClip: {fileID: 0}
   - powerUpBehaviour: {fileID: 1072912475}
     enabled: 1
     stopMethod: 1
     duration: 5
+    maxLevel: 25
     activationClip: {fileID: 0}
-  - powerUpBehaviour: {fileID: 1072912475}
+  - powerUpBehaviour: {fileID: 1856288339}
     enabled: 1
     stopMethod: 1
     duration: 5
+    maxLevel: 1000
     activationClip: {fileID: 0}
-  - powerUpBehaviour: {fileID: 1160752080}
+  - powerUpBehaviour: {fileID: 1856288339}
     enabled: 1
     stopMethod: 1
     duration: 5
-    activationClip: {fileID: 0}
-  - powerUpBehaviour: {fileID: 822818376}
-    enabled: 1
-    stopMethod: 1
-    duration: 5
+    maxLevel: 1000
     activationClip: {fileID: 0}
   - powerUpBehaviour: {fileID: 721990428}
     enabled: 1
     stopMethod: 1
     duration: 5
+    maxLevel: 10
     activationClip: {fileID: 0}
-  - powerUpBehaviour: {fileID: 1160752080}
+  - powerUpBehaviour: {fileID: 1856288339}
     enabled: 1
     stopMethod: 1
     duration: 5
+    maxLevel: 1000
     activationClip: {fileID: 0}
-  - powerUpBehaviour: {fileID: 1160752080}
+  - powerUpBehaviour: {fileID: 1856288339}
     enabled: 1
     stopMethod: 1
     duration: 5
+    maxLevel: 1000
     activationClip: {fileID: 0}
   - powerUpBehaviour: {fileID: 822818376}
     enabled: 1
     stopMethod: 1
     duration: 5
+    maxLevel: 10
     activationClip: {fileID: 0}
-  - powerUpBehaviour: {fileID: 1160752080}
+  - powerUpBehaviour: {fileID: 1856288339}
     enabled: 1
     stopMethod: 1
     duration: 5
+    maxLevel: 1000
     activationClip: {fileID: 0}
-  - powerUpBehaviour: {fileID: 721990428}
+  - powerUpBehaviour: {fileID: 1856288339}
     enabled: 1
     stopMethod: 1
     duration: 5
+    maxLevel: 1000
+    activationClip: {fileID: 0}
+  - powerUpBehaviour: {fileID: 1856288339}
+    enabled: 1
+    stopMethod: 1
+    duration: 5
+    maxLevel: 1000
     activationClip: {fileID: 0}
   randomPool:
   - powerUpBehaviour: {fileID: 822818376}
     enabled: 1
     stopMethod: 0
     duration: 5
+    maxLevel: 2147483647
     activationClip: {fileID: 0}
   - powerUpBehaviour: {fileID: 1072912475}
     enabled: 1
     stopMethod: 0
     duration: 5
+    maxLevel: 2147483647
     activationClip: {fileID: 0}
   - powerUpBehaviour: {fileID: 721990428}
     enabled: 1
     stopMethod: 0
     duration: 5
+    maxLevel: 2147483647
     activationClip: {fileID: 0}
   - powerUpBehaviour: {fileID: 1160752080}
     enabled: 1
     stopMethod: 0
     duration: 5
+    maxLevel: 2147483647
     activationClip: {fileID: 0}
 --- !u!1 &1545633967
 GameObject:
@@ -6708,6 +6732,83 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!1001 &1630742585
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1302915256399563206}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: ffd88c3184adc9446b0064a0f781fdc6, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 119.09
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ffd88c3184adc9446b0064a0f781fdc6, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 119.09
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ffd88c3184adc9446b0064a0f781fdc6, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 119.09
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ffd88c3184adc9446b0064a0f781fdc6, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ffd88c3184adc9446b0064a0f781fdc6, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.9126
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ffd88c3184adc9446b0064a0f781fdc6, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.029785
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ffd88c3184adc9446b0064a0f781fdc6, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071067
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ffd88c3184adc9446b0064a0f781fdc6, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ffd88c3184adc9446b0064a0f781fdc6, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ffd88c3184adc9446b0064a0f781fdc6, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ffd88c3184adc9446b0064a0f781fdc6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ffd88c3184adc9446b0064a0f781fdc6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ffd88c3184adc9446b0064a0f781fdc6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: ffd88c3184adc9446b0064a0f781fdc6, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 78ed2059eded55746a9a2f785502e7ff, type: 2}
+    - target: {fileID: 919132149155446097, guid: ffd88c3184adc9446b0064a0f781fdc6, type: 3}
+      propertyPath: m_Name
+      value: ORANGE_CAR
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: ffd88c3184adc9446b0064a0f781fdc6, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: ffd88c3184adc9446b0064a0f781fdc6, type: 3}
 --- !u!1 &1651284800
 GameObject:
   m_ObjectHideFlags: 0
@@ -8305,6 +8406,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 2121062477880154779, guid: ef09529ed2ce65040a24a6823fb62059, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4213046169773412278, guid: ef09529ed2ce65040a24a6823fb62059, type: 3}
       propertyPath: m_LocalPosition.z
       value: 18.27
@@ -8397,6 +8502,10 @@ PrefabInstance:
       propertyPath: nitroBar
       value: 
       objectReference: {fileID: 2012024937}
+    - target: {fileID: 8427944158568673912, guid: ef09529ed2ce65040a24a6823fb62059, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 187331881217709447, guid: ef09529ed2ce65040a24a6823fb62059, type: 3}
@@ -8420,6 +8529,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4614344821210746740, guid: ef09529ed2ce65040a24a6823fb62059, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1972794283}
+    - targetCorrespondingSourceObject: {fileID: 4614344821210746740, guid: ef09529ed2ce65040a24a6823fb62059, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 298915678}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ef09529ed2ce65040a24a6823fb62059, type: 3}
 --- !u!54 &4737679046774780089 stripped
