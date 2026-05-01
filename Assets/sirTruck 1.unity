@@ -1299,7 +1299,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1543512158}
-  - {fileID: 1836021125}
   - {fileID: 1165284456}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2180,7 +2179,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   displayName: TIme Slow
-  slowMotion: {fileID: 1836021126}
+  slowMotion: {fileID: 0}
 --- !u!1 &830598126
 GameObject:
   m_ObjectHideFlags: 0
@@ -3809,7 +3808,7 @@ MonoBehaviour:
   - {fileID: 1018507089}
   showSpawnPointGizmos: 1
   gizmoRadius: 3.53
-  scoreManager: {fileID: 1543512157}
+  scoreManager: {fileID: 0}
 --- !u!1 &1543512156
 GameObject:
   m_ObjectHideFlags: 0
@@ -3819,34 +3818,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1543512158}
-  - component: {fileID: 1543512157}
   - component: {fileID: 1543512159}
-  - component: {fileID: 1543512160}
   m_Layer: 0
-  m_Name: Exp&Score&PowerUp Manager
+  m_Name: GameManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1543512157
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1543512156}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3c8b6e114c4fa2418e1d77ae65acea1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  enemyTag: Enemy
-  scoreText: {fileID: 148403212}
-  expManager: {fileID: 1543512159}
-  expPerKill: 100
-  kpmWindowSeconds: 60
-  enemies: []
 --- !u!4 &1543512158
 Transform:
   m_ObjectHideFlags: 0
@@ -3871,132 +3850,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1543512156}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2ee4504aeee5e094088cfc9c2944c13a, type: 3}
+  m_Script: {fileID: 11500000, guid: 926cf4025e9ea3d4db634cdb4ea63582, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  expBar: {fileID: 1454467581}
-  levelText: {fileID: 1966401085}
-  startingLevel: 1
-  currentLevel: 0
-  baseExpRequired: 100
-  expMultiplier: 1.25
-  bosses:
-  - bossName: green zomboss
-    spawnLevel: 10
-    bossPrefab: {fileID: 2977843243201819697, guid: d2bcf82962b13284aa733ed3f99bf285, type: 3}
-    spawnPoint: {fileID: 830598127}
-    hasSpawned: 0
-  - bossName: blue zomboss
-    spawnLevel: 18
-    bossPrefab: {fileID: 7719227699745283082, guid: f224112850ed9c44a95d3107b33bf49f, type: 3}
-    spawnPoint: {fileID: 830598127}
-    hasSpawned: 0
-  levelUpEffectPrefab: {fileID: 8434842591292709995, guid: c40d899182bd2484b8af4d1960882efd, type: 3}
-  levelUpEffectDuration: 1
-  playerRef: {fileID: 1972794283}
-  guns:
-  - {fileID: 1356099873}
-  - {fileID: 408323121}
-  - {fileID: 1304160409}
-  - {fileID: 534258634}
-  - {fileID: 0}
-  - {fileID: 0}
-  powerUpManager: {fileID: 1543512160}
---- !u!114 &1543512160
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1543512156}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de989dc44af0ac84995e71b0f481f3da, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mode: 1
-  modeText: {fileID: 1545633970}
-  audioSource: {fileID: 0}
-  controlledSequence:
-  - powerUpBehaviour: {fileID: 1856288339}
-    enabled: 1
-    stopMethod: 1
-    duration: 5
-    maxLevel: 1000
-    activationClip: {fileID: 0}
-  - powerUpBehaviour: {fileID: 1856288339}
-    enabled: 1
-    stopMethod: 1
-    duration: 5
-    maxLevel: 1000
-    activationClip: {fileID: 0}
-  - powerUpBehaviour: {fileID: 1072912475}
-    enabled: 1
-    stopMethod: 1
-    duration: 5
-    maxLevel: 25
-    activationClip: {fileID: 0}
-  - powerUpBehaviour: {fileID: 1856288339}
-    enabled: 1
-    stopMethod: 1
-    duration: 5
-    maxLevel: 1000
-    activationClip: {fileID: 0}
-  - powerUpBehaviour: {fileID: 1856288339}
-    enabled: 1
-    stopMethod: 1
-    duration: 5
-    maxLevel: 1000
-    activationClip: {fileID: 0}
-  - powerUpBehaviour: {fileID: 822818376}
-    enabled: 1
-    stopMethod: 1
-    duration: 5
-    maxLevel: 10
-    activationClip: {fileID: 0}
-  - powerUpBehaviour: {fileID: 1856288339}
-    enabled: 1
-    stopMethod: 1
-    duration: 5
-    maxLevel: 1000
-    activationClip: {fileID: 0}
-  - powerUpBehaviour: {fileID: 1856288339}
-    enabled: 1
-    stopMethod: 1
-    duration: 5
-    maxLevel: 1000
-    activationClip: {fileID: 0}
-  - powerUpBehaviour: {fileID: 1856288339}
-    enabled: 1
-    stopMethod: 1
-    duration: 5
-    maxLevel: 1000
-    activationClip: {fileID: 0}
-  randomPool:
-  - powerUpBehaviour: {fileID: 822818376}
-    enabled: 1
-    stopMethod: 0
-    duration: 5
-    maxLevel: 2147483647
-    activationClip: {fileID: 0}
-  - powerUpBehaviour: {fileID: 1072912475}
-    enabled: 1
-    stopMethod: 0
-    duration: 5
-    maxLevel: 2147483647
-    activationClip: {fileID: 0}
-  - powerUpBehaviour: {fileID: 721990428}
-    enabled: 1
-    stopMethod: 0
-    duration: 5
-    maxLevel: 2147483647
-    activationClip: {fileID: 0}
-  - powerUpBehaviour: {fileID: 1160752080}
-    enabled: 1
-    stopMethod: 0
-    duration: 5
-    maxLevel: 2147483647
-    activationClip: {fileID: 0}
 --- !u!1 &1545633967
 GameObject:
   m_ObjectHideFlags: 0
@@ -4199,53 +4055,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1497389109}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1836021123
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1836021125}
-  - component: {fileID: 1836021126}
-  m_Layer: 0
-  m_Name: CustomTimeController
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1836021125
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1836021123}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.274002, y: 10.501177, z: -11.415878}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 677021423}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1836021126
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1836021123}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 374b29dfb1432f44eba2baf0287e1b36, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  WillFreezeOnPressingL: 0
-  slowTimeScale: 0.2
-  transitionSpeed: 5
 --- !u!1 &1847878373
 GameObject:
   m_ObjectHideFlags: 0
