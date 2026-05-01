@@ -4,6 +4,10 @@ using System.Collections.Generic;
 
 public class Health : MonoBehaviour
 {
+
+    public System.Action OnDeath;
+
+
     #region Health
 
     [SerializeField] private float maxHp = 100f;
@@ -189,6 +193,8 @@ public class Health : MonoBehaviour
 
         SpawnRandomObject();
         Destroy(gameObject, 0.05f);
+
+        OnDeath?.Invoke();
     }
 
     private void SpawnRandomObject()

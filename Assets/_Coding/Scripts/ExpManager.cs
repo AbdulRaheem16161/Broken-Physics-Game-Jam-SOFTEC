@@ -3,6 +3,17 @@ using UnityEngine.UI;
 using TMPro;
 using System.Collections.Generic;
 
+[System.Serializable]
+public class BossSpawnData
+{
+    public string bossName;
+    public int spawnLevel;
+    public GameObject bossPrefab;
+    public Transform spawnPoint;
+
+    [HideInInspector] public bool hasSpawned = false;
+}
+
 public class ExpManager : MonoBehaviour
 {
     [Header("UI")]
@@ -15,11 +26,8 @@ public class ExpManager : MonoBehaviour
     [SerializeField] private float baseExpRequired = 100f;
     [SerializeField] private float expMultiplier = 1.25f;
 
-    [Header("Level 10 Spawn")]
-    [SerializeField] private GameObject level10SpawnPrefab;
-    [SerializeField] private Transform level10SpawnPoint;
-
-    private bool level10Spawned = false;
+    [Header("Boss System")]
+    [SerializeField] private List<BossSpawnData> bosses = new List<BossSpawnData>();
 
     [Header("Level Up Effect")]
     [SerializeField] private GameObject levelUpEffectPrefab;
@@ -40,7 +48,6 @@ public class ExpManager : MonoBehaviour
     private void Start()
     {
         currentLevel = Mathf.Max(1, startingLevel);
-
         requiredExp = baseExpRequired;
         currentExp = 0f;
 
@@ -80,12 +87,7 @@ public class ExpManager : MonoBehaviour
         Debug.Log("LEVEL UP → Level: " + currentLevel);
 
         SyncAllGuns();
-
-        if (currentLevel >= 10 && !level10Spawned)
-        {
-            SpawnLevel10Object();
-            level10Spawned = true;
-        }
+        CheckBossSpawns();
 
         if (powerUpManager != null)
         {
@@ -96,45 +98,55 @@ public class ExpManager : MonoBehaviour
         UpdateUI();
     }
 
-    private void SpawnLevel10Object()
+    private void CheckBossSpawns()
     {
-        if (level10SpawnPrefab == null)
+        foreach (var boss in bosses)
         {
-            Debug.LogWarning("Level 10 prefab not assigned!");
+            if (boss == null) continue;
+
+            if (!boss.hasSpawned && currentLevel >= boss.spawnLevel)
+            {
+                SpawnBoss(boss);
+                boss.hasSpawned = true;
+            }
+        }
+    }
+
+    private void SpawnBoss(BossSpawnData boss)
+    {
+        if (boss.bossPrefab == null)
+        {
+            Debug.LogWarning("Boss prefab missing for: " + boss.bossName);
             return;
         }
 
         Vector3 spawnPosition;
         Quaternion spawnRotation;
 
-        if (level10SpawnPoint != null)
+        if (boss.spawnPoint != null)
         {
-            spawnPosition = level10SpawnPoint.position;
-            spawnRotation = level10SpawnPoint.rotation;
+            spawnPosition = boss.spawnPoint.position;
+            spawnRotation = boss.spawnPoint.rotation;
+        }
+        else if (playerRef != null)
+        {
+            spawnPosition = playerRef.position + Vector3.forward * 5f;
+            spawnRotation = Quaternion.identity;
         }
         else
         {
-            if (playerRef != null)
-            {
-                spawnPosition = playerRef.position;
-                spawnRotation = Quaternion.identity;
-            }
-            else
-            {
-                spawnPosition = transform.position;
-                spawnRotation = Quaternion.identity;
-            }
+            spawnPosition = transform.position;
+            spawnRotation = Quaternion.identity;
         }
 
-        Instantiate(level10SpawnPrefab, spawnPosition, spawnRotation);
+        Instantiate(boss.bossPrefab, spawnPosition, spawnRotation);
 
-        Debug.Log("🔥 LEVEL 10 → Special object spawned!");
+        Debug.Log("🔥 BOSS SPAWNED → " + boss.bossName + " at level " + boss.spawnLevel);
     }
 
     private void SpawnLevelUpEffect()
     {
-        if (levelUpEffectPrefab == null) return;
-        if (playerRef == null) return;
+        if (levelUpEffectPrefab == null || playerRef == null) return;
 
         GameObject fx = Instantiate(levelUpEffectPrefab, playerRef);
         fx.transform.localPosition = Vector3.zero;
