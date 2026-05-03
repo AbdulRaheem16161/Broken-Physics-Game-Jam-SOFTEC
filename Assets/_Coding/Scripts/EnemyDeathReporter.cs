@@ -2,34 +2,25 @@ using UnityEngine;
 
 public class EnemyDeathReporter : MonoBehaviour
 {
-    #region Runtime
+    [SerializeField] private Health health;
+    [SerializeField] private EnemiesList enemiesList;
 
-    private ScoreManager scoreManager;
-
-    #endregion
-
-    #region Unity Methods
-
-    private void Start()
+    void Awake()
     {
-        #region Find Score Manager
-
-        scoreManager = FindObjectOfType<ScoreManager>();
-
-        #endregion
-    }
-
-    private void OnDestroy()
-    {
-        #region Notify Score Manager
-
-        if (scoreManager != null)
+        if (health == null)
         {
-            scoreManager.AddScore(1);
-        }
-
-        #endregion
+            health = GetComponent<Health>();
+        }   
+        
+        enemiesList = EnemiesList.instance;
+        health.OnDeath += ReportDeath;
+        enemiesList.AddEnemy(gameObject);
     }
 
-    #endregion
+    void ReportDeath()
+    {
+        enemiesList.RemoveEnemy(gameObject);
+    }
+
+    
 }

@@ -20,7 +20,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/_Coding/Scenes/Obsolete/Comic trailer.unity
     guid: 8e04c937b7907fa4188f1e685d64ddee
-  - enabled: 1
+  - enabled: 0
     path: Assets/sirTruck.unity
     guid: d3fcff7abd4be554fbe9aced051b280e
   m_configObjects: {}

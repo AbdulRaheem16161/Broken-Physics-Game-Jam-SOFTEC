@@ -1,167 +1,80 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
+using UnityEngine.UI;
 
-public class PowerUpManager : MonoBehaviour
+public class PowerUpsManager : MonoBehaviour
 {
-    public enum StopMethod
+    [SerializeField] private List<BasePowerUp> powerUps = new List<BasePowerUp>();
+    [SerializeField] private List<PowerUpCard> powerUpCards = new List<PowerUpCard>();
+    [SerializeField] private LevelUpManager LevelUpManager;
+
+    [SerializeField] private int firstCardPowerUpIndex;
+    [SerializeField] private int secondCardPowerUpIndex;
+    [SerializeField] private int thirdCardPowerUpIndex;
+
+    private void Start()
     {
-        Timer,
-        UntilNextPowerUp
-    }
+        LevelUpManager.OnLevelUp += ActivatePowerUp;
 
-    public enum Mode
-    {
-        Random,
-        Controlled
-    }
-
-    [System.Serializable]
-    public class PowerUpEntry
-    {
-        public MonoBehaviour powerUpBehaviour;   // must implement IPowerUp
-        public bool enabled = true;
-
-        public StopMethod stopMethod = StopMethod.Timer;
-        public float duration = 5f;
-
-        [Header("Level Restriction")]
-        public int maxLevel = int.MaxValue;
-
-        [Header("Audio")]
-        public AudioClip activationClip;
-    }
-
-    [Header("Mode")]
-    [SerializeField] private Mode mode = Mode.Random;
-
-    [Header("UI")]
-    [SerializeField] private TextMeshProUGUI modeText;
-
-    [Header("Audio Source")]
-    [SerializeField] private AudioSource audioSource;
-
-    [Header("Controlled Sequence")]
-    [SerializeField] private List<PowerUpEntry> controlledSequence = new List<PowerUpEntry>();
-
-    [Header("Random Pool")]
-    [SerializeField] private List<PowerUpEntry> randomPool = new List<PowerUpEntry>();
-
-    private int sequenceIndex = 0;
-    private IPowerUp activePowerUp;
-    private PowerUpEntry activeEntry;
-    private Coroutine activeRoutine;
-
-    public void ActivatePowerUpOnLevelUp(int currentLevel)
-    {
-        Debug.Log("PowerUp Manager Triggered Level Up PowerUp");
-
-        if (activeEntry != null && activeEntry.stopMethod == StopMethod.UntilNextPowerUp)
+        foreach (var card in powerUpCards)
         {
-            activePowerUp?.DeactivatePowerUp();
-            UpdateModeUI();
+            card.onCardSelected += DisablePowerUps;
+            card.gameObject.SetActive(false);
         }
 
-        if (activeRoutine != null)
+      
+    }
+
+    private void ActivatePowerUp()
+    {
+        SelectRandomPowerUps();
+        EnablePowerUps();
+    }
+
+    private void SelectRandomPowerUps()
+    {
+        firstCardPowerUpIndex = Random.Range(0, powerUps.Count);
+
+        secondCardPowerUpIndex = Random.Range(0, powerUps.Count);
+        while (firstCardPowerUpIndex == secondCardPowerUpIndex)
         {
-            StopCoroutine(activeRoutine);
-            activeRoutine = null;
+            secondCardPowerUpIndex = Random.Range(0, powerUps.Count);
         }
 
-        PowerUpEntry entry = GetNextPowerUp(currentLevel);
-
-        if (entry == null || entry.powerUpBehaviour == null) return;
-
-        activeEntry = entry;
-        activePowerUp = entry.powerUpBehaviour as IPowerUp;
-
-        if (activePowerUp == null)
+        thirdCardPowerUpIndex = Random.Range(0, powerUps.Count);
+        while (thirdCardPowerUpIndex == firstCardPowerUpIndex || thirdCardPowerUpIndex == secondCardPowerUpIndex)
         {
-            Debug.LogWarning("PowerUp does not implement IPowerUp!");
-            return;
-        }
-
-        activePowerUp.ActivatePowerUp();
-        PlayPowerUpAudio(entry);
-        UpdateModeUI();
-
-        if (entry.stopMethod == StopMethod.Timer)
-        {
-            activeRoutine = StartCoroutine(StopAfterTime(entry.duration));
+            thirdCardPowerUpIndex = Random.Range(0, powerUps.Count);
         }
     }
 
-    private void PlayPowerUpAudio(PowerUpEntry entry)
+    private void EnablePowerUps()
     {
-        if (audioSource == null) return;
-        if (entry.activationClip == null) return;
+        powerUpCards[0].SetPowerUp(powerUps[firstCardPowerUpIndex]);
+        powerUpCards[1].SetPowerUp(powerUps[secondCardPowerUpIndex]);
+        powerUpCards[2].SetPowerUp(powerUps[thirdCardPowerUpIndex]);
 
-        audioSource.PlayOneShot(entry.activationClip);
-    }
-
-    private PowerUpEntry GetNextPowerUp(int currentLevel)
-    {
-        if (mode == Mode.Random)
+        foreach (var card in powerUpCards)
         {
-            List<PowerUpEntry> valid = new List<PowerUpEntry>();
-
-            foreach (var p in randomPool)
-            {
-                if (p == null) continue;
-
-                if (!p.enabled) continue;
-                if (p.powerUpBehaviour == null) continue;
-                if (currentLevel > p.maxLevel) continue;
-
-                valid.Add(p);
-            }
-
-            if (valid.Count == 0) return null;
-
-            return valid[Random.Range(0, valid.Count)];
+            card.gameObject.SetActive(true);
         }
-
-        if (controlledSequence.Count == 0) return null;
-
-        int attempts = 0;
-
-        while (attempts < controlledSequence.Count)
-        {
-            PowerUpEntry entry = controlledSequence[sequenceIndex];
-            sequenceIndex = (sequenceIndex + 1) % controlledSequence.Count;
-            attempts++;
-
-            if (entry == null) continue;
-            if (!entry.enabled) continue;
-            if (entry.powerUpBehaviour == null) continue;
-            if (currentLevel > entry.maxLevel) continue;
-
-            return entry;
-        }
-
-        return null;
     }
 
-    private IEnumerator StopAfterTime(float duration)
+    private void DisablePowerUps()
     {
-        yield return new WaitForSeconds(duration);
+        Debug.Log("PowerUp Selected, disabling cards...");
+        
+        powerUpCards[0].SetPowerUp(null);
+        powerUpCards[1].SetPowerUp(null);
+        powerUpCards[2].SetPowerUp(null);
 
-        activePowerUp?.DeactivatePowerUp();
-        UpdateModeUI();
-    }
-
-    private void UpdateModeUI()
-    {
-        if (modeText == null) return;
-
-        string displayName = "None";
-
-        if (activePowerUp != null)
+        foreach (var card in powerUpCards)
         {
-            displayName = activePowerUp.DisplayName;
+            card.gameObject.SetActive(false);
         }
-
-        modeText.text = "Physics Mode: " + displayName;
     }
+
+
+
 }

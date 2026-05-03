@@ -5049,7 +5049,7 @@ GameObject:
   - component: {fileID: 6345248446914083182}
   - component: {fileID: 5762192700297825048}
   - component: {fileID: 7671629396151762083}
-  - component: {fileID: 7567481169133506948}
+  - component: {fileID: 6471865281573538371}
   m_Layer: 9
   m_Name: Armored zombie
   m_TagString: Enemy
@@ -5641,7 +5641,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movementThreshold: 0.05
   idleTimeRequired: 10
---- !u!114 &7567481169133506948
+--- !u!114 &6471865281573538371
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5650,7 +5650,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1056866011463894519}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: caecea4ab711e0b459a91bcb6b78a081, type: 3}
+  m_Script: {fileID: 11500000, guid: dcf02826a3b67d54eb475ad0b5e58ea8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1526220469919203577

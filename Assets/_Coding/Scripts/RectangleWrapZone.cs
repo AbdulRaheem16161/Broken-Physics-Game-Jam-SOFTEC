@@ -2,94 +2,51 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+[RequireComponent(typeof(EnemiesList))]
 public class GroundWrapZone : MonoBehaviour
 {
-    [Header("Ground Size")]
-    public float width = 20f;
-    public float length = 20f;
+    public GameObject testEnemy;
 
-    [Header("Target Settings")]
-    public string targetTag = "Enemy";
-
-    [Header("Teleport Settings")]
-    public float teleportDelay = 1f;
-
-    [Header("Gizmos")]
-    public bool showGizmos = true;
-
-    public Color rectangleColor = Color.green;
-    public Color rightEdgeColor = Color.red;
-
-    private HashSet<GameObject> processingObjects = new HashSet<GameObject>();
+    public float teleportThreshold = 50f;
+    public float gizmosSize = 0.5f;
 
     private void Update()
     {
-        GameObject[] targets = GameObject.FindGameObjectsWithTag(targetTag);
-
-        foreach (GameObject target in targets)
+        if (testEnemy.transform.position.x > transform.position.x + teleportThreshold)
         {
-            if (target == null)
-                continue;
-
-            Vector3 localPos = transform.InverseTransformPoint(target.transform.position);
-
-            float rightEdge = width * 0.5f;
-
-            // Check if object crossed RIGHT side
-            if (localPos.x > rightEdge)
-            {
-                if (!processingObjects.Contains(target))
-                {
-                    StartCoroutine(TeleportToLeft(target));
-                }
-            }
+            testEnemy.transform.position += new Vector3(-teleportThreshold * 2f, 0f, 0f);
+            testEnemy.transform.LookAt(PlayerInstance.instance.transform.position);
         }
-    }
-
-    private IEnumerator TeleportToLeft(GameObject target)
-    {
-        processingObjects.Add(target);
-
-        yield return new WaitForSeconds(teleportDelay);
-
-        if (target != null)
+        if (testEnemy.transform.position.x < transform.position.x - teleportThreshold)
         {
-            Vector3 localPos = transform.InverseTransformPoint(target.transform.position);
-
-            float leftEdge = -width * 0.5f;
-
-            // Teleport to LEFT side
-            localPos.x = leftEdge;
-
-            target.transform.position = transform.TransformPoint(localPos);
-
-            // Rotate 180 degrees on Y axis
-            target.transform.Rotate(0f, 180f, 0f);
+            testEnemy.transform.position += new Vector3(teleportThreshold * 2f, 0f, 0f);
+            testEnemy.transform.LookAt(PlayerInstance.instance.transform.position);
         }
-
-        processingObjects.Remove(target);
+        if (testEnemy.transform.position.z > transform.position.z + teleportThreshold)
+        {
+            testEnemy.transform.position += new Vector3(0f, 0f, -teleportThreshold * 2f);
+            testEnemy.transform.LookAt(PlayerInstance.instance.transform.position);
+        }
+        if (testEnemy.transform.position.z < transform.position.z - teleportThreshold)
+        {
+            testEnemy.transform.position += new Vector3(0f, 0f, teleportThreshold * 2f);
+            testEnemy.transform.LookAt(PlayerInstance.instance.transform.position);
+        }
     }
 
     private void OnDrawGizmos()
     {
-        if (!showGizmos)
-            return;
+        Gizmos.color = Color.red;   
 
-        Vector3 center = transform.position;
+        Vector3 rightDotPosition = transform.position + new Vector3(teleportThreshold, 0f, 0f);
+        Vector3 leftDotPosition = transform.position + new Vector3(-teleportThreshold, 0f, 0f);
+        Vector3 topDotPosition = transform.position + new Vector3(0f, 0f, teleportThreshold);
+        Vector3 bottomDotPosition = transform.position + new Vector3(0f, 0f, -teleportThreshold);
 
-        // Draw flat rectangle
-        Gizmos.color = rectangleColor;
-
-        Vector3 size = new Vector3(width, 0.1f, length);
-
-        Gizmos.DrawWireCube(center, size);
-
-        // Draw RIGHT edge
-        Gizmos.color = rightEdgeColor;
-
-        Vector3 topRight = center + new Vector3(width * 0.5f, 0f, length * 0.5f);
-        Vector3 bottomRight = center + new Vector3(width * 0.5f, 0f, -length * 0.5f);
-
-        Gizmos.DrawLine(topRight, bottomRight);
+        Gizmos.DrawSphere(rightDotPosition, gizmosSize);
+        Gizmos.DrawSphere(leftDotPosition, gizmosSize);
+        Gizmos.DrawSphere(topDotPosition, gizmosSize);
+        Gizmos.DrawSphere(bottomDotPosition, gizmosSize);
     }
 }

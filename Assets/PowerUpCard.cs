@@ -1,0 +1,51 @@
+using UnityEngine;
+using UnityEngine.UI;
+using System;
+
+public class PowerUpCard : MonoBehaviour
+{
+    [SerializeField] private Image powerUpImage;
+    [SerializeField] private BasePowerUp powerUp;
+    public Action onCardSelected;
+
+    private void Start()
+    {
+        Debug.Log("PowerUpCard script is running");
+    }
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Debug.Log("Space key pressed");
+            SelectCard();
+        }
+    }
+    public void SelectCard()
+    {
+        Debug.Log("Selected Power-Up: " + "now invoking OnCardSelected");
+
+        powerUp.ActivatePowerUp();
+        onCardSelected?.Invoke();
+    }
+
+    public void SetPowerUp(BasePowerUp newPowerUp)
+    {
+        powerUp = newPowerUp;
+
+        if (powerUpImage == null)
+        {
+            Debug.LogError("PowerUpCard: PowerUpImage reference is missing!");
+        }
+
+        if (powerUp != null)
+        {
+            Debug.Log("Setting Power-Up: " + powerUp.name);
+        }
+        
+        if (newPowerUp == null)
+        {
+            Debug.LogWarning("newPowerUp is null, cannot set image.");
+        }
+        powerUpImage.sprite = newPowerUp.powerUpImage;
+    }
+}

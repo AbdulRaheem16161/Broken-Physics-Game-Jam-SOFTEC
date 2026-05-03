@@ -7,7 +7,6 @@ public class Health : MonoBehaviour
 
     public System.Action OnDeath;
 
-
     #region Health
 
     [SerializeField] private float maxHp = 100f;
@@ -16,7 +15,7 @@ public class Health : MonoBehaviour
 
     #endregion
 
-    #region Regen (NEW 🔥)
+    #region Regen (Health Regen)
 
     [Header("Health Regen")]
     [SerializeField] private bool enableRegen = true;
@@ -128,7 +127,7 @@ public class Health : MonoBehaviour
 
     #endregion
 
-    #region Regen Logic (NEW 🔥)
+    #region Regen Logic (HandleRegen)
 
     private void HandleRegen()
     {
@@ -282,6 +281,16 @@ public class Health : MonoBehaviour
     #endregion
 
     #region Gizmos
+
+    #region Heal
+
+    public void Heal(float amount)
+    {
+        hp += amount;
+        hp = Mathf.Clamp(hp, 0f, maxHp);
+        UpdateHealthUI();
+    }
+    #endregion
 
     private void OnDrawGizmos()
     {

@@ -14,7 +14,7 @@ public class ScoreManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI scoreText;
 
     [Header("XP System")]
-    [SerializeField] private ExpManager expManager;
+    [SerializeField] private LevelUpManager LevelUpManager;
     [SerializeField] private int expPerKill = 10;
 
     [Header("KPM Tracking")]
@@ -70,9 +70,9 @@ public class ScoreManager : MonoBehaviour
         killTimestamps.Add(Time.time);
         UpdateUI();
 
-        if (expManager != null)
+        if (LevelUpManager != null)
         {
-            expManager.AddExp(expPerKill);
+        //   /  LevelUpManager'.AddExp();
         }
 
         #endregion
