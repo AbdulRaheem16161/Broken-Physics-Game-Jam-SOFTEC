@@ -6275,7 +6275,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyTag: Enemy
   scoreText: {fileID: 148403212}
-  expManager: {fileID: 1543512159}
+  LevelUpManager: {fileID: 0}
   expPerKill: 100
   kpmWindowSeconds: 60
   enemies: []
@@ -6306,34 +6306,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ee4504aeee5e094088cfc9c2944c13a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  expBar: {fileID: 1454467581}
-  levelText: {fileID: 1966401085}
-  startingLevel: 1
-  currentLevel: 0
-  baseExpRequired: 100
-  expMultiplier: 1.25
-  bosses:
-  - bossName: green zomboss
-    spawnLevel: 10
-    bossPrefab: {fileID: 2977843243201819697, guid: d2bcf82962b13284aa733ed3f99bf285, type: 3}
-    spawnPoint: {fileID: 830598127}
-    hasSpawned: 0
-  - bossName: blue zomboss
-    spawnLevel: 18
-    bossPrefab: {fileID: 7719227699745283082, guid: f224112850ed9c44a95d3107b33bf49f, type: 3}
-    spawnPoint: {fileID: 830598127}
-    hasSpawned: 0
-  levelUpEffectPrefab: {fileID: 8434842591292709995, guid: c40d899182bd2484b8af4d1960882efd, type: 3}
-  levelUpEffectDuration: 1
-  playerRef: {fileID: 1972794283}
-  guns:
-  - {fileID: 1356099873}
-  - {fileID: 408323121}
-  - {fileID: 1304160409}
-  - {fileID: 534258634}
-  - {fileID: 0}
-  - {fileID: 0}
-  powerUpManager: {fileID: 1543512160}
+  killsCounter: {fileID: 0}
+  playerLevel: 1
+  expPerKill: 10
+  expToLevelUp: 30
+  currentExp: 0
+  expReqPerLevelMult: 1.25
 --- !u!114 &1543512160
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6346,89 +6324,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de989dc44af0ac84995e71b0f481f3da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mode: 1
-  modeText: {fileID: 1545633970}
-  audioSource: {fileID: 0}
-  controlledSequence:
-  - powerUpBehaviour: {fileID: 1856288339}
-    enabled: 1
-    stopMethod: 1
-    duration: 5
-    maxLevel: 1000
-    activationClip: {fileID: 0}
-  - powerUpBehaviour: {fileID: 1856288339}
-    enabled: 1
-    stopMethod: 1
-    duration: 5
-    maxLevel: 1000
-    activationClip: {fileID: 0}
-  - powerUpBehaviour: {fileID: 1072912475}
-    enabled: 1
-    stopMethod: 1
-    duration: 5
-    maxLevel: 25
-    activationClip: {fileID: 0}
-  - powerUpBehaviour: {fileID: 1856288339}
-    enabled: 1
-    stopMethod: 1
-    duration: 5
-    maxLevel: 1000
-    activationClip: {fileID: 0}
-  - powerUpBehaviour: {fileID: 1856288339}
-    enabled: 1
-    stopMethod: 1
-    duration: 5
-    maxLevel: 1000
-    activationClip: {fileID: 0}
-  - powerUpBehaviour: {fileID: 822818376}
-    enabled: 1
-    stopMethod: 1
-    duration: 5
-    maxLevel: 10
-    activationClip: {fileID: 0}
-  - powerUpBehaviour: {fileID: 1856288339}
-    enabled: 1
-    stopMethod: 1
-    duration: 5
-    maxLevel: 1000
-    activationClip: {fileID: 0}
-  - powerUpBehaviour: {fileID: 1856288339}
-    enabled: 1
-    stopMethod: 1
-    duration: 5
-    maxLevel: 1000
-    activationClip: {fileID: 0}
-  - powerUpBehaviour: {fileID: 1856288339}
-    enabled: 1
-    stopMethod: 1
-    duration: 5
-    maxLevel: 1000
-    activationClip: {fileID: 0}
-  randomPool:
-  - powerUpBehaviour: {fileID: 822818376}
-    enabled: 1
-    stopMethod: 0
-    duration: 5
-    maxLevel: 2147483647
-    activationClip: {fileID: 0}
-  - powerUpBehaviour: {fileID: 1072912475}
-    enabled: 1
-    stopMethod: 0
-    duration: 5
-    maxLevel: 2147483647
-    activationClip: {fileID: 0}
-  - powerUpBehaviour: {fileID: 721990428}
-    enabled: 1
-    stopMethod: 0
-    duration: 5
-    maxLevel: 2147483647
-    activationClip: {fileID: 0}
-  - powerUpBehaviour: {fileID: 1160752080}
-    enabled: 1
-    stopMethod: 0
-    duration: 5
-    maxLevel: 2147483647
-    activationClip: {fileID: 0}
+  powerUps: []
+  powerUpCards: []
+  LevelUpManager: {fileID: 0}
+  firstCardPowerUpIndex: 0
+  secondCardPowerUpIndex: 0
+  thirdCardPowerUpIndex: 0
 --- !u!1 &1545633967
 GameObject:
   m_ObjectHideFlags: 0

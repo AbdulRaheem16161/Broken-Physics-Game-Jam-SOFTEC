@@ -28,16 +28,16 @@ public class CursorLockManager : MonoBehaviour
         #region Input Handling
 
         // Lock cursor on left mouse click
-        if (Input.GetMouseButtonDown(0))
-        {
-            LockCursor();
-        }
+        //if (Input.GetMouseButtonDown(0))    ///////////////////
+        //{
+        //    LockCursor();
+        //}
 
         // Unlock cursor on Escape key press
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            UnlockCursor();
-        }
+        //if (Input.GetKeyDown(KeyCode.Escape)) ///////////////////
+        //{
+        //    UnlockCursor();
+        //}
 
         #endregion
     }

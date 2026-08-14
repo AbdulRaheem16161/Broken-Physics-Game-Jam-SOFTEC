@@ -40,17 +40,17 @@ public class Nitro : MonoBehaviour
     }
 
     #region INPUT
-    void HandleInput()
+    void HandleInput() //////////////////////// NITRO
     {
-        if (Input.GetKeyDown(nitroKey))
-        {
-            active = true;
-        }
+        //if (Input.GetKeyDown(nitroKey))
+        //{
+        //    active = true;
+        //}
 
-        if (Input.GetKeyUp(nitroKey))
-        {
-            active = false;
-        }
+        //if (Input.GetKeyUp(nitroKey))
+        //{
+        //    active = false;
+        //}
     }
     #endregion
 

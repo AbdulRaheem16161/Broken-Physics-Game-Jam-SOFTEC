@@ -5608,8 +5608,8 @@ MonoBehaviour:
     m_Bits: 8
   damage: 20
   damageCooldown: 0.5
-  bounceForce: 10
-  upwardBoost: 2
+  bounceForce: 0
+  upwardBoost: 0
 --- !u!114 &5762192700297825048
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5653,6 +5653,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dcf02826a3b67d54eb475ad0b5e58ea8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  health: {fileID: 0}
+  enemiesList: {fileID: 0}
 --- !u!1 &1526220469919203577
 GameObject:
   m_ObjectHideFlags: 0

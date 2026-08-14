@@ -23,10 +23,10 @@ public class PauseManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(pauseKey))
-        {
-            TogglePause();
-        }
+        //if (Input.GetKeyDown(pauseKey)) ////////////// PAUSE
+        //{
+        //    TogglePause();
+        //}
     }
 
     public void TogglePause()

@@ -10,12 +10,11 @@ public class EnemiesList : MonoBehaviour
 
     public Action OnEnemyRemoval;
 
-    void Awake()
+    void Start()
     {
         if (instance != null)
         {
-            Destroy(instance.gameObject);
-
+            Destroy(gameObject);
             return;
         }
 

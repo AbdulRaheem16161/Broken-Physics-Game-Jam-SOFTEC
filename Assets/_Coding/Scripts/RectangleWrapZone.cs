@@ -16,22 +16,22 @@ public class GroundWrapZone : MonoBehaviour
         if (testEnemy.transform.position.x > transform.position.x + teleportThreshold)
         {
             testEnemy.transform.position += new Vector3(-teleportThreshold * 2f, 0f, 0f);
-            testEnemy.transform.LookAt(PlayerInstance.instance.transform.position);
+            testEnemy.transform.LookAt(PlayerManager.instance.transform.position);
         }
         if (testEnemy.transform.position.x < transform.position.x - teleportThreshold)
         {
             testEnemy.transform.position += new Vector3(teleportThreshold * 2f, 0f, 0f);
-            testEnemy.transform.LookAt(PlayerInstance.instance.transform.position);
+            testEnemy.transform.LookAt(PlayerManager.instance.transform.position);
         }
         if (testEnemy.transform.position.z > transform.position.z + teleportThreshold)
         {
             testEnemy.transform.position += new Vector3(0f, 0f, -teleportThreshold * 2f);
-            testEnemy.transform.LookAt(PlayerInstance.instance.transform.position);
+            testEnemy.transform.LookAt(PlayerManager.instance.transform.position);
         }
         if (testEnemy.transform.position.z < transform.position.z - teleportThreshold)
         {
             testEnemy.transform.position += new Vector3(0f, 0f, teleportThreshold * 2f);
-            testEnemy.transform.LookAt(PlayerInstance.instance.transform.position);
+            testEnemy.transform.LookAt(PlayerManager.instance.transform.position);
         }
     }
 

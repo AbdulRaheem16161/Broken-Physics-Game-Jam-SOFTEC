@@ -42,17 +42,17 @@ public class ResetScene : MonoBehaviour
     {
         if (disableReset) return;
 
-        if (Input.GetKey(resetKey))
-        {
-            inputTimer += Time.deltaTime;
+        //if (Input.GetKey(resetKey))   ////////////////////
+        //{
+        //    inputTimer += Time.deltaTime;
 
-            if (inputTimer >= holdDuration)
-                ReloadScene();
-        }
-        else
-        {
-            inputTimer = 0f;
-        }
+        //    if (inputTimer >= holdDuration)
+        //        ReloadScene();
+        //}
+        //else
+        //{
+        //    inputTimer = 0f;
+        //}
     }
 
     private void HandleDeathReset()

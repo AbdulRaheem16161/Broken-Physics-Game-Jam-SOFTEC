@@ -6,6 +6,6 @@ public class IncreaseSpeedPowerUp : BasePowerUp
     [SerializeField] private float healAmount = 20f;
     protected override void functionality()
     {
-        PlayerInstance.instance.playerHealth.Heal(healAmount);
+        PlayerManager.instance.playerHealth.Heal(healAmount);
     }
 }

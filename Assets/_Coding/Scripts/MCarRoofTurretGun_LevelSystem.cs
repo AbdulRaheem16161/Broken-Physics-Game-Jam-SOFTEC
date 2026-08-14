@@ -39,7 +39,6 @@ public class MCarRoofTurretGun_LevelSystem : MonoBehaviour
     #endregion
 
     #region Live Debug Values
-
     [Header("Live Runtime Values")]
     [SerializeField] private bool isUnlocked;
     [SerializeField] private int resolvedLevelIndex;
@@ -48,11 +47,9 @@ public class MCarRoofTurretGun_LevelSystem : MonoBehaviour
     [SerializeField] private float currentFireRate;
     [SerializeField] private float currentSpread;
     [SerializeField] private float currentDamage;
-
     #endregion
 
     #region Reflection Fields
-
     private FieldInfo modeField;
     private FieldInfo rifleRateField;
     private FieldInfo machineRateField;

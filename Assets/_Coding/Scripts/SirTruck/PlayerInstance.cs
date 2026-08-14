@@ -1,10 +1,12 @@
 using UnityEngine;
 
-public class PlayerInstance : MonoBehaviour
+public class PlayerManager : MonoBehaviour
 {
     public Health playerHealth;
+    private ShotGun shotGun;
+    private MachineGun machineGun;
 
-    public static PlayerInstance instance;
+    public static PlayerManager instance;
     void Awake()
     {
         if (instance != null)
@@ -19,6 +21,22 @@ public class PlayerInstance : MonoBehaviour
         if (playerHealth == null)
         {
             playerHealth = GetComponent<Health>();
+        }
+    }
+
+    public void EnableShotGun()
+    {
+        if (shotGun != null)
+        {
+            shotGun.enabled = true;
+        }
+    }
+
+    public void EnableMachineGun()
+    {
+        if (machineGun != null)
+        {
+            machineGun.enabled = true;
         }
     }
 }

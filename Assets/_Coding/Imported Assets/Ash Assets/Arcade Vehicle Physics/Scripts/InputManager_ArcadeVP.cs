@@ -45,7 +45,7 @@ namespace ArcadeVP
             if (nitroSystem != null)
             {
                 // Nitro is active ONLY while key is held AND nitro has fuel
-                nitroBeingPressed = Input.GetKey(nitroSystem.nitroKey) && nitroSystem.nitro > 0;
+              //  nitroBeingPressed = Input.GetKey(nitroSystem.nitroKey) && nitroSystem.nitro > 0; //////////////////////////////// NITRO 
             }
 
             #endregion

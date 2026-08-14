@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4206919493065987192}
   - component: {fileID: 3065747617815776719}
   - component: {fileID: 3542051596642880285}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: VFX projectile 4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -153,7 +153,7 @@ MonoBehaviour:
   damage: 30
   minDamageOffset: -5
   maxDamageOffset: 5
-  lifeTime: 5
+  lifeTime: 1
   attacker: {fileID: 0}
   targetLayer:
     serializedVersion: 2

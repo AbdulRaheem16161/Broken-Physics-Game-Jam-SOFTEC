@@ -112,10 +112,10 @@ public class Health : MonoBehaviour
     private void Update()
     {
         #region Debug Kill
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            TakeDamage(maxHp);
-        }
+        //if (Input.GetKeyDown(KeyCode.K))  
+        //{
+        //    TakeDamage(maxHp);
+        //}
         #endregion
 
         #region Regen Tick (NEW)

@@ -14,18 +14,24 @@ public class PowerUpCard : MonoBehaviour
     }
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Debug.Log("Space key pressed");
-            SelectCard();
-        }
+        //if (Input.GetKeyDown(KeyCode.Space)) ///////////////////////
+        //{
+        //    Debug.Log("Space key pressed");
+        //    SelectCard();
+        //}
     }
     public void SelectCard()
     {
-        Debug.Log("Selected Power-Up: " + "now invoking OnCardSelected");
+        Debug.Log("Selected Power-Up: " + powerUp.name + " now invoking OnCardSelected");
 
+        if (powerUp == null)
+        {
+            Debug.LogWarning("PowerUp is null, cannot activate.");
+            return;
+        }
         powerUp.ActivatePowerUp();
         onCardSelected?.Invoke();
+        Time.timeScale = 1f;
     }
 
     public void SetPowerUp(BasePowerUp newPowerUp)

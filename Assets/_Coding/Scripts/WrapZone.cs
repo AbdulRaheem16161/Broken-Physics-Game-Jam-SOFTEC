@@ -15,22 +15,22 @@ public class WrapZone : MonoBehaviour
             if (enemy.transform.position.x > transform.position.x + teleportThreshold)
             {
                 enemy.transform.position += new Vector3(-teleportThreshold * 2f, 0f, 0f);
-                enemy.transform.LookAt(PlayerInstance.instance.transform.position);
+                enemy.transform.LookAt(PlayerManager.instance.transform.position);
             }
             if (enemy.transform.position.x < transform.position.x - teleportThreshold)
             {
                 enemy.transform.position += new Vector3(teleportThreshold * 2f, 0f, 0f);
-                enemy.transform.LookAt(PlayerInstance.instance.transform.position);
+                enemy.transform.LookAt(PlayerManager.instance.transform.position);
             }
             if (enemy.transform.position.z > transform.position.z + teleportThreshold)
             {
                 enemy.transform.position += new Vector3(0f, 0f, -teleportThreshold * 2f);
-                enemy.transform.LookAt(PlayerInstance.instance.transform.position);
+                enemy.transform.LookAt(PlayerManager.instance.transform.position);
             }
             if (enemy.transform.position.z < transform.position.z - teleportThreshold)
             {
                 enemy.transform.position += new Vector3(0f, 0f, teleportThreshold * 2f);
-                enemy.transform.LookAt(PlayerInstance.instance.transform.position);
+                enemy.transform.LookAt(PlayerManager.instance.transform.position);
             }
         }
     }

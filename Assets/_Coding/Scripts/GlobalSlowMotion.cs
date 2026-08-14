@@ -25,10 +25,10 @@ public class GlobalSlowMotion : MonoBehaviour
     {
         #region Debug Input Toggle
 
-        if (WillFreezeOnPressingL && Input.GetKeyDown(KeyCode.L))
-        {
-            ToggleSlowMotion();
-        }
+        //if (WillFreezeOnPressingL && Input.GetKeyDown(KeyCode.L)) //////////////////
+        //{
+        //    ToggleSlowMotion();
+        //}
 
         #endregion
 

@@ -8,7 +8,6 @@ public class PowerUpsManager : MonoBehaviour
     [SerializeField] private List<BasePowerUp> powerUps = new List<BasePowerUp>();
     [SerializeField] private List<PowerUpCard> powerUpCards = new List<PowerUpCard>();
     [SerializeField] private LevelUpManager LevelUpManager;
-
     [SerializeField] private int firstCardPowerUpIndex;
     [SerializeField] private int secondCardPowerUpIndex;
     [SerializeField] private int thirdCardPowerUpIndex;
@@ -22,8 +21,6 @@ public class PowerUpsManager : MonoBehaviour
             card.onCardSelected += DisablePowerUps;
             card.gameObject.SetActive(false);
         }
-
-      
     }
 
     private void ActivatePowerUp()
@@ -59,16 +56,19 @@ public class PowerUpsManager : MonoBehaviour
         {
             card.gameObject.SetActive(true);
         }
+
+        Time.timeScale = 0f;
     }
 
     private void DisablePowerUps()
     {
         Debug.Log("PowerUp Selected, disabling cards...");
-        
-        powerUpCards[0].SetPowerUp(null);
-        powerUpCards[1].SetPowerUp(null);
-        powerUpCards[2].SetPowerUp(null);
 
+        // powerUpCards[0].SetPowerUp(null);
+        // powerUpCards[1].SetPowerUp(null);
+        // powerUpCards[2].SetPowerUp(null);
+
+        
         foreach (var card in powerUpCards)
         {
             card.gameObject.SetActive(false);
